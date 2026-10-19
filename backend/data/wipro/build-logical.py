@@ -1,0 +1,210 @@
+#!/usr/bin/env python3
+"""Generate the verified Wipro Logical Reasoning question bank.
+
+Every question is a genuine reasoning / puzzle item; every answer and
+explanation was derived and checked by hand.
+Outputs: backend/data/wipro/wipro_logical.json
+"""
+import json
+import os
+
+DIFF_STR = {1: "Easy", 2: "Medium", 3: "Hard"}
+DIFF_LVL = {1: "Foundation", 2: "Intermediate", 3: "Advanced"}
+
+ROWS = [
+    # ---- Number Series ----
+    ("Number Series", 1,
+     "Find the next number in the series: 4, 9, 19, 39, 79, ?",
+     "149", "158", "159", "169", "159",
+     "Each term is (previous x 2) + 1: 4->9, 9->19, 19->39, 39->79, 79->159."),
+    ("Number Series", 1,
+     "Find the next number in the series: 2, 6, 12, 20, 30, ?",
+     "36", "40", "42", "46", "42",
+     "The terms are n(n+1): 1x2, 2x3, 3x4, 4x5, 5x6, 6x7 = 42."),
+    ("Number Series", 2,
+     "Find the next number in the series: 3, 7, 16, 35, 74, ?",
+     "148", "153", "157", "161", "153",
+     "Multiply by 2 and add an increasing number: x2+1, x2+2, x2+3, x2+4, x2+5. So 74 x 2 + 5 = 153."),
+    ("Number Series", 1,
+     "Find the next number in the series: 1, 4, 9, 16, 25, ?",
+     "30", "32", "36", "49", "36",
+     "These are perfect squares: 1^2, 2^2, 3^2, 4^2, 5^2, 6^2 = 36."),
+    ("Number Series", 2,
+     "Find the next number in the series: 5, 11, 23, 47, 95, ?",
+     "189", "190", "191", "192", "191",
+     "Each term is (previous x 2) + 1: 5->11->23->47->95->191."),
+    ("Number Series", 3,
+     "Find the next number in the series: 120, 99, 80, 63, 48, ?",
+     "33", "34", "35", "36", "35",
+     "Differences are 21, 19, 17, 15, and next 13. So 48 - 13 = 35."),
+    # ---- Letter Series ----
+    ("Letter Series", 2,
+     "Find the next letter in the series: A, C, F, J, O, ?",
+     "S", "T", "U", "V", "U",
+     "Add 2, 3, 4, 5, 6 letters: A->C (+2), C->F (+3), F->J (+4), J->O (+5), O->U (+6)."),
+    ("Letter Series", 2,
+     "Find the next letter in the series: Z, X, U, Q, L, ?",
+     "F", "G", "H", "I", "F",
+     "Subtract 2, 3, 4, 5, 6 letters: Z->X, X->U, U->Q, Q->L, L->F."),
+    ("Letter Series", 1,
+     "Find the next term in the series: AZ, BY, CX, ?",
+     "DV", "DW", "EW", "DX", "DW",
+     "First letters A, B, C, D; second letters Z, Y, X, W. So the next term is DW."),
+    ("Letter Series", 2,
+     "Find the next letter in the series: A, B, D, G, K, ?",
+     "N", "O", "P", "Q", "P",
+     "Add 1, 2, 3, 4, 5 letters: A->B, B->D, D->G, G->K, K->P."),
+    # ---- Coding-Decoding ----
+    ("Coding-Decoding", 1,
+     "If CAT is coded as 3120 (using A = 1, B = 2, ... Z = 26), how is DOG coded?",
+     "4157", "4156", "4257", "4158", "4157",
+     "DOG: D = 4, O = 15, G = 7, so the code is 4157."),
+    ("Coding-Decoding", 1,
+     "In a certain code, PEN is written as QFO. How is INK written in the same code?",
+     "JOL", "HOL", "JOK", "JPM", "JOL",
+     "Each letter moves forward by 1: I->J, N->O, K->L, giving JOL."),
+    ("Coding-Decoding", 2,
+     "If FRIEND is coded as HTKGPF (each letter shifted forward by 2), how is CANDLE coded?",
+     "ECPFNG", "ECPFNH", "ECOFNG", "DCPFNG", "ECPFNG",
+     "Shift each letter of CANDLE forward by 2: C->E, A->C, N->P, D->F, L->N, E->G = ECPFNG."),
+    ("Coding-Decoding", 2,
+     "In a code, TERM is written as UFTN. Using the same rule, how is EXAM written?",
+     "FYBN", "FZBN", "FYBM", "EZBN", "FYBN",
+     "Each letter moves forward by 1: E->F, X->Y, A->B, M->N, giving FYBN."),
+    # ---- Direction Sense ----
+    ("Direction Sense", 1,
+     "A man walks 5 km towards the north, turns right and walks 3 km, then turns right again and walks 5 km. How far is he from the starting point and in which direction?",
+     "3 km East", "3 km West", "5 km East", "8 km North", "3 km East",
+     "Moving 5 km north and then 5 km south cancels out, leaving a net displacement of 3 km to the east."),
+    ("Direction Sense", 1,
+     "Ravi walks 6 km towards the east and then 8 km towards the north. How far is he from the starting point?",
+     "10 km", "12 km", "14 km", "2 km", "10 km",
+     "Distance = sqrt(6^2 + 8^2) = sqrt(100) = 10 km."),
+    ("Direction Sense", 2,
+     "A person starts facing north. He turns 90 degrees to the left, then 90 degrees to the left again, then 90 degrees to the right. Which direction is he facing now?",
+     "East", "West", "South", "North", "West",
+     "North -> (left) West -> (left) South -> (right) West. He is facing west."),
+    ("Direction Sense", 2,
+     "A man faces the rising sun, turns 90 degrees to his right and then turns 180 degrees. Which direction is he facing now?",
+     "North", "South", "East", "West", "North",
+     "Facing east -> right gives south -> 180 degrees gives north."),
+    # ---- Blood Relations ----
+    ("Blood Relations", 2,
+     "Pointing to a photograph, a man says, 'She is the daughter of my grandfather's only son.' How is the girl related to the man?",
+     "Sister", "Cousin", "Aunt", "Niece", "Sister",
+     "Grandfather's only son is the man's father. The father's daughter is the man's sister."),
+    ("Blood Relations", 3,
+     "A is B's brother, B is C's father, and C is D's sister. How is A related to D?",
+     "Uncle", "Father", "Brother", "Grandfather", "Uncle",
+     "A is the brother of B, who is D's father. So A is D's uncle."),
+    ("Blood Relations", 2,
+     "If P + Q means 'P is the mother of Q' and P - Q means 'P is the brother of Q', how is A related to C in 'A + B - C'?",
+     "Mother", "Aunt", "Sister", "Grandmother", "Mother",
+     "A is B's mother and B is C's brother, so A is also C's mother."),
+    ("Blood Relations", 3,
+     "Introducing a man, a woman said, 'His wife is the only daughter of my mother.' How is the man related to the woman?",
+     "Husband", "Brother", "Father", "Uncle", "Husband",
+     "The only daughter of the woman's mother is the woman herself, so the man's wife is the woman, making the man her husband."),
+    # ---- Syllogisms ----
+    ("Syllogisms", 2,
+     "Statements: All roses are flowers. All flowers are plants. Conclusions: I. All roses are plants. II. All plants are roses.",
+     "Only conclusion I follows", "Only conclusion II follows", "Both I and II follow", "Neither I nor II follows", "Only conclusion I follows",
+     "All roses are flowers and all flowers are plants, so all roses are plants (I follows). II reverses the relation and is not valid."),
+    ("Syllogisms", 2,
+     "Statements: Some pens are books. All books are pencils. Conclusions: I. Some pens are pencils. II. All pencils are books.",
+     "Only conclusion I follows", "Only conclusion II follows", "Both I and II follow", "Neither I nor II follows", "Only conclusion I follows",
+     "Some pens are books and all books are pencils, so some pens are pencils (I follows). II is not a valid converse."),
+    ("Syllogisms", 3,
+     "Statements: All engineers are graduates. Some graduates are managers. Conclusions: I. Some engineers are managers. II. Some managers are graduates.",
+     "Only conclusion I follows", "Only conclusion II follows", "Both I and II follow", "Neither I nor II follows", "Only conclusion II follows",
+     "From 'some graduates are managers', the converse 'some managers are graduates' (II) follows. I does not necessarily follow."),
+    ("Syllogisms", 3,
+     "Statements: No cat is a dog. All dogs are animals. Conclusions: I. No cat is an animal. II. Some animals are dogs.",
+     "Only conclusion I follows", "Only conclusion II follows", "Both I and II follow", "Neither I nor II follows", "Only conclusion II follows",
+     "All dogs are animals, so some animals are dogs (II follows). I is not valid, since cats could still be animals."),
+    # ---- Seating Arrangement ----
+    ("Seating Arrangements", 2,
+     "Five friends P, Q, R, S and T sit in a row facing north. R is at the extreme left. T is at the extreme right. Q is immediately to the right of R. S is not adjacent to T. Who sits in the middle?",
+     "P", "Q", "R", "S", "S",
+     "Position 1 = R, 2 = Q, 5 = T. S is not adjacent to T, so S is at position 3 and P at position 4. The middle seat (position 3) is S."),
+    ("Seating Arrangements", 2,
+     "Five colleagues A, B, C, D and E sit in a row facing north. B is at the extreme left. D is at the extreme right. C sits exactly in the middle. A is an immediate neighbour of B. Who sits second to the right of A?",
+     "C", "D", "E", "B", "E",
+     "Position 1 = B, 3 = C, 5 = D. A is an immediate neighbour of B, so A is at position 2 and E at position 4. Second to the right of A (position 2) is position 4 = E."),
+    ("Seating Arrangements", 3,
+     "Six persons A, B, C, D, E and F sit in a row facing north. D is at the extreme left and F at the extreme right. A is immediately to the right of D. E is immediately to the left of F. C is not next to A. Who sits at the third position from the left?",
+     "B", "C", "D", "E", "B",
+     "Positions: 1 = D, 2 = A, 5 = E, 6 = F. B and C occupy positions 3 and 4. Since C is not next to A (position 2), C is at 4 and B is at 3."),
+    # ---- Logical Puzzles ----
+    ("Logical Puzzles", 2,
+     "If by a certain code BOOK = 43 and PEN = 35 (where each letter is replaced by its position in the alphabet, A = 1), what is the value of CAP?",
+     "18", "19", "20", "21", "20",
+     "B+O+O+K = 2+15+15+11 = 43 and P+E+N = 16+5+14 = 35 confirm the rule. CAP = 3+1+16 = 20."),
+    ("Logical Puzzles", 3,
+     "Five boxes are stacked one above another. P is immediately above Q, R is immediately above P, S is at the bottom, and T is above R. Which box is immediately above Q?",
+     "P", "R", "S", "T", "P",
+     "From top to bottom: T, R, P, Q, S. The box immediately above Q is P."),
+    ("Logical Puzzles", 2,
+     "In a group of 40 students, 25 play cricket and 20 play football. If every student plays at least one of the two games, how many students play both games?",
+     "4", "5", "6", "10", "5",
+     "Both = (25 + 20) - 40 = 45 - 40 = 5."),
+    ("Logical Puzzles", 3,
+     "In a family of three children, every child has at least one sister. What is the minimum number of girls in the family?",
+     "1", "2", "3", "0", "2",
+     "With one girl and two boys, the girl would have no sister. With two girls and one boy, each girl has the other as a sister and the boy has sisters. So the minimum is 2."),
+    # ---- Data Sufficiency ----
+    ("Data Sufficiency", 2,
+     "What is the value of x? Statement I: 2x + 3 = 11. Statement II: x is a positive integer.",
+     "Statement I alone is sufficient", "Statement II alone is sufficient", "Both statements together are sufficient", "Even together, the statements are not sufficient", "Statement I alone is sufficient",
+     "Statement I gives x = 4 uniquely, so I alone is sufficient. Statement II alone does not determine a single value."),
+    ("Data Sufficiency", 3,
+     "Is the number n divisible by 6? Statement I: n is divisible by 3. Statement II: n is even.",
+     "Statement I alone is sufficient", "Statement II alone is sufficient", "Both statements together are sufficient", "Even together, the statements are not sufficient", "Both statements together are sufficient",
+     "A number divisible by both 3 and 2 is divisible by 6. Neither statement alone is enough, but both together are sufficient."),
+    # ---- Deductive Logic ----
+    ("Deductive Logic", 2,
+     "All managers in a company have laptops. Some employees with laptops work from home. Which of the following must be true?",
+     "All managers work from home", "Some managers work from home", "All employees with laptops are managers", "None of these", "None of these",
+     "The statements do not guarantee that any manager works from home, nor that all laptop holders are managers. None of the given conclusions is forced."),
+    ("Deductive Logic", 1,
+     "If A means '+', B means '-', and C means 'x', find the value of 12 A 4 B 3.",
+     "9", "11", "13", "19", "13",
+     "12 + 4 - 3 = 13."),
+    ("Deductive Logic", 2,
+     "Statement: If it rains, the match will be cancelled. It did not rain. Which conclusion follows?",
+     "The match will definitely be played", "The match will definitely be cancelled", "The match may or may not be cancelled", "The match will be postponed", "The match may or may not be cancelled",
+     "The given condition only links rain to cancellation. Since it did not rain, nothing definite can be concluded about the match."),
+    ]
+
+def build():
+    questions = []
+    for subject, diff, q, o1, o2, o3, o4, ans, exp in ROWS:
+        assert ans in (o1, o2, o3, o4), f"Answer not in options for: {q}"
+        assert len({o1, o2, o3, o4}) == 4, f"Duplicate options for: {q}"
+        questions.append({
+            "company": "Wipro",
+            "exam": "Wipro_Elite_NTH",
+            "section": "Logical",
+            "subject": subject,
+            "topic": subject,
+            "category": "Logical Reasoning",
+            "sourceType": "practice",
+            "sourceRef": "Wipro Placement Practice",
+            "question": q,
+            "option1": o1, "option2": o2, "option3": o3, "option4": o4,
+            "answer": ans,
+            "explanation": exp,
+            "difficultyLevel": diff,
+            "difficulty": DIFF_STR[diff],
+            "level": DIFF_LVL[diff],
+            "questionType": "mcq",
+            "active": True,
+        })
+    out = os.path.join(os.path.dirname(__file__), "wipro_logical.json")
+    with open(out, "w", encoding="utf-8") as f:
+        json.dump(questions, f, indent=2, ensure_ascii=False)
+    print(f"Wrote {len(questions)} logical questions to {out}")
+
+
+if __name__ == "__main__":
+    build()

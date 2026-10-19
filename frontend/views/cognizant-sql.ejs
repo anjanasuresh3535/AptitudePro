@@ -1,0 +1,415 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Cognizant SQL Assessment | AptitudePro</title>
+<link rel="stylesheet" href="/css/styles.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+* { box-sizing: border-box; }
+body {
+    margin: 0;
+    background: #08111f;
+    color: #eaf2ff;
+    font: 15px/1.55 Inter, system-ui, sans-serif;
+    min-height: 100vh;
+}
+.wrap {
+    max-width: 1200px;
+    margin: auto;
+    padding: 24px;
+}
+.top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 18px;
+    background: #0d1728;
+    border: 1px solid #1e2c44;
+    border-radius: 12px;
+    margin-bottom: 24px;
+}
+.top a {
+    color: #38bdf8;
+    text-decoration: none;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: color 0.2s;
+}
+.top a:hover {
+    color: #7dd3fc;
+}
+.top-actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+.timer {
+    color: #fbbf24;
+    font-weight: 800;
+    font-size: 1.05rem;
+    font-family: 'JetBrains Mono', Consolas, monospace;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+.page-header h1 {
+    font-size: 1.75rem;
+    font-weight: 800;
+    margin: 0 0 8px;
+    color: #f8fafc;
+}
+.meta {
+    color: #94a3b8;
+    margin: 0 0 20px;
+    font-size: 0.92rem;
+}
+.task {
+    background: #0f1c30;
+    border: 1px solid #203350;
+    border-radius: 14px;
+    padding: 24px;
+    margin: 20px 0;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+}
+.task h2 {
+    margin: 0 0 10px;
+    font-size: 1.25rem;
+    color: #38bdf8;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.task-prompt {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: #e2e8f0;
+    margin: 0 0 12px;
+}
+.badge-topic {
+    display: inline-block;
+    background: rgba(56, 189, 248, 0.12);
+    color: #38bdf8;
+    border: 1px solid rgba(56, 189, 248, 0.25);
+    padding: 3px 10px;
+    border-radius: 6px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    margin-bottom: 14px;
+}
+details {
+    background: #071120;
+    border: 1px solid #1a2a42;
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin: 14px 0;
+    font-size: 0.88rem;
+}
+summary {
+    cursor: pointer;
+    font-weight: 600;
+    color: #94a3b8;
+    user-select: none;
+}
+summary:hover {
+    color: #38bdf8;
+}
+details pre {
+    margin: 10px 0 0;
+    color: #cbd5e1;
+    font-family: Consolas, monospace;
+    font-size: 0.85rem;
+    white-space: pre-wrap;
+}
+.query-label {
+    display: block;
+    margin: 16px 0 6px;
+    font-weight: 600;
+    color: #cbd5e1;
+    font-size: 0.9rem;
+}
+.query {
+    width: 100%;
+    min-height: 150px;
+    background: #060d18;
+    color: #f1f5f9;
+    border: 1px solid #2b3e5b;
+    border-radius: 9px;
+    padding: 14px;
+    font: 14px/1.6 Consolas, 'Courier New', monospace;
+    resize: vertical;
+    outline: none;
+    transition: border-color 0.2s;
+}
+.query:focus {
+    border-color: #38bdf8;
+    box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.15);
+}
+.btn-bar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 14px;
+}
+.btn {
+    border: 0;
+    border-radius: 8px;
+    padding: 10px 20px;
+    background: #0284c7;
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 0.92rem;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s;
+}
+.btn:hover {
+    background: #0369a1;
+    transform: translateY(-1px);
+}
+.btn.run {
+    background: #0284c7;
+}
+.btn.run:hover {
+    background: #0ea5e9;
+}
+.btn-submit-all {
+    background: linear-gradient(135deg, #10b981, #059669);
+    padding: 14px 28px;
+    font-size: 1rem;
+    margin-top: 24px;
+}
+.btn-submit-all:hover {
+    background: linear-gradient(135deg, #059669, #047857);
+}
+.status {
+    margin: 12px 0 0;
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    display: none;
+}
+.status.visible {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.status.running {
+    background: rgba(56, 189, 248, 0.1);
+    border: 1px solid rgba(56, 189, 248, 0.25);
+    color: #38bdf8;
+}
+.status.success {
+    background: rgba(16, 185, 129, 0.12);
+    border: 1px solid rgba(16, 185, 129, 0.3);
+    color: #34d399;
+}
+.status.wrong {
+    background: rgba(245, 158, 11, 0.12);
+    border: 1px solid rgba(245, 158, 11, 0.3);
+    color: #fbbf24;
+}
+.status.error {
+    background: rgba(239, 68, 68, 0.12);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    color: #f87171;
+}
+.rows {
+    white-space: pre-wrap;
+    overflow-x: auto;
+    background: #050a14;
+    border: 1px solid #1a2a44;
+    padding: 14px;
+    border-radius: 8px;
+    font-family: 'JetBrains Mono', Consolas, monospace;
+    font-size: 0.85rem;
+    color: #e2e8f0;
+    margin-top: 10px;
+    display: none;
+}
+.rows:not(:empty) {
+    display: block;
+}
+.rows:empty {
+    display: none !important;
+}
+@media (max-width: 650px) {
+    .wrap { padding: 14px; }
+    .task { padding: 16px; }
+}
+</style>
+</head>
+<body>
+<main class="wrap">
+<div class="top">
+    <a href="/placement/college/company/cognizant">
+        <i class="fa-solid fa-arrow-left"></i> Cognizant practice
+    </a>
+    <div class="top-actions">
+        <button type="button" class="btn-nav-fullscreen" id="btnNavFullscreen" title="Toggle Full Screen (or press F)">
+            <i class="fa-solid fa-expand"></i> <span>Full Screen</span>
+        </button>
+        <span id="timer" class="timer" data-seconds="<%= remainingSeconds %>">
+            <i class="fa-regular fa-clock"></i> <span>--:--</span>
+        </span>
+    </div>
+</div>
+
+<% if (unavailable) { %>
+<section class="task">
+    <h1>No SQL tasks available</h1>
+    <p>SQL practice tasks are not currently available in the question bank.</p>
+</section>
+<% } else { %>
+
+<div class="page-header">
+    <h1>Cognizant SQL Assessment</h1>
+    <p class="meta">
+        <i class="fa-solid fa-database"></i>
+        <%= executionAvailable ? 'Queries run in an isolated, in-memory read-only SQLite database. Reference solutions are never exposed.' : 'SQL evaluation is unavailable. Queries can still be submitted and will be safely preserved.' %>
+    </p>
+</div>
+
+<% tasks.forEach((task, i) => { %>
+<section class="task" data-task-id="<%= task.id %>">
+    <h2><i class="fa-solid fa-terminal"></i> Task <%= i+1 %>: <%= task.title %></h2>
+    <p class="task-prompt"><%= task.prompt %></p>
+    <span class="badge-topic"><i class="fa-solid fa-tag"></i> <%= task.topic %></span>
+    <details>
+        <summary><i class="fa-solid fa-table-list"></i> View Database Schema & Tables</summary>
+        <pre><%= task.schemaDescription %></pre>
+    </details>
+    <label class="query-label" for="query-<%= i %>">Your SQL query</label>
+    <textarea class="query" id="query-<%= i %>" spellcheck="false"><%= task.starter %></textarea>
+    <div class="btn-bar">
+        <button type="button" class="btn run">
+            <i class="fa-solid fa-play"></i> Run query
+        </button>
+    </div>
+    <p class="status" role="status"></p>
+    <pre class="rows"></pre>
+</section>
+<% }); %>
+
+<div style="margin-top: 30px; text-align: right;">
+    <button type="button" class="btn btn-submit-all" id="submit">
+        <i class="fa-solid fa-flag-checkered"></i> Submit all tasks
+    </button>
+    <p id="submitStatus" class="status" role="status" style="display:inline-block; margin-left: 12px;"></p>
+</div>
+
+<script nonce="<%= cspNonce %>">
+const attemptId='<%= attemptId %>';
+const initial=<%- queryStateJson %>;
+
+document.querySelectorAll('.task').forEach(card => {
+    const id = card.dataset.taskId;
+    const area = card.querySelector('.query');
+    if (initial[id] !== undefined) area.value = initial[id];
+
+    area.addEventListener('input', () => {
+        initial[id] = area.value;
+        localStorage.setItem('cog-sql-' + attemptId, JSON.stringify(initial));
+    });
+
+    card.querySelector('.run').onclick = async () => {
+        const status = card.querySelector('.status');
+        const rows = card.querySelector('.rows');
+        
+        status.textContent = 'Running query against isolated database…';
+        status.className = 'status visible running';
+        rows.textContent = '';
+        rows.style.display = 'none';
+
+        try {
+            const r = await fetch('/cognizant/sql/run', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ attemptId, taskId: id, query: area.value })
+            });
+            const d = await r.json();
+            if (!r.ok || !d.ok) throw new Error(d.message || 'Query could not run.');
+
+            const isSuccess = d.status === 'Accepted';
+            const isWrong = d.status === 'Wrong Answer';
+            status.className = 'status visible ' + (isSuccess ? 'success' : (isWrong ? 'wrong' : 'error'));
+            
+            const prefix = isSuccess ? '✓ ' : (isWrong ? '⚠ ' : '✕ ');
+            status.textContent = prefix + (d.status ? '[' + d.status + '] ' : '') + d.message;
+
+            if (d.previewColumns && d.previewColumns.length) {
+                const header = d.previewColumns.join(' \t| ');
+                const sep = d.previewColumns.map(c => '-'.repeat(Math.max(c.length, 6))).join('-+-');
+                const bodyRows = (d.previewRows || []).map(row => row.join(' \t| ')).join('\n');
+                rows.textContent = header + '\n' + sep + '\n' + bodyRows;
+                rows.style.display = 'block';
+            } else {
+                rows.textContent = '';
+                rows.style.display = 'none';
+            }
+        } catch (e) {
+            status.className = 'status visible error';
+            status.textContent = '✕ ' + e.message;
+            rows.textContent = '';
+            rows.style.display = 'none';
+        }
+    };
+});
+
+const local = localStorage.getItem('cog-sql-' + attemptId);
+if (local) {
+    try {
+        const d = JSON.parse(local);
+        Object.assign(initial, d);
+        document.querySelectorAll('.task').forEach(card => {
+            const id = card.dataset.taskId;
+            if (initial[id] !== undefined) card.querySelector('.query').value = initial[id];
+        });
+    } catch (_) {}
+}
+
+document.getElementById('submit').onclick = async () => {
+    const status = document.getElementById('submitStatus');
+    status.textContent = 'Submitting all assessment tasks…';
+    status.className = 'status visible running';
+    
+    const queries = [...document.querySelectorAll('.task')].map(c => ({
+        taskId: c.dataset.taskId,
+        query: c.querySelector('.query').value
+    }));
+
+    try {
+        const r = await fetch('/cognizant/sql/submit', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ attemptId, queries })
+        });
+        const d = await r.json();
+        if (!r.ok || !d.ok) throw new Error(d.message || 'Could not submit.');
+        localStorage.removeItem('cog-sql-' + attemptId);
+        location.href = d.redirect;
+    } catch (e) {
+        status.className = 'status visible error';
+        status.textContent = '✕ ' + e.message;
+    }
+};
+
+let seconds = Number(document.getElementById('timer').dataset.seconds) || 0;
+function tick() {
+    const display = document.getElementById('timer').querySelector('span') || document.getElementById('timer');
+    display.textContent = seconds <= 0 ? 'Time ended' : String(Math.floor(seconds / 60)).padStart(2, '0') + ':' + String(seconds % 60).padStart(2, '0');
+    if (seconds > 0) seconds--;
+}
+tick();
+setInterval(tick, 1000);
+</script>
+<% } %>
+</main>
+</body>
+</html>

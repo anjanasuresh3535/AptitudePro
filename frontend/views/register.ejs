@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Register — AptitudePro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/css/styles.css">
+    <style>
+        /* Password strength/requirement additions - scoped to this page
+           only, using the same colors already defined in styles.css
+           (#ff4444 weak, #ffaa00 medium, #00cc44 strong/met) so nothing
+           else on the site is touched. */
+        .password-meta {
+            font-size: 11px;
+            color: #888;
+            margin-top: 6px;
+        }
+        .password-meta.ok {
+            color: #00cc44;
+            font-weight: 600;
+        }
+        .pw-requirements {
+            list-style: none;
+            padding: 0;
+            margin: 8px 0 0;
+            font-size: 11px;
+            color: #888;
+        }
+        .pw-requirements li {
+            margin-bottom: 3px;
+            transition: color 0.2s;
+        }
+        .pw-requirements li.met {
+            color: #00cc44;
+            font-weight: 600;
+        }
+        .confirm-match {
+            font-size: 11px;
+            margin-top: 6px;
+            font-weight: 600;
+            min-height: 14px;
+        }
+        .confirm-match.match {
+            color: #00cc44;
+        }
+        .confirm-match.no-match {
+            color: #ff4444;
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar">
+    <a href="/" class="nav-logo">
+        <div class="nav-logo-icon">🧠</div>
+        <div class="nav-logo-text">Aptitude<span>Pro</span></div>
+    </a>
+    <div style="display: flex; align-items: center; gap: 14px;">
+        <button type="button" class="btn-nav-fullscreen" id="btnNavFullscreen" title="Toggle Full Screen (or press F)">
+            <i class="fa-solid fa-expand"></i> <span>Full Screen</span>
+        </button>
+        <a href="/login" class="nav-link">
+            Already have an account? Login →
+        </a>
+    </div>
+</nav>
+
+<div class="main">
+    <div class="card">
+
+        <div class="card-header">
+            <div class="card-icon">📝</div>
+            <h2>Create Account</h2>
+            <p>Join AptitudePro and start practicing today</p>
+        </div>
+
+        <% if (error) { %>
+            <div class="msg-error"><%= error %></div>
+        <% } %>
+
+        <% if (success) { %>
+            <div class="msg-success"><%= success %></div>
+        <% } %>
+
+        <form method="POST" action="/register">
+            <div class="form-group">
+                <label>FULL NAME</label>
+                <input type="text"
+                       name="name"
+                       placeholder="Enter your full name"
+                       required>
+            </div>
+
+            <div class="form-group">
+                <label>EMAIL ADDRESS</label>
+                <input type="email"
+                       name="email"
+                       placeholder="Enter your email"
+                       required>
+            </div>
+
+            <div class="form-group">
+                <label for="password">PASSWORD</label>
+                <input type="password"
+                       name="password"
+                       id="password"
+                       placeholder="Create a password"
+                       required
+                       aria-describedby="pwLengthText pwRequirements">
+                <div class="strength-bar">
+                    <div class="strength-fill" id="strengthFill"></div>
+                </div>
+                <div class="strength-text" id="strengthText"></div>
+
+                <div class="password-meta" id="pwLengthText" aria-live="polite">
+                    Password length: 0 / 8 characters
+                </div>
+
+                <ul class="pw-requirements" id="pwRequirements" aria-live="polite">
+                    <li id="reqLength">○ At least 8 characters</li>
+                    <li id="reqLower">○ Contains a lowercase letter</li>
+                    <li id="reqUpper">○ Contains an uppercase letter</li>
+                    <li id="reqNumber">○ Contains a number</li>
+                    <li id="reqSpecial">○ Contains a special character</li>
+                </ul>
+            </div>
+
+            <div class="form-group">
+                <label for="confirm">CONFIRM PASSWORD</label>
+                <input type="password"
+                       name="confirm"
+                       id="confirm"
+                       placeholder="Repeat your password"
+                       required
+                       aria-describedby="confirmMatchText">
+                <div class="confirm-match" id="confirmMatchText" aria-live="polite"></div>
+            </div>
+
+            <div class="msg-error" id="clientError" style="display:none;" role="alert"></div>
+
+            <button type="submit"
+                    name="register"
+                    class="btn"
+                    id="registerBtn">
+                🚀 Create My Account
+            </button>
+        </form>
+
+        <div class="divider">or</div>
+
+        <div class="bottom-link">
+            Already have an account?
+            <a href="/login">Login here</a>
+        </div>
+
+    </div>
+</div>
+
+<!-- Password strength / requirement / confirm-match checker.
+     Lives in an external file (public/js/register.js) because this
+     app's Content-Security-Policy blocks inline scripts - see the
+     comment at the top of that file for why. -->
+<script src="/js/register.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,24 @@
+[
+  {
+    "company": "Wipro",
+    "exam": "Wipro_Elite_NTH",
+    "section": "English",
+    "subject": "Synonyms",
+    "topic": "Synonyms",
+    "category": "Verbal Ability",
+    "sourceType": "practice",
+    "sourceRef": "Wipro Placement Practice",
+    "question": "Choose the word most similar in meaning to DILIGENT.",
+    "option1": "Lazy",
+    "option2": "Hardworking",
+    "option3": "Careless",
+    "option4": "Weak",
+    "answer": "Hardworking",
+    "explanation": "Diligent means showing careful and persistent effort, i.e. hardworking.",
+    "difficultyLevel": 1,
+    "difficulty": "Easy",
+    "level": "Foundation",
+    "questionType": "mcq",
+    "active": true
+  }
+]

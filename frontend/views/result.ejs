@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Result - <%= result.section %> | AptitudePro</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+    font-family:'Inter',sans-serif;
+    background: linear-gradient(135deg,#0a1628 0%,#0f2138 50%,#0a1628 100%);
+    color:#e2e8f0;
+    min-height:100vh;
+    padding-bottom:60px;
+}
+.top-nav {
+    display:flex; align-items:center; justify-content:space-between;
+    padding:18px 32px; background:rgba(10,22,40,0.85); backdrop-filter:blur(10px);
+    border-bottom:1px solid rgba(79,172,254,0.15); position:sticky; top:0; z-index:50;
+}
+.top-nav a { color:#94a3b8; text-decoration:none; font-size:0.9rem; font-weight:600; }
+.top-nav a:hover { color:#4facfe; }
+.brand { color:#fff; font-weight:800; font-size:1.1rem; }
+.brand span { color:#4facfe; }
+.wrap { max-width:920px; margin:0 auto; padding:32px 20px; }
+
+.card {
+    background:rgba(255,255,255,0.04); backdrop-filter:blur(12px);
+    border:1px solid rgba(79,172,254,0.15); border-radius:18px;
+    padding:28px; margin-bottom:24px;
+}
+.card h3 {
+    font-size:0.85rem; letter-spacing:0.08em; text-transform:uppercase;
+    color:#4facfe; margin-bottom:18px; font-weight:700;
+}
+
+/* --- Summary card --- */
+.summary-top { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:20px; margin-bottom:24px; }
+.summary-badges { display:flex; gap:10px; flex-wrap:wrap; }
+.badge { padding:6px 14px; border-radius:20px; font-size:0.8rem; font-weight:700; background:rgba(79,172,254,0.15); color:#4facfe; border:1px solid rgba(79,172,254,0.3); }
+.summary-title { font-size:1.6rem; font-weight:800; color:#fff; margin-bottom:6px; }
+.summary-sub { color:#94a3b8; font-size:0.9rem; }
+
+.summary-grid { display:grid; grid-template-columns:auto 1fr; gap:32px; align-items:center; }
+@media (max-width:600px) { .summary-grid { grid-template-columns:1fr; justify-items:center; } }
+
+.accuracy-ring { position:relative; width:150px; height:150px; }
+.accuracy-ring svg { transform:rotate(-90deg); }
+.accuracy-ring .bg { fill:none; stroke:rgba(255,255,255,0.08); stroke-width:12; }
+.accuracy-ring .fg { fill:none; stroke:url(#accGrad); stroke-width:12; stroke-linecap:round; transition:stroke-dashoffset 1s ease; }
+.accuracy-label { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; }
+.accuracy-label .pct { font-size:2rem; font-weight:900; color:#fff; }
+.accuracy-label .lbl { font-size:0.7rem; letter-spacing:0.1em; color:#94a3b8; text-transform:uppercase; }
+
+.stat-row { display:grid; grid-template-columns:repeat(2,1fr); gap:14px; }
+@media (min-width:500px) { .stat-row { grid-template-columns:repeat(3,1fr); } }
+.stat-box { background:rgba(255,255,255,0.03); border-radius:12px; padding:14px; text-align:center; }
+.stat-box .val { font-size:1.5rem; font-weight:800; color:#fff; }
+.stat-box .lbl { font-size:0.72rem; color:#94a3b8; text-transform:uppercase; letter-spacing:0.05em; margin-top:2px; }
+.stat-box.correct .val { color:#34d399; }
+.stat-box.wrong .val { color:#f87171; }
+.stat-box.skipped .val { color:#fbbf24; }
+
+/* --- XP card --- */
+.xp-row { display:flex; justify-content:space-between; padding:8px 0; font-size:0.92rem; border-bottom:1px solid rgba(255,255,255,0.06); }
+.xp-row:last-of-type { border-bottom:none; }
+.xp-row .amt.pos { color:#34d399; font-weight:700; }
+.xp-row .amt.neg { color:#f87171; font-weight:700; }
+.xp-row.net { font-weight:800; font-size:1.05rem; color:#4facfe; }
+.level-line { display:flex; align-items:center; gap:10px; margin-top:18px; }
+.level-badge { font-size:1.4rem; }
+.level-name { font-weight:700; color:#fff; }
+.progress-track { height:10px; background:rgba(255,255,255,0.08); border-radius:6px; margin-top:10px; overflow:hidden; }
+.progress-fill { height:100%; background:linear-gradient(90deg,#4facfe,#00f2fe); border-radius:6px; }
+.progress-text { font-size:0.78rem; color:#94a3b8; margin-top:6px; }
+
+/* --- Two-up grid for topic/improvement cards --- */
+.two-col { display:grid; grid-template-columns:1fr; gap:20px; }
+@media (min-width:640px) { .two-col { grid-template-columns:1fr 1fr; } }
+.topic-card .name { font-size:1.2rem; font-weight:800; color:#fff; }
+.topic-card .acc { font-size:0.9rem; color:#94a3b8; margin-top:4px; }
+.topic-card.strong { border-color:rgba(52,211,153,0.3); }
+.topic-card.strong h3 { color:#34d399; }
+.topic-card.weak { border-color:rgba(248,113,113,0.3); }
+.topic-card.weak h3 { color:#f87171; }
+.no-data { color:#64748b; font-style:italic; font-size:0.9rem; }
+
+.improve-row { display:flex; align-items:center; justify-content:space-between; }
+.improve-num { text-align:center; }
+.improve-num .val { font-size:1.6rem; font-weight:800; color:#fff; }
+.improve-num .lbl { font-size:0.75rem; color:#94a3b8; text-transform:uppercase; }
+.improve-delta { font-size:1.6rem; font-weight:900; }
+.improve-delta.up { color:#34d399; }
+.improve-delta.down { color:#f87171; }
+.improve-delta.flat { color:#94a3b8; }
+
+/* --- Recent performance bars --- */
+.recent-bars { display:flex; align-items:flex-end; gap:10px; height:110px; margin-bottom:10px; }
+.recent-bar-wrap { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:flex-end; height:100%; }
+.recent-bar { width:100%; max-width:36px; background:linear-gradient(180deg,#4facfe,#00f2fe); border-radius:6px 6px 0 0; }
+.recent-bar-val { font-size:0.7rem; color:#94a3b8; margin-top:4px; }
+.recent-avg { text-align:center; color:#4facfe; font-weight:700; font-size:0.9rem; margin-top:8px; }
+
+/* --- Recommendation --- */
+.recommend-box { background:rgba(79,172,254,0.08); border:1px solid rgba(79,172,254,0.25); border-radius:12px; padding:18px; }
+.recommend-box p { font-size:0.92rem; line-height:1.6; color:#cbd5e1; }
+.recommend-box strong { color:#4facfe; }
+
+/* --- Section performance --- */
+.section-stat-list { display:grid; grid-template-columns:repeat(2,1fr); gap:12px; }
+@media (min-width:500px) { .section-stat-list { grid-template-columns:repeat(4,1fr); } }
+
+/* --- Question review --- */
+.q-review-item {
+    background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08);
+    border-radius:14px; margin-bottom:14px; overflow:hidden;
+}
+.q-review-head { display:flex; align-items:center; justify-content:space-between; padding:16px 18px; cursor:pointer; }
+.q-review-head .q-num { color:#4facfe; font-weight:700; font-size:0.85rem; }
+.q-review-head .q-text { color:#e2e8f0; font-size:0.95rem; margin-top:4px; }
+.status-pill { padding:4px 12px; border-radius:16px; font-size:0.75rem; font-weight:700; white-space:nowrap; margin-left:12px; }
+.status-pill.correct { background:rgba(52,211,153,0.15); color:#34d399; }
+.status-pill.wrong { background:rgba(248,113,113,0.15); color:#f87171; }
+.status-pill.skipped { background:rgba(251,191,36,0.15); color:#fbbf24; }
+.q-review-body { display:none; padding:0 18px 20px; border-top:1px solid rgba(255,255,255,0.06); }
+.q-review-item.open .q-review-body { display:block; }
+.answer-line { font-size:0.88rem; margin:12px 0 4px; }
+.answer-line .lbl { color:#94a3b8; text-transform:uppercase; font-size:0.72rem; letter-spacing:0.05em; }
+.answer-line .val { color:#fff; font-weight:600; }
+.answer-line.correct-ans .val { color:#34d399; }
+.answer-line.wrong-ans .val { color:#f87171; }
+.explain-section { margin-top:16px; }
+.explain-toggle {
+    background:rgba(79,172,254,0.08); border:1px solid rgba(79,172,254,0.2);
+    border-radius:8px; padding:10px 14px; font-size:0.82rem; font-weight:600;
+    color:#4facfe; cursor:pointer; margin-bottom:6px; display:flex; justify-content:space-between; align-items:center;
+}
+.explain-content { display:none; padding:12px 14px; font-size:0.85rem; color:#cbd5e1; line-height:1.6; background:rgba(255,255,255,0.02); border-radius:0 0 8px 8px; margin-bottom:8px; }
+.explain-block.open .explain-content { display:block; }
+.explain-block.open .explain-toggle { border-radius:8px 8px 0 0; }
+.formula-box { background:rgba(0,0,0,0.25); border-radius:6px; padding:10px 14px; font-family:'Courier New',monospace; color:#4facfe; margin-top:6px; }
+
+/* --- Actions --- */
+.action-row { display:flex; gap:14px; flex-wrap:wrap; margin-top:8px; }
+.btn { padding:13px 24px; border-radius:12px; font-weight:700; font-size:0.9rem; text-decoration:none; text-align:center; flex:1; min-width:140px; }
+.btn-primary { background:linear-gradient(135deg,#4facfe,#00f2fe); color:#0a1628; }
+.btn-secondary { background:rgba(255,255,255,0.06); color:#e2e8f0; border:1px solid rgba(255,255,255,0.15); }
+.btn:hover { opacity:0.9; }
+</style>
+</head>
+<body>
+    <div class="top-nav">
+        <div class="brand">Aptitude<span>Pro</span></div>
+        <a href="/dashboard"><i class="fas fa-arrow-left"></i> Back to Dashboard</a>
+    </div>
+
+    <div class="wrap">
+
+        <!-- ============ TOP SUMMARY ============ -->
+        <div class="card">
+            <div class="summary-top">
+                <div>
+                    <div class="summary-title">Quiz Completed</div>
+                    <div class="summary-badges">
+                        <span class="badge"><%= placementCategoryLabel %></span>
+                        <span class="badge"><%= areaDisplayName %></span>
+                        <span class="badge"><%= difficultyLabel.full %></span>
+                    </div>
+                </div>
+                <div class="summary-sub">
+                    <%= new Date(result.testDate).toLocaleDateString('en-US', { day:'numeric', month:'short', year:'numeric' }) %>
+                    &middot; <%= formatTime(result.timeTaken) %>
+                </div>
+            </div>
+
+            <div class="summary-grid">
+                <% if (result.evaluationStatus === 'execution-unavailable') { %>
+                    <div class="stat-box" style="grid-column:1/-1;padding:28px;text-align:center;">
+                        <div class="val" style="font-size:1.4rem;">Not evaluated</div>
+                        <div class="lbl">Code execution was unavailable. Your submission was saved; no score was assigned.</div>
+                    </div>
+                <% } else { %>
+                <div class="accuracy-ring">
+                    <svg width="150" height="150" viewBox="0 0 150 150">
+                        <defs>
+                            <linearGradient id="accGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#4facfe"/>
+                                <stop offset="100%" stop-color="#00f2fe"/>
+                            </linearGradient>
+                        </defs>
+                        <circle class="bg" cx="75" cy="75" r="63"></circle>
+                        <circle class="fg" cx="75" cy="75" r="63"
+                            stroke-dasharray="<%= (2 * Math.PI * 63).toFixed(2) %>"
+                            stroke-dashoffset="<%= (2 * Math.PI * 63 * (1 - result.accuracy / 100)).toFixed(2) %>"></circle>
+                    </svg>
+                    <div class="accuracy-label">
+                        <div class="pct"><%= result.accuracy %>%</div>
+                        <div class="lbl">Accuracy</div>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="stat-box" style="margin-bottom:14px;">
+                        <div class="val" style="font-size:1.8rem;"><%= result.score %> / <%= result.totalQuestions %></div>
+                        <div class="lbl">Score</div>
+                    </div>
+                    <div class="stat-row">
+                        <div class="stat-box correct"><div class="val"><%= result.correct %></div><div class="lbl">Correct</div></div>
+                        <div class="stat-box wrong"><div class="val"><%= result.wrong %></div><div class="lbl">Wrong</div></div>
+                        <div class="stat-box skipped"><div class="val"><%= result.skipped %></div><div class="lbl">Skipped</div></div>
+                    </div>
+                </div>
+                <% } %>
+            </div>
+        </div>
+
+        <!-- ============ XP BREAKDOWN ============ -->
+        <div class="card">
+            <h3><i class="fas fa-bolt"></i> XP Summary</h3>
+            <% if (result.evaluationStatus === 'execution-unavailable') { %>
+                <p style="color:#94a3b8;margin:12px 0;">No XP was awarded because the code could not be evaluated.</p>
+            <% } else { %>
+            <div class="xp-row"><span>Correct Answers</span><span class="amt pos">+<%= result.xpEarned %> XP</span></div>
+            <div class="xp-row"><span>Penalty (Wrong / Skipped)</span><span class="amt neg">-<%= result.xpLost %> XP</span></div>
+            <div class="xp-row net"><span>Net XP</span><span class="amt <%= result.netXP >= 0 ? 'pos' : 'neg' %>"><%= result.netXP >= 0 ? '+' : '' %><%= result.netXP %> XP</span></div>
+            <% } %>
+
+            <div class="level-line">
+                <span class="level-badge"><%= levelDetails.icon %></span>
+                <span class="level-name"><%= levelDetails.name %></span>
+            </div>
+            <div class="progress-track"><div class="progress-fill" style="width:<%= levelProgress %>%"></div></div>
+            <div class="progress-text"><%= result.xpAfter %> / <%= levelDetails.max %> XP in this level</div>
+        </div>
+
+        <% if (result.evaluationStatus !== 'execution-unavailable') { %>
+        <!-- ============ PERFORMANCE ANALYSIS ============ -->
+        <div class="card">
+            <h3><i class="fas fa-chart-line"></i> Performance Analysis</h3>
+            <div class="stat-row" style="grid-template-columns:1fr 1fr;">
+                <div class="stat-box"><div class="val"><%= result.accuracy %>%</div><div class="lbl">Accuracy</div></div>
+                <div class="stat-box">
+                    <% if (avgSecondsPerQuestion !== null) { %>
+                        <div class="val"><%= avgSecondsPerQuestion %>s</div>
+                        <div class="lbl">Avg. Time / Question</div>
+                    <% } else { %>
+                        <div class="val" style="font-size:0.85rem; color:#64748b;">Unavailable</div>
+                        <div class="lbl">Speed</div>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============ STRONGEST / WEAKEST TOPIC ============ -->
+        <div class="two-col">
+            <div class="card topic-card strong">
+                <h3><i class="fas fa-arrow-trend-up"></i> Strongest Topic</h3>
+                <% if (topicBreakdown.insufficientData) { %>
+                    <div class="no-data">Not enough topic data yet - this quiz covered too few distinct topics to compare.</div>
+                <% } else { %>
+                    <div class="name"><%= topicBreakdown.strongest.subject %></div>
+                    <div class="acc">Accuracy: <%= topicBreakdown.strongest.accuracy %>% (<%= topicBreakdown.strongest.correct %>/<%= topicBreakdown.strongest.total %>)</div>
+                <% } %>
+            </div>
+            <div class="card topic-card weak">
+                <h3><i class="fas fa-arrow-trend-down"></i> Weakest Topic</h3>
+                <% if (topicBreakdown.insufficientData) { %>
+                    <div class="no-data">Not enough data yet</div>
+                <% } else { %>
+                    <div class="name"><%= topicBreakdown.weakest.subject %></div>
+                    <div class="acc">Accuracy: <%= topicBreakdown.weakest.accuracy %>% (<%= topicBreakdown.weakest.correct %>/<%= topicBreakdown.weakest.total %>)</div>
+                <% } %>
+            </div>
+        </div>
+
+        <!-- ============ IMPROVEMENT ============ -->
+        <div class="card">
+            <h3><i class="fas fa-chart-simple"></i> Improvement</h3>
+            <% if (!previousResult) { %>
+                <div class="no-data">First attempt in this section - complete another <%= result.section %> quiz to measure your improvement.</div>
+            <% } else { %>
+                <div class="improve-row">
+                    <div class="improve-num"><div class="val"><%= previousResult.accuracy %>%</div><div class="lbl">Previous</div></div>
+                    <div class="improve-delta <%= improvement > 0 ? 'up' : (improvement < 0 ? 'down' : 'flat') %>">
+                        <%= improvement > 0 ? '+' : '' %><%= improvement %>%
+                    </div>
+                    <div class="improve-num"><div class="val"><%= result.accuracy %>%</div><div class="lbl">Current</div></div>
+                </div>
+            <% } %>
+        </div>
+
+        <!-- ============ RECENT PERFORMANCE ============ -->
+        <div class="card">
+            <h3><i class="fas fa-clock-rotate-left"></i> Recent Performance - Last <%= last5.length %> <%= result.section %> Quiz<%= last5.length === 1 ? '' : 'zes' %></h3>
+            <div class="recent-bars">
+                <% last5.forEach(function(r, i) { %>
+                    <div class="recent-bar-wrap">
+                        <div class="recent-bar" style="height:<%= Math.max(4, r.accuracy) %>%"></div>
+                        <div class="recent-bar-val"><%= r.accuracy %>%</div>
+                    </div>
+                <% }); %>
+            </div>
+            <div class="recent-avg">Average Accuracy: <%= last5Average %>%</div>
+        </div>
+
+        <!-- ============ TOTAL QUIZZES ============ -->
+        <div class="card" style="text-align:center;">
+            <h3>Total <%= result.section %> Quizzes Attempted</h3>
+            <div style="font-size:2.2rem; font-weight:900; color:#fff;"><%= totalQuizzesThisSection %></div>
+        </div>
+
+        <!-- ============ SECTION PERFORMANCE (cumulative) ============ -->
+        <% if (sectionProgress) { %>
+        <div class="card">
+            <h3><i class="fas fa-layer-group"></i> <%= result.section %> - Overall Section Performance</h3>
+            <div class="section-stat-list">
+                <div class="stat-box"><div class="val"><%= sectionProgress.accuracy %>%</div><div class="lbl">Accuracy</div></div>
+                <div class="stat-box correct"><div class="val"><%= sectionProgress.correct %></div><div class="lbl">Correct</div></div>
+                <div class="stat-box wrong"><div class="val"><%= sectionProgress.wrong %></div><div class="lbl">Wrong</div></div>
+                <div class="stat-box"><div class="val"><%= sectionProgress.xp %></div><div class="lbl">Total XP</div></div>
+            </div>
+        </div>
+        <% } %>
+
+        <!-- ============ MISTAKE ANALYSIS + RECOMMENDATION ============ -->
+        <div class="card">
+            <h3><i class="fas fa-magnifying-glass"></i> Mistake Analysis</h3>
+            <div class="stat-row" style="grid-template-columns:1fr 1fr; margin-bottom:18px;">
+                <div class="stat-box wrong"><div class="val"><%= result.wrong %></div><div class="lbl">Wrong Answers</div></div>
+                <div class="stat-box skipped"><div class="val"><%= result.skipped %></div><div class="lbl">Skipped Questions</div></div>
+            </div>
+
+            <div class="recommend-box">
+                <p>
+                <% if (topicBreakdown.insufficientData) { %>
+                    Complete a quiz covering more topics to get a personalized practice recommendation.
+                <% } else if (topicBreakdown.weakest.accuracy === 100) { %>
+                    Great work - no clear weak topic in this attempt. Keep it up!
+                <% } else { %>
+                    Your weakest area in this attempt was <strong><%= topicBreakdown.weakest.subject %></strong> (<%= topicBreakdown.weakest.accuracy %>% accuracy).
+                    Recommended: review the explanations below for those questions and practice a few more <%= topicBreakdown.weakest.subject %> questions before your next quiz.
+                <% } %>
+                </p>
+            </div>
+        </div>
+
+        <!-- ============ QUESTION REVIEW ============ -->
+        <div class="card">
+            <h3><i class="fas fa-list-check"></i> Question Review</h3>
+
+            <% (result.answers || []).forEach(function(a, i) { %>
+                <div class="q-review-item">
+                    <div class="q-review-head" data-toggle-question>
+                        <div>
+                            <div class="q-num">Question <%= i + 1 %></div>
+                            <div class="q-text"><%= a.questionText %></div>
+                        </div>
+                        <% if (a.isSkipped) { %>
+                            <span class="status-pill skipped">⏭ Skipped</span>
+                        <% } else if (a.selectedAnswer === 'WRITING_SUBMITTED') { %>
+                            <span class="status-pill correct">📝 Response Submitted</span>
+                        <% } else if (a.isCorrect) { %>
+                            <span class="status-pill correct">✓ Correct</span>
+                        <% } else { %>
+                            <span class="status-pill wrong">✗ Wrong</span>
+                        <% } %>
+                    </div>
+                    <div class="q-review-body">
+                        <% if (a.selectedAnswer === 'WRITING_SUBMITTED') { %>
+                            <div class="answer-line">
+                                <span class="lbl">Your Response:</span>
+                            </div>
+                            <div class="essay-submission" style="white-space:pre-wrap;line-height:1.8;color:#e2e8f0;background:rgba(255,255,255,0.03);border:1px solid rgba(79,172,254,0.18);border-radius:12px;padding:16px 18px;margin:8px 0 14px;font-size:0.95rem;"><%= a.selectedAnswerText %></div>
+                            <div class="explain-section">
+                                <div class="explain-block">
+                                    <div class="explain-toggle" data-toggle-explain>Review Rubric <span>▾</span></div>
+                                    <div class="explain-content">
+                                        <p style="margin-bottom:10px;">
+                                            AptitudePro does not publish an automated quality score for written responses.
+                                            Review your response against the rubric below.
+                                        </p>
+                                        <ul style="margin:0 0 10px 18px;line-height:1.8;">
+                                            <li>Relevance to the topic</li>
+                                            <li>Grammar</li>
+                                            <li>Vocabulary</li>
+                                            <li>Clarity</li>
+                                            <li>Coherence</li>
+                                            <li>Paragraph structure</li>
+                                            <li>Appropriate conclusion</li>
+                                        </ul>
+                                        <% if (a.explanation) { %><%= a.explanation %><% } %>
+                                    </div>
+                                </div>
+                            </div>
+                        <% } else { %>
+                        <% if (!a.isSkipped) { %>
+                            <div class="answer-line <%= a.isCorrect ? 'correct-ans' : 'wrong-ans' %>">
+                                <span class="lbl">Your Answer:</span>
+                                <span class="val"><%= a.selectedAnswer %>. <%= a.selectedAnswerText %></span>
+                            </div>
+                        <% } else { %>
+                            <div class="answer-line"><span class="lbl">Your Answer:</span> <span class="val">Not answered</span></div>
+                        <% } %>
+                        <div class="answer-line correct-ans">
+                            <span class="lbl">Correct Answer:</span>
+                            <span class="val"><%= a.correctAnswer %>. <%= a.correctAnswerText %></span>
+                        </div>
+                        <% } %>
+
+                        <div class="explain-section">
+                            <% if (a.explanation) { %>
+                                <div class="explain-block">
+                                    <div class="explain-toggle" data-toggle-explain>Quick Answer / Explanation <span>▾</span></div>
+                                    <div class="explain-content"><%= a.explanation %></div>
+                                </div>
+                            <% } %>
+                            <% if (a.stepSolution) { %>
+                                <div class="explain-block">
+                                    <div class="explain-toggle" data-toggle-explain>Step-by-Step Solution <span>▾</span></div>
+                                    <div class="explain-content"><%= a.stepSolution %></div>
+                                </div>
+                            <% } %>
+                            <% if (a.formula) { %>
+                                <div class="explain-block">
+                                    <div class="explain-toggle" data-toggle-explain>Formula Used <span>▾</span></div>
+                                    <div class="explain-content"><div class="formula-box"><%= a.formula %></div></div>
+                                </div>
+                            <% } %>
+                            <% if (a.quickTrick) { %>
+                                <div class="explain-block">
+                                    <div class="explain-toggle" data-toggle-explain>Shortcut / Quick Trick <span>▾</span></div>
+                                    <div class="explain-content"><%= a.quickTrick %></div>
+                                </div>
+                            <% } %>
+                            <% if (a.commonMistake) { %>
+                                <div class="explain-block">
+                                    <div class="explain-toggle" data-toggle-explain>Common Mistake <span>▾</span></div>
+                                    <div class="explain-content"><%= a.commonMistake %></div>
+                                </div>
+                            <% } %>
+                        </div>
+                    </div>
+                </div>
+            <% }); %>
+        </div>
+
+        <% } %>
+
+        <!-- ============ ACTIONS ============ -->
+        <div class="action-row">
+            <% if (result.company === 'Accenture' && result.section === 'Company-accenture-coding') { %>
+                <a class="btn btn-primary" href="/accenture/coding"><i class="fas fa-rotate-right"></i> Try another coding set</a>
+            <% } else { %>
+                <a class="btn btn-primary" href="/quiz?section=<%= result.section %>&difficulty=<%= {1:'easy',2:'medium',3:'hard'}[result.difficulty] || 'medium' %>"><i class="fas fa-rotate-right"></i> Retry Quiz</a>
+            <% } %>
+            <a class="btn btn-secondary" href="/results/history"><i class="fas fa-clock-rotate-left"></i> View History</a>
+            <a class="btn btn-secondary" href="/dashboard"><i class="fas fa-house"></i> Back to Dashboard</a>
+        </div>
+
+    </div>
+
+    <script src="/js/result.js"></script>
+</body>
+</html>

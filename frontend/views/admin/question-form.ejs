@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= mode === 'new' ? 'Add New Question' : 'Edit Question' %> – AptitudePro Admin</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; font-family:'Poppins',sans-serif; }
+    body { display:flex; min-height:100vh; background:#0a1628; color:#e2e8f0; }
+    .admin-sidebar { width:240px; min-height:100vh; background:rgba(15,23,42,0.95); border-right:1px solid rgba(255,255,255,0.08); position:fixed; top:0; left:0; bottom:0; display:flex; flex-direction:column; padding:0; z-index:100; }
+    .admin-sidebar-logo { padding:20px 20px 16px; display:flex; align-items:center; gap:10px; font-size:16px; font-weight:800; color:#fff; border-bottom:1px solid rgba(255,255,255,0.08); }
+    .admin-badge { background:#3b82f6; color:#fff; font-size:10px; font-weight:700; padding:2px 8px; border-radius:20px; margin-left:auto; }
+    .admin-nav { flex:1; padding:16px 12px; display:flex; flex-direction:column; gap:4px; overflow-y:auto; }
+    .admin-nav-link { display:flex; align-items:center; gap:10px; padding:10px 14px; border-radius:10px; font-size:13px; font-weight:600; color:#94a3b8; text-decoration:none; transition:all 0.2s; }
+    .admin-nav-link:hover { background:rgba(255,255,255,0.07); color:#fff; }
+    .admin-nav-link.active { background:rgba(59,130,246,0.15); color:#60a5fa; border-left:3px solid #3b82f6; }
+    .admin-sidebar-user { padding:16px 20px; border-top:1px solid rgba(255,255,255,0.08); display:flex; align-items:center; gap:10px; }
+    .admin-avatar { width:36px; height:36px; background:linear-gradient(135deg,#1a56db,#3b82f6); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:16px; font-weight:700; color:#fff; flex-shrink:0; }
+    .admin-main { margin-left:240px; flex:1; padding:28px 32px; min-height:100vh; }
+    .admin-topbar { display:flex; justify-content:space-between; align-items:center; margin-bottom:24px; }
+    .admin-topbar h1 { font-size:22px; font-weight:800; color:#fff; }
+    .btn { display:inline-flex; align-items:center; gap:6px; padding:8px 16px; border-radius:8px; font-size:13px; font-weight:600; text-decoration:none; cursor:pointer; border:none; transition:all 0.2s; }
+    .btn-primary { background:linear-gradient(135deg,#1a56db,#3b82f6); color:#fff; }
+    .btn-primary:hover { opacity:0.9; transform:translateY(-1px); }
+    .btn-sm { padding:5px 12px; font-size:12px; }
+    .btn-outline { background:transparent; color:#94a3b8; border:1px solid rgba(255,255,255,0.15); }
+    .btn-outline:hover { background:rgba(255,255,255,0.07); color:#fff; }
+    .flash-success { background:rgba(34,197,94,0.12); border:1px solid rgba(34,197,94,0.25); color:#4ade80; padding:12px 16px; border-radius:10px; margin-bottom:20px; font-size:13px; }
+    .flash-error { background:rgba(239,68,68,0.12); border:1px solid rgba(239,68,68,0.25); color:#f87171; padding:12px 16px; border-radius:10px; margin-bottom:20px; font-size:13px; }
+    .form-card { background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:14px; padding:24px; margin-bottom:20px; }
+    .form-card h3 { font-size:15px; font-weight:700; color:#fff; margin-bottom:16px; }
+    .form-group { margin-bottom:16px; }
+    .form-group label { display:block; font-size:13px; font-weight:600; color:#94a3b8; margin-bottom:6px; }
+    .form-group input, .form-group textarea, .form-group select { width:100%; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12); border-radius:8px; color:#e2e8f0; padding:10px 14px; font-size:13px; outline:none; }
+    .form-group input:focus, .form-group textarea:focus, .form-group select:focus { border-color:#3b82f6; }
+    .form-grid2 { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+    @media(max-width:768px){ .admin-sidebar{display:none;} .admin-main{margin-left:0;} .form-grid2{grid-template-columns:1fr;} }
+  </style>
+</head>
+<body>
+
+<aside class="admin-sidebar">
+  <div class="admin-sidebar-logo">
+    <span>🧠</span> AptitudePro
+    <div class="admin-badge">Admin</div>
+  </div>
+  <nav class="admin-nav">
+    <a href="/admin" class="admin-nav-link"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+    <a href="/admin/users" class="admin-nav-link"><i class="fas fa-users"></i> Users</a>
+    <a href="/admin/questions" class="admin-nav-link active"><i class="fas fa-question-circle"></i> Questions</a>
+    <a href="/admin/results" class="admin-nav-link"><i class="fas fa-chart-bar"></i> Results</a>
+    <a href="/admin/analytics" class="admin-nav-link"><i class="fas fa-chart-line"></i> Analytics</a>
+    <a href="/admin/audit-log" class="admin-nav-link"><i class="fas fa-clipboard-list"></i> Audit Log</a>
+    <hr style="border-color:rgba(255,255,255,0.1);margin:12px 0;">
+    <a href="/dashboard?view=student" class="admin-nav-link"><i class="fas fa-arrow-left"></i> Student View</a>
+    <a href="/logout" class="admin-nav-link" style="color:#f87171;"><i class="fas fa-sign-out-alt"></i> Logout</a>
+  </nav>
+  <div class="admin-sidebar-user">
+    <div class="admin-avatar"><%= locals.adminUser ? locals.adminUser.name.charAt(0).toUpperCase() : 'A' %></div>
+    <div>
+      <div style="font-size:13px;font-weight:600;color:#fff;"><%= locals.adminUser ? locals.adminUser.name : 'Admin' %></div>
+      <div style="font-size:11px;color:#60a5fa;">Administrator</div>
+    </div>
+  </div>
+</aside>
+
+<main class="admin-main">
+  <div class="admin-topbar">
+    <div style="display:flex;align-items:center;gap:12px;">
+      <a href="/admin/questions" class="btn btn-outline btn-sm"><i class="fas fa-arrow-left"></i> Back to Questions</a>
+      <h1><%= mode === 'new' ? 'Add New Question' : 'Edit Question' %></h1>
+    </div>
+  </div>
+
+  <% if (locals.flash) { %>
+    <% if (locals.flash.type === 'success' || locals.flash.success) { %>
+      <div class="flash-success"><i class="fas fa-check-circle"></i> <%= locals.flash.message || locals.flash.success %></div>
+    <% } %>
+    <% if (locals.flash.type === 'error' || locals.flash.error) { %>
+      <div class="flash-error"><i class="fas fa-exclamation-circle"></i> <%= locals.flash.message || locals.flash.error %></div>
+    <% } %>
+  <% } %>
+
+  <form method="POST" action="<%= mode === 'new' ? '/admin/questions/new' : ('/admin/questions/' + question._id + '/edit') %>">
+    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+
+    <div class="form-card">
+      <h3><i class="fas fa-file-alt" style="color:#3b82f6;"></i> Question Statement & Options</h3>
+      
+      <div class="form-group">
+        <label>Question Text *</label>
+        <textarea name="question" rows="4" required placeholder="Type the question problem statement here..."><%= question ? question.question : '' %></textarea>
+      </div>
+
+      <div class="form-grid2">
+        <div class="form-group">
+          <label>Option 1 *</label>
+          <input type="text" name="option1" required value="<%= question ? question.option1 : '' %>" placeholder="Option 1 text">
+        </div>
+        <div class="form-group">
+          <label>Option 2 *</label>
+          <input type="text" name="option2" required value="<%= question ? question.option2 : '' %>" placeholder="Option 2 text">
+        </div>
+      </div>
+
+      <div class="form-grid2">
+        <div class="form-group">
+          <label>Option 3 *</label>
+          <input type="text" name="option3" required value="<%= question ? question.option3 : '' %>" placeholder="Option 3 text">
+        </div>
+        <div class="form-group">
+          <label>Option 4 *</label>
+          <input type="text" name="option4" required value="<%= question ? question.option4 : '' %>" placeholder="Option 4 text">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Correct Answer * (Must match one of the 4 options exactly)</label>
+        <input type="text" name="answer" required value="<%= question ? question.answer : '' %>" placeholder="Copy/paste the exact text of the correct option">
+      </div>
+    </div>
+
+    <div class="form-card">
+      <h3><i class="fas fa-tags" style="color:#3b82f6;"></i> Classification & Difficulty</h3>
+
+      <div class="form-grid2">
+        <div class="form-group">
+          <label>Section *</label>
+          <select name="section" required>
+            <% for (const s of sections) { %>
+              <option value="<%= s %>" <%= question && question.section === s ? 'selected' : '' %>><%= s %></option>
+            <% } %>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Subject / Topic *</label>
+          <input type="text" name="subject" required value="<%= question ? question.subject : '' %>" placeholder="e.g. Time & Work, Blood Relations, Reading Comprehension">
+        </div>
+      </div>
+
+      <div class="form-grid2">
+        <div class="form-group">
+          <label>Difficulty Level *</label>
+          <select name="difficultyLevel" required>
+            <option value="1" <%= question && question.difficultyLevel === 1 ? 'selected' : '' %>>1 — Foundation</option>
+            <option value="2" <%= question && question.difficultyLevel === 2 ? 'selected' : '' %>>2 — Intermediate</option>
+            <option value="3" <%= question && question.difficultyLevel === 3 ? 'selected' : '' %>>3 — Advanced</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Company Tag (Optional)</label>
+          <input type="text" name="company" value="<%= question ? (question.company || '') : '' %>" placeholder="e.g. TCS, Capgemini, Accenture">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Category (Optional)</label>
+        <input type="text" name="category" value="<%= question ? (question.category || '') : '' %>" placeholder="e.g. Quantitative Aptitude, Logical Reasoning">
+      </div>
+    </div>
+
+    <div class="form-card">
+      <h3><i class="fas fa-lightbulb" style="color:#3b82f6;"></i> Explanations & Solutions</h3>
+
+      <div class="form-group">
+        <label>Step-by-step Solution</label>
+        <textarea name="explanation" rows="3" placeholder="Explain how to solve this problem..."><%= question ? (question.explanation || '') : '' %></textarea>
+      </div>
+
+      <div class="form-group">
+        <label>Quick Trick / Shortcut (Optional)</label>
+        <input type="text" name="quickTrick" value="<%= question ? (question.quickTrick || '') : '' %>" placeholder="Short-cut formula or trick">
+      </div>
+    </div>
+
+    <div style="display:flex;gap:12px;margin-bottom:30px;">
+      <button type="submit" class="btn btn-primary" style="padding:10px 24px;">
+        <i class="fas fa-save"></i> <%= mode === 'new' ? 'Create Question' : 'Save Changes' %>
+      </button>
+      <a href="/admin/questions" class="btn btn-outline" style="padding:10px 20px;">Cancel</a>
+    </div>
+  </form>
+</main>
+
+</body>
+</html>

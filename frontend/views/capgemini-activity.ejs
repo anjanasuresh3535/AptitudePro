@@ -1,0 +1,19 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title><%= title %> | AptitudePro</title><link rel="stylesheet" href="/css/styles.css"><style>
+*{box-sizing:border-box}body{margin:0;background:#08111f;color:#eaf2ff;font:16px/1.55 Inter,system-ui,sans-serif}.wrap{max-width:950px;margin:auto;padding:22px}.panel{background:#101d30;border:1px solid #253650;border-radius:14px;padding:20px;margin:14px 0}.muted{color:#9aabc0}.timer{color:#fbbf24}.btn{border:0;border-radius:9px;padding:11px 16px;background:#1da8d8;color:#08111f;font-weight:700;cursor:pointer}.response{display:block;width:100%;min-height:120px;background:#08111f;color:white;border:1px solid #354963;border-radius:8px;padding:12px;font:inherit}.status{color:#9edcff}.option{display:block;margin:8px 0}
+</style></head><body><main class="wrap"><a href="/placement/college/company/capgemini">← Capgemini practice</a><div style="display:flex;justify-content:space-between;gap:10px"><h1><%= title %></h1><strong class="timer" id="timer" data-seconds="<%= remainingSeconds %>">--:--</strong></div>
+<% if (kind === 'behavioral') { %><p class="muted">AptitudePro workplace reflection practice. There are no universally correct personality answers; responses are saved without right/wrong scoring or suitability labels.</p><% questions.forEach((q,index)=>{ %><section class="panel"><h2><%= index+1 %>. <%= q.prompt %></h2><% if (q.type === 'likert') { %><% ['Strongly disagree','Disagree','Neither agree nor disagree','Agree','Strongly agree'].forEach((label,i)=>{ %><label class="option"><input type="radio" name="<%= q.id %>" value="<%= label %>"> <%= label %></label><% }) %><% } else { %><% q.options.forEach((option,i)=>{ %><label class="option"><input type="radio" name="<%= q.id %>" value="<%= option %>"> <%= option %></label><% }) %><% } %></section><% }) %><% } else { %><p class="muted">Your responses are saved for later review. Automated writing evaluation is not configured, so no score is assigned.</p><% tasks.forEach((task,index)=>{ %><section class="panel"><h2><%= index+1 %>. <%= task.title %></h2><p><%= task.prompt %></p><label for="<%= task.id %>">Your response</label><textarea id="<%= task.id %>" class="response" maxlength="20000"></textarea><p class="muted">Review criteria: <%= task.criteria.join(' · ') %></p></section><% }) %><% } %>
+<button class="btn" id="submit">Save and review</button><p class="status" id="status" role="status"></p>
+<script nonce="<%= cspNonce %>">
+const attemptId='<%= attemptId %>', kind='<%= kind %>';
+let seconds=Number(document.getElementById('timer').dataset.seconds)||0;function tick(){document.getElementById('timer').textContent=seconds<=0?'Time ended':String(Math.floor(seconds/60)).padStart(2,'0')+':'+String(seconds%60).padStart(2,'0');if(seconds>0)seconds--}tick();setInterval(tick,1000);
+document.getElementById('submit').addEventListener('click',async()=>{
+ const responses={};
+ <% if (kind === 'behavioral') { %>
+ <% questions.forEach(q=>{ %>responses['<%= q.id %>']=document.querySelector('input[name="<%= q.id %>"]:checked')?.value||'';<% }) %>
+ <% } else { %>
+ <% tasks.forEach(task=>{ %>responses['<%= task.id %>']=document.getElementById('<%= task.id %>').value;<% }) %>
+ <% } %>
+ const status=document.getElementById('status');status.textContent='Saving…';
+ try{const result=await fetch('/capgemini/'+kind+'/submit',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({attemptId,responses})});const data=await result.json();if(!result.ok||!data.ok)throw new Error(data.message||'Could not save your responses.');window.location.href=data.redirect||('/capgemini/result/'+data.id)}catch(error){status.textContent=error.message}
+});
+</script></main></body></html>

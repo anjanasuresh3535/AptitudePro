@@ -1,0 +1,78 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Cognizant Game Practice | AptitudePro</title><link rel="stylesheet" href="/css/styles.css"><style>
+*{box-sizing:border-box}body{margin:0;background:#08111f;color:#eaf2ff;font:16px/1.55 Inter,system-ui,sans-serif}.wrap{max-width:1050px;margin:auto;padding:22px}.top{display:flex;justify-content:space-between}.top a{color:#8fdcff}.timer{font-weight:800;color:#fbbf24}.panel{background:#101d30;border:1px solid #253650;border-radius:14px;padding:20px;margin:14px 0}.muted{color:#9aabc0}.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;max-width:400px}.tile{min-height:65px;border:1px solid #354963;border-radius:10px;background:#08111f;color:#fff;font-size:24px;cursor:pointer}.tile.selected{outline:3px solid #38bdf8}.digits{font-size:2rem;font-weight:800;letter-spacing:.25em}.input{background:#08111f;color:white;border:1px solid #354963;border-radius:8px;padding:10px;font-size:1rem;max-width:100%}.status{color:#9edcff}.btn{border:0;border-radius:9px;padding:11px 16px;background:#1da8d8;color:#08111f;font-weight:700;cursor:pointer}@media(max-width:600px){.wrap{padding:12px}.panel{padding:15px}}
+</style></head><body><main class="wrap"><div class="top"><a href="/placement/college/company/cognizant">← Cognizant practice</a><span id="timer" class="timer" data-seconds="<%= remainingSeconds %>">--:--</span></div><h1>Game-based aptitude practice</h1><p class="muted">Five original interactive activities. Completion records accuracy and time only; it does not generate an invented psychometric score.<% if (previous) { %> Your previous run: <%= previous.score %>/<%= previous.totalGames %> activities correct.<% } %></p><section class="panel" id="motion"><h2>1. Motion target</h2><p>Tap the only tile containing <strong><%= challenge.motion.targetSymbol %></strong>.</p><div class="grid"><% challenge.motion.grid.forEach((glyph,i)=>{ %><button type="button" class="tile" data-index="<%= i %>" aria-label="Tile <%= i+1 %>"><%= glyph %></button><% }) %></div></section><section class="panel" id="digit"><h2>2. Digit recall</h2><p><%= challenge.digitRecall.instructions %></p><div id="digits" class="digits"><%= challenge.digitRecall.digits %></div><label>Enter the sequence <input id="digitAnswer" class="input" inputmode="numeric" autocomplete="off"></label></section><section class="panel" id="switch"><h2>3. Switch tracker</h2><p><%= challenge.switchTracker.instructions %></p><p class="digits"><%= challenge.switchTracker.values.join(' · ') %></p><input id="switchAnswer" class="input" placeholder="odd, low, even, high, odd, low" autocomplete="off"></section><section class="panel" id="pattern"><h2>4. Pattern completion</h2><p><%= challenge.patternMatrix.instructions %></p><p class="digits"><%= challenge.patternMatrix.sequence %></p><input id="patternAnswer" class="input" inputmode="numeric" placeholder="Next number"></section><section class="panel" id="logic"><h2>5. Logic grid</h2><p>Assign a different pet to each person using the clues.</p><ul><% challenge.logicGrid.clues.forEach(clue=>{ %><li><%= clue %></li><% }) %></ul><% challenge.logicGrid.people.forEach(person=>{ %><label style="display:block;margin:8px 0"><%= person %> <select class="input pet" data-person="<%= person %>"><option value="">Choose pet</option><% challenge.logicGrid.pets.forEach(pet=>{ %><option value="<%= pet %>"><%= pet %></option><% }) %></select></label><% }) %></section><button class="btn" id="submit">Finish and save results</button><p class="status" id="status" role="status"></p><div class="panel" id="summary" hidden></div><script nonce="<%= cspNonce %>">
+const attemptId = '<%= attemptId %>';
+let motionAnswer = '';
+document.querySelectorAll('.tile').forEach(button => button.addEventListener('click', () => {
+    document.querySelectorAll('.tile').forEach(tile => tile.classList.remove('selected'));
+    button.classList.add('selected');
+    motionAnswer = button.dataset.index;
+}));
+const digits = document.getElementById('digits');
+setTimeout(() => { if (digits) digits.textContent = '•••••'; }, 5000);
+
+function displayAnswer(key, value) {
+    if (!value) return 'No answer entered';
+    if (key === 'motion') return `Tile ${Number(value) + 1}`;
+    if (key === 'logicGrid') return value.split(',').map(pair => pair.replace(':', ': ')).join(', ');
+    if (key === 'switchTracker') return value.split(',').join(', ');
+    return value;
+}
+
+document.getElementById('submit').onclick = async () => {
+    const logic = [...document.querySelectorAll('.pet')].map(select => select.dataset.person + ':' + select.value).join(',');
+    const answers = {
+        motion: motionAnswer,
+        digitRecall: document.getElementById('digitAnswer').value.trim(),
+        switchTracker: document.getElementById('switchAnswer').value.toLowerCase(),
+        patternMatrix: document.getElementById('patternAnswer').value.trim(),
+        logicGrid: logic
+    };
+    const status = document.getElementById('status');
+    status.textContent = 'Saving results…';
+    try {
+        const response = await fetch('/cognizant/games/submit', {
+            method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ attemptId, answers })
+        });
+        const result = await response.json();
+        if (!response.ok || !result.ok) throw new Error(result.message || 'Could not save results.');
+        status.textContent = '';
+        const summary = document.getElementById('summary');
+        summary.replaceChildren();
+        summary.hidden = false;
+        const heading = document.createElement('h2');
+        heading.textContent = `Practice summary: ${result.score}/${result.total} correct`;
+        summary.append(heading);
+        const list = document.createElement('ol');
+        const labels = { motion: 'Motion target', digitRecall: 'Digit recall', switchTracker: 'Switch tracker', patternMatrix: 'Pattern completion', logicGrid: 'Logic grid' };
+        result.games.forEach(game => {
+            const item = document.createElement('li');
+            const title = document.createElement('strong');
+            title.textContent = `${labels[game.key] || game.key}: ${game.correct ? 'Correct' : 'Needs review'}`;
+            item.append(title);
+            const yourAnswer = document.createElement('p');
+            yourAnswer.textContent = `Your answer: ${displayAnswer(game.key, game.response)}`;
+            const correctAnswer = document.createElement('p');
+            correctAnswer.textContent = `Correct answer: ${game.expectedAnswer}`;
+            const explanation = document.createElement('p');
+            explanation.textContent = game.explanation;
+            item.append(yourAnswer, correctAnswer, explanation);
+            list.append(item);
+        });
+        summary.append(list);
+        const history = document.createElement('a');
+        history.href = '/cognizant/history';
+        history.textContent = 'View practice history';
+        summary.append(history);
+        document.getElementById('submit').disabled = true;
+    } catch (error) { status.textContent = error.message; }
+};
+
+let seconds = Number(document.getElementById('timer').dataset.seconds) || 0;
+function tick() {
+    document.getElementById('timer').textContent = seconds <= 0 ? 'Time ended' : String(Math.floor(seconds / 60)).padStart(2, '0') + ':' + String(seconds % 60).padStart(2, '0');
+    if (seconds > 0) seconds--;
+}
+tick();
+setInterval(tick, 1000);
+</script></main></body></html>

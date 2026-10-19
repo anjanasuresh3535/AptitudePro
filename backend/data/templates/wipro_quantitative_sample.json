@@ -1,0 +1,24 @@
+[
+  {
+    "company": "Wipro",
+    "exam": "Wipro_Elite_NTH",
+    "section": "Maths",
+    "subject": "Percentages",
+    "topic": "Percentages",
+    "category": "Quantitative Aptitude",
+    "sourceType": "practice",
+    "sourceRef": "Wipro Placement Practice",
+    "question": "A shopkeeper buys an article for Rs 450 and sells it for Rs 540. Find the profit percentage.",
+    "option1": "15%",
+    "option2": "18%",
+    "option3": "20%",
+    "option4": "25%",
+    "answer": "20%",
+    "explanation": "Profit = 540 - 450 = 90. Profit% = (90 / 450) x 100 = 20%.",
+    "difficultyLevel": 1,
+    "difficulty": "Easy",
+    "level": "Foundation",
+    "questionType": "mcq",
+    "active": true
+  }
+]

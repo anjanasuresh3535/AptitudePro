@@ -1,0 +1,1982 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %> — AptitudePro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/css/styles.css">
+    <style>
+        :root {
+            --primary: #1e40af;
+            --primary-hover: #1d4ed8;
+            --accent: #3b82f6;
+            --bg-dark: #0f172a;
+            --card-bg: rgba(30, 41, 59, 0.7);
+            --card-border: rgba(255, 255, 255, 0.1);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: #090d16;
+            color: var(--text-main);
+            min-height: 100vh;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .navbar {
+            background: rgba(15, 23, 42, 0.9);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 16px 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand-link {
+            font-size: 22px;
+            font-weight: 800;
+            color: #60a5fa;
+            text-decoration: none;
+            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .nav-link {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            transition: color 0.2s;
+        }
+
+        .nav-link:hover {
+            color: #ffffff;
+        }
+
+        .placement-container {
+            max-width: 1100px;
+            margin: 40px auto;
+            padding: 0 24px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .page-header h1 {
+            font-size: 32px;
+            font-weight: 800;
+            margin: 0 0 10px 0;
+            background: linear-gradient(135deg, #ffffff, #93c5fd);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .page-header p {
+            color: var(--text-muted);
+            font-size: 16px;
+            margin: 0;
+        }
+
+        .disclaimer-banner {
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.25);
+            border-radius: 12px;
+            padding: 14px 20px;
+            margin-bottom: 32px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 13px;
+            color: #93c5fd;
+        }
+
+        .disclaimer-banner i {
+            font-size: 18px;
+            color: #60a5fa;
+        }
+
+        .alert-error {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: 12px;
+            padding: 14px 20px;
+            margin-bottom: 24px;
+            color: #fca5a5;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* CARD GRIDS */
+        .path-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 24px;
+        }
+
+        .path-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 20px;
+            padding: 32px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .path-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(96, 165, 250, 0.4);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .path-icon-wrapper {
+            width: 64px;
+            height: 64px;
+            border-radius: 16px;
+            background: linear-gradient(135deg, rgba(37, 99, 235, 0.2), rgba(96, 165, 250, 0.1));
+            border: 1px solid rgba(96, 165, 250, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            color: #60a5fa;
+            margin-bottom: 24px;
+        }
+
+        .path-card h2 {
+            font-size: 22px;
+            font-weight: 700;
+            margin: 0 0 12px 0;
+            color: #ffffff;
+        }
+
+        .path-card p {
+            color: var(--text-muted);
+            font-size: 14px;
+            line-height: 1.6;
+            margin: 0 0 24px 0;
+            flex-grow: 1;
+        }
+
+        .path-features {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 28px 0;
+        }
+
+        .path-features li {
+            font-size: 13px;
+            color: #cbd5e1;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .path-features li i {
+            color: #34d399;
+            font-size: 12px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            color: #ffffff;
+            border: none;
+            border-radius: 12px;
+            padding: 14px 24px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: all 0.2s;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            box-shadow: 0 8px 20px rgba(37, 99, 235, 0.4);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: #ffffff;
+            border-radius: 12px;
+            padding: 14px 24px;
+            font-size: 15px;
+            font-weight: 700;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: all 0.2s;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.12);
+            border-color: rgba(96, 165, 250, 0.4);
+        }
+
+        /* COMPANY GRID */
+        .company-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .company-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            padding: 24px;
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            transition: all 0.25s ease;
+        }
+
+        .company-card:hover {
+            transform: translateY(-3px);
+            border-color: #60a5fa;
+            background: rgba(30, 41, 59, 0.9);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .company-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .company-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: #ffffff;
+        }
+
+        .company-name {
+            font-size: 18px;
+            font-weight: 700;
+            color: #ffffff;
+            margin: 0;
+        }
+
+        .company-tag {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        .cognizant-sections { display:grid; gap:10px; margin-top:16px; }
+        .cognizant-section-row { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:12px; border:1px solid rgba(255,255,255,.09); border-radius:10px; background:rgba(2,6,23,.25); }
+        .cognizant-section-row span { display:flex; flex-direction:column; gap:3px; }
+        .cognizant-section-row small { color:#94a3b8; }
+        .cognizant-section-row .btn-primary { white-space:nowrap; }
+        @media(max-width:560px){.cognizant-section-row{align-items:flex-start;flex-direction:column}.cognizant-section-row .btn-primary{width:100%;justify-content:center}}
+
+        /* LEVEL CARDS */
+        .level-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+        }
+
+        .level-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 18px;
+            padding: 28px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+        }
+
+        .level-card.locked {
+            opacity: 0.6;
+            filter: grayscale(40%);
+        }
+
+        .level-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            width: fit-content;
+        }
+
+        .level-badge.unlocked {
+            background: rgba(16, 185, 129, 0.15);
+            color: #34d399;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .level-badge.locked-tag {
+            background: rgba(239, 68, 68, 0.15);
+            color: #fca5a5;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+
+        .level-card h3 {
+            font-size: 20px;
+            font-weight: 700;
+            margin: 0 0 8px 0;
+            color: #ffffff;
+        }
+
+        .level-card p {
+            color: var(--text-muted);
+            font-size: 13px;
+            margin: 0 0 24px 0;
+            line-height: 1.5;
+        }
+
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 24px;
+        }
+
+        .breadcrumb a {
+            color: #60a5fa;
+            text-decoration: none;
+        }
+
+        .breadcrumb a:hover {
+            text-decoration: underline;
+        }
+
+        .back-bar {
+            margin-bottom: 24px;
+        }
+
+        .btn-back {
+            color: #94a3b8;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: color 0.2s;
+        }
+
+        .btn-back:hover {
+            color: #ffffff;
+        }
+
+        /* TCS MOCK HERO BANNER & RESTRUCTURED CARDS */
+        .tcs-placement-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 28px;
+        }
+
+        .tcs-mock-hero {
+            background: linear-gradient(135deg, rgba(30, 58, 138, 0.8), rgba(15, 23, 42, 0.95));
+            border: 1px solid rgba(59, 130, 246, 0.4);
+            border-radius: 20px;
+            padding: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 24px;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        .tcs-hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(59, 130, 246, 0.2);
+            color: #60a5fa;
+            border: 1px solid rgba(59, 130, 246, 0.4);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .tcs-hero-content h2 {
+            font-size: 24px;
+            font-weight: 800;
+            margin: 0 0 8px 0;
+            color: #ffffff;
+        }
+
+        .tcs-hero-content p {
+            color: #94a3b8;
+            font-size: 14px;
+            margin: 0 0 16px 0;
+            max-width: 650px;
+            line-height: 1.5;
+        }
+
+        .tcs-meta-pills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .tcs-pill {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            padding: 6px 14px;
+            border-radius: 8px;
+            font-size: 13px;
+            color: #cbd5e1;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-tcs-primary {
+            background: linear-gradient(135deg, #2563eb, #3b82f6);
+            color: #ffffff;
+            border: none;
+            border-radius: 12px;
+            padding: 16px 28px;
+            font-size: 15px;
+            font-weight: 700;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            white-space: nowrap;
+            box-shadow: 0 8px 24px rgba(37, 99, 235, 0.4);
+            transition: all 0.25s ease;
+        }
+
+        .btn-tcs-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 30px rgba(37, 99, 235, 0.6);
+            background: linear-gradient(135deg, #1d4ed8, #2563eb);
+        }
+
+        .tcs-card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 24px;
+        }
+
+        .tcs-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 20px;
+            padding: 28px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            transition: all 0.25s ease;
+        }
+
+        .tcs-card.locked {
+            opacity: 0.65;
+            filter: grayscale(30%);
+        }
+
+        .tcs-card-header {
+            margin-bottom: 12px;
+        }
+
+        .tcs-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .tcs-badge.unlocked {
+            background: rgba(16, 185, 129, 0.15);
+            color: #34d399;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .tcs-badge.locked-tag {
+            background: rgba(239, 68, 68, 0.15);
+            color: #fca5a5;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+
+        .tcs-card h3 {
+            font-size: 22px;
+            font-weight: 800;
+            margin: 0 0 6px 0;
+            color: #ffffff;
+        }
+
+        .tcs-card-stats {
+            font-size: 13px;
+            color: #60a5fa;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .tcs-card-desc {
+            color: var(--text-muted);
+            font-size: 13px;
+            line-height: 1.5;
+            margin: 0 0 20px 0;
+        }
+
+        .tcs-section-breakdown {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 24px;
+        }
+
+        .tcs-breakdown-item {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 12px;
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            transition: background 0.2s;
+        }
+
+        .tcs-breakdown-item:hover {
+            background: rgba(30, 41, 59, 0.8);
+            border-color: rgba(96, 165, 250, 0.2);
+        }
+
+        .tcs-sec-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            background: rgba(59, 130, 246, 0.15);
+            color: #60a5fa;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+
+        .tcs-sec-info {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .tcs-sec-info strong {
+            font-size: 14px;
+            color: #f8fafc;
+            font-weight: 700;
+        }
+
+        .tcs-sec-info small {
+            font-size: 12px;
+            color: #94a3b8;
+            margin-top: 2px;
+        }
+
+        .tcs-mini-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            background: rgba(37, 99, 235, 0.2);
+            color: #60a5fa;
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            font-size: 12px;
+            transition: all 0.2s;
+        }
+
+        .tcs-mini-btn:hover:not(.disabled) {
+            background: #2563eb;
+            color: #ffffff;
+        }
+
+        .tcs-mini-btn.disabled {
+            background: rgba(255, 255, 255, 0.05);
+            color: #64748b;
+            border-color: transparent;
+            cursor: not-allowed;
+        }
+
+        @media (max-width: 768px) {
+            .tcs-mock-hero {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .btn-tcs-primary {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    /* ─────────────────────────────────────────────────────────
+           Company-module component styles.
+           The rules above define the canonical vocabulary
+           (.tcs-card-grid / .tcs-card / .tcs-badge / .tcs-sec-*).
+           The rules below add the remaining building blocks used by the
+           company modules (hero actions, section headers, card CTAs) so that
+           those pages render as designed instead of falling back to raw HTML.
+           ───────────────────────────────────────────────────────── */
+
+        .tcs-hero-actions,
+        .tcs-hero-action {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            flex-shrink: 0;
+        }
+
+        .tcs-hero-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 14px 26px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 700;
+            text-decoration: none;
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .tcs-hero-btn:hover {
+            transform: translateY(-2px);
+            border-color: rgba(96, 165, 250, 0.5);
+            box-shadow: 0 10px 24px rgba(0, 0, 0, 0.4);
+        }
+
+        .tcs-btn-primary {
+            background: linear-gradient(135deg, #1d4ed8, #3b82f6);
+            border-color: transparent;
+            color: #ffffff;
+        }
+
+        .tcs-btn-secondary {
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        /* Section heading used between groups of cards */
+        .tcs-section-header {
+            margin-bottom: 6px;
+        }
+
+        .tcs-section-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 5px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+
+        .tcs-section-header h3 {
+            font-size: 22px;
+            font-weight: 800;
+            color: #ffffff;
+            margin: 0 0 6px 0;
+        }
+
+        .tcs-section-header p {
+            color: var(--text-muted);
+            font-size: 14px;
+            line-height: 1.6;
+            margin: 0 0 18px 0;
+            max-width: 760px;
+        }
+
+        /* Card internals */
+        .tcs-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(96, 165, 250, 0.4);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .tcs-card-icon {
+            width: 46px;
+            height: 46px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            margin-bottom: 14px;
+        }
+
+        .tcs-card-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+        }
+
+        .tcs-card-title {
+            font-size: 17px;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 3px;
+        }
+
+        .tcs-card-subtitle {
+            font-size: 12px;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        .tcs-card-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+            margin-bottom: 18px;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .tcs-card-meta span {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .tcs-card-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            padding: 12px 20px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 700;
+            text-decoration: none;
+            color: #ffffff;
+            background: rgba(37, 99, 235, 0.25);
+            border: 1px solid rgba(59, 130, 246, 0.35);
+            transition: all 0.2s ease;
+        }
+
+        .tcs-card-btn:hover {
+            filter: brightness(1.12);
+            transform: translateY(-1px);
+        }
+
+        .tcs-card-footer {
+            margin-top: auto;
+        }
+
+        /* Make sure anchors never render as raw blue underlined links */
+        .tcs-placement-wrapper a {
+            text-decoration: none;
+        }
+
+        /* ── Aliases ──────────────────────────────────────────
+           The company modules historically used a second set of names for the
+           same components. Aliasing them keeps every existing page rendering
+           with the intended card / grid styling. */
+        .tcs-cards-grid,
+        .tcs-practice-card,
+        .tcs-card-grid .tcs-practice-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 20px;
+        }
+
+        .tcs-cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 24px;
+        }
+
+        .tcs-practice-card {
+            padding: 28px;
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            position: relative;
+            transition: all 0.25s ease;
+        }
+
+        .tcs-practice-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(96, 165, 250, 0.4);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .tcs-practice-card .tcs-card-title {
+            font-size: 17px;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 3px;
+        }
+
+        .tcs-practice-card .tcs-card-desc {
+            color: var(--text-muted);
+            font-size: 13px;
+            line-height: 1.6;
+            margin: 0 0 16px 0;
+        }
+
+        .tcs-practice-card .tcs-card-btn {
+            margin-top: auto;
+        }
+
+        /* Legacy single-column variants used by the coding / writing cards */
+        .tcs-cards-grid[style*="grid-template-columns: 1fr"] {
+            grid-template-columns: 1fr;
+        }
+
+        /* FULLSCREEN & WIDE-VIEW CONTROLS */
+        .btn-fullscreen-toggle {
+            background: rgba(30, 41, 59, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: #93c5fd;
+            border-radius: 9px;
+            padding: 8px 14px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            transition: all 0.2s ease;
+            font-family: inherit;
+        }
+
+        .btn-fullscreen-toggle:hover {
+            background: rgba(59, 130, 246, 0.25);
+            border-color: #60a5fa;
+            color: #ffffff;
+            box-shadow: 0 0 12px rgba(59, 130, 246, 0.35);
+            transform: translateY(-1px);
+        }
+
+        .btn-fullscreen-toggle.active {
+            background: #2563eb;
+            color: #ffffff;
+            border-color: #60a5fa;
+        }
+
+        .fullscreen-fab-container {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 999;
+        }
+
+        .btn-floating-fab {
+            width: 46px;
+            height: 46px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #1e40af, #3b82f6);
+            border: 1.5px solid rgba(255, 255, 255, 0.25);
+            color: #ffffff;
+            font-size: 17px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.4), 0 0 16px rgba(59, 130, 246, 0.3);
+            transition: all 0.25s ease;
+        }
+
+        .btn-floating-fab:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 24px rgba(59, 130, 246, 0.5);
+            border-color: #93c5fd;
+        }
+
+        /* FLUID EXPANSION IN FULLSCREEN / WIDE-MODE */
+        :fullscreen body,
+        body:-webkit-full-screen {
+            background: #090d16;
+            overflow-y: auto;
+        }
+
+        :fullscreen .placement-container,
+        body:-webkit-full-screen .placement-container,
+        body.fullscreen-active .placement-container,
+        .placement-container.wide-mode {
+            max-width: 96vw;
+            margin: 24px auto;
+            padding: 0 28px;
+            transition: max-width 0.3s ease;
+        }
+
+        :fullscreen .company-grid,
+        body:-webkit-full-screen .company-grid,
+        body.fullscreen-active .company-grid,
+        .placement-container.wide-mode .company-grid {
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 22px;
+        }
+
+        :fullscreen .company-card,
+        body:-webkit-full-screen .company-card,
+        body.fullscreen-active .company-card,
+        .placement-container.wide-mode .company-card {
+            padding: 26px;
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <a href="/dashboard" class="brand-link">
+            <i class="fa-solid fa-graduation-cap"></i> AptitudePro
+        </a>
+        <div class="nav-links">
+            <button type="button" id="btnToggleWidth" class="btn-fullscreen-toggle" title="Toggle Full Width Mode">
+                <i class="fa-solid fa-arrows-left-right-to-line" id="widthIcon"></i>
+                <span id="widthText">Full Width</span>
+            </button>
+            <button type="button" id="btnToggleFullscreen" class="btn-fullscreen-toggle" title="Toggle Full Screen (or press F)">
+                <i class="fa-solid fa-expand" id="fullscreenIcon"></i>
+                <span id="fullscreenText">Full Screen</span>
+            </button>
+            <a href="/dashboard" class="nav-link"><i class="fa-solid fa-chart-line"></i> Dashboard</a>
+            <a href="/results/history" class="nav-link"><i class="fa-solid fa-clock-rotate-left"></i> History</a>
+            <a href="/logout" class="nav-link"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+        </div>
+    </nav>
+
+    <div class="placement-container">
+
+        <% if (error) { %>
+            <div class="alert-error">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+                <span><%= error %></span>
+            </div>
+        <% } %>
+
+        <% if (step === 'main-choice') { %>
+            <!-- STEP 1: MAIN LEARNING PATH SELECTION -->
+            <div class="page-header">
+                <h1>Choose Your Learning Path</h1>
+                <p>Select your education tier to experience tailored aptitude tests and placement preparation.</p>
+            </div>
+
+            <div class="path-grid">
+                <!-- SCHOOL STUDENTS CARD -->
+                <div class="path-card">
+                    <div>
+                        <div class="path-icon-wrapper">
+                            <i class="fa-solid fa-user-graduate"></i>
+                        </div>
+                        <h2>School Students</h2>
+                        <p>Build strong fundamental aptitude skills through a single combined practice test.</p>
+                        <ul class="path-features">
+                            <li><i class="fa-solid fa-check"></i> 25 Mixed Questions per test</li>
+                            <li><i class="fa-solid fa-check"></i> Mathematics + Logical + English</li>
+                            <li><i class="fa-solid fa-check"></i> 3 Separate Difficulty Levels</li>
+                            <li><i class="fa-solid fa-check"></i> No subject selection required</li>
+                        </ul>
+                    </div>
+                    <a href="/placement/school" class="btn-primary">
+                        <span>Start Learning</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+                </div>
+
+                <!-- COLLEGE STUDENTS & PLACEMENT CARD -->
+                <div class="path-card">
+                    <div>
+                        <div class="path-icon-wrapper">
+                            <i class="fa-solid fa-briefcase"></i>
+                        </div>
+                        <h2>College & Placement Preparation</h2>
+                        <p>Prepare for campus recruitment drives, competitive aptitude exams, and company assessments.</p>
+                        <ul class="path-features">
+                            <li><i class="fa-solid fa-check"></i> General Placement Aptitude</li>
+                            <li><i class="fa-solid fa-check"></i> Practice by Company (TCS, Infosys, etc.)</li>
+                            <li><i class="fa-solid fa-check"></i> Quant, Logical, Verbal & Problem Solving</li>
+                            <li><i class="fa-solid fa-check"></i> Foundation, Intermediate & Advanced</li>
+                        </ul>
+                    </div>
+                    <a href="/placement/college" class="btn-primary">
+                        <span>Explore Placement</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+
+        <% } else if (step === 'school-levels') { %>
+            <!-- STEP 2A: SCHOOL LEVELS -->
+            <div class="back-bar">
+                <a href="/placement" class="btn-back"><i class="fa-solid fa-chevron-left"></i> Back to Path Selection</a>
+            </div>
+
+            <div class="page-header">
+                <h1>School Aptitude Test</h1>
+                <p>Combined practice test featuring Mathematics, Logical Reasoning & English questions.</p>
+            </div>
+
+            <div class="level-grid">
+                <% levels.forEach(function(lvl) { %>
+                    <div class="level-card <%= lvl.unlocked ? '' : 'locked' %>">
+                        <div>
+                            <div class="level-badge <%= lvl.unlocked ? 'unlocked' : 'locked-tag' %>">
+                                <i class="fa-solid <%= lvl.unlocked ? 'fa-lock-open' : 'fa-lock' %>"></i>
+                                <span><%= lvl.unlocked ? 'Unlocked' : 'Locked' %></span>
+                            </div>
+                            <h3><%= lvl.label.full %></h3>
+                            <p><%= lvl.label.tagline %>. 25 mixed aptitude questions automatically selected from the Level <%= lvl.number %> question pool.</p>
+                        </div>
+                        <% if (lvl.unlocked) { %>
+                            <a href="/quiz?learningPath=school&difficulty=<%= lvl.number %>" class="btn-primary">
+                                <span>Start Level <%= lvl.number %> Test</span>
+                                <i class="fa-solid fa-play"></i>
+                            </a>
+                        <% } else { %>
+                            <button class="btn-secondary" disabled>
+                                <span>Score <%= unlockThreshold %>% on Level <%= lvl.number - 1 %> to Unlock</span>
+                            </button>
+                        <% } %>
+                    </div>
+                <% }); %>
+            </div>
+
+        <% } else if (step === 'college-choice') { %>
+            <!-- STEP 2B: COLLEGE CHOICE -->
+            <div class="back-bar">
+                <a href="/placement" class="btn-back"><i class="fa-solid fa-chevron-left"></i> Back to Path Selection</a>
+            </div>
+
+            <div class="page-header">
+                <h1>College & Placement Preparation</h1>
+                <p>Choose between General Placement Aptitude or Practice by Company.</p>
+            </div>
+
+            <% if (disclaimer) { %>
+                <div class="disclaimer-banner">
+                    <i class="fa-solid fa-circle-info"></i>
+                    <span><%= disclaimer %></span>
+                </div>
+            <% } %>
+
+            <div class="path-grid">
+                <!-- GENERAL PLACEMENT APTITUDE -->
+                <div class="path-card">
+                    <div>
+                        <div class="path-icon-wrapper">
+                            <i class="fa-solid fa-compass"></i>
+                        </div>
+                        <h2>General Placement Aptitude</h2>
+                        <p>Comprehensive placement practice covering Quantitative Aptitude, Logical Reasoning, Verbal Ability & Data Interpretation.</p>
+                        <ul class="path-features">
+                            <li><i class="fa-solid fa-check"></i> Standard campus placement structure</li>
+                            <li><i class="fa-solid fa-check"></i> 25 Questions per test</li>
+                            <li><i class="fa-solid fa-check"></i> 3 Progressive Difficulty Levels</li>
+                        </ul>
+                    </div>
+                    <a href="/placement/college/general" class="btn-primary">
+                        <span>Select General Aptitude</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+                </div>
+
+                <!-- PRACTICE BY COMPANY -->
+                <div class="path-card">
+                    <div>
+                        <div class="path-icon-wrapper">
+                            <i class="fa-solid fa-building-columns"></i>
+                        </div>
+                        <h2>Practice by Company</h2>
+                        <p>Practice aptitude problem patterns associated with major recruitment drives (TCS, Infosys, Wipro, Accenture & more).</p>
+                        <ul class="path-features">
+                            <li><i class="fa-solid fa-check"></i> 9 Top Placement Recruiter Patterns</li>
+                            <li><i class="fa-solid fa-check"></i> Company-oriented Practice Cards</li>
+                            <li><i class="fa-solid fa-check"></i> Separate level-based question pools</li>
+                        </ul>
+                    </div>
+                    <a href="/placement/college/company" class="btn-primary">
+                        <span>Explore Companies</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+
+        <% } else if (step === 'college-general-levels') { %>
+            <!-- STEP 3A: GENERAL COLLEGE LEVELS -->
+            <div class="back-bar">
+                <a href="/placement/college" class="btn-back"><i class="fa-solid fa-chevron-left"></i> Back to College Preparation</a>
+            </div>
+
+            <div class="page-header">
+                <h1>General Placement Aptitude</h1>
+                <p>Select your difficulty level to attempt a 25-question mixed placement test.</p>
+            </div>
+
+            <div class="level-grid">
+                <% levels.forEach(function(lvl) { %>
+                    <div class="level-card <%= lvl.unlocked ? '' : 'locked' %>">
+                        <div>
+                            <div class="level-badge <%= lvl.unlocked ? 'unlocked' : 'locked-tag' %>">
+                                <i class="fa-solid <%= lvl.unlocked ? 'fa-lock-open' : 'fa-lock' %>"></i>
+                                <span><%= lvl.unlocked ? 'Unlocked' : 'Locked' %></span>
+                            </div>
+                            <h3><%= lvl.label.full %></h3>
+                            <p><%= lvl.label.tagline %>. 25 placement questions retrieved from the Level <%= lvl.number %> general placement pool.</p>
+                        </div>
+                        <% if (lvl.unlocked) { %>
+                            <a href="/quiz?learningPath=college&placementType=general&difficulty=<%= lvl.number %>" class="btn-primary">
+                                <span>Start Level <%= lvl.number %> Test</span>
+                                <i class="fa-solid fa-play"></i>
+                            </a>
+                        <% } else { %>
+                            <button class="btn-secondary" disabled>
+                                <span>Score <%= unlockThreshold %>% on Level <%= lvl.number - 1 %> to Unlock</span>
+                            </button>
+                        <% } %>
+                    </div>
+                <% }); %>
+            </div>
+
+        <% } else if (step === 'company-list') { %>
+            <!-- STEP 3B: COMPANY LIST -->
+            <div class="back-bar">
+                <a href="/placement/college" class="btn-back"><i class="fa-solid fa-chevron-left"></i> Back to College Preparation</a>
+            </div>
+
+            <div class="page-header">
+                <h1>Practice by Company</h1>
+                <p>Company-oriented placement practice for major hiring assessments.</p>
+            </div>
+
+            <% if (disclaimer) { %>
+                <div class="disclaimer-banner">
+                    <i class="fa-solid fa-shield-halved"></i>
+                    <span><%= disclaimer %></span>
+                </div>
+            <% } %>
+
+            <div class="company-grid">
+                <% companies.forEach(function(comp) { %>
+                    <a href="/placement/college/company/<%= comp.slug %>" class="company-card">
+                            <div class="company-header">
+                            <div class="company-icon" style="background: <%= comp.logoBg %>;">
+                                <i class="fa-solid <%= comp.icon %>"></i>
+                            </div>
+                            <div>
+                                <h3 class="company-name"><%= comp.name %></h3>
+                                <div class="company-tag"><%= comp.tag %></div>
+                            </div>
+                        </div>
+                        <% if (comp.slug === 'cognizant') { %>
+                            <p class="company-tag"><strong><%= cognizantQuestionCount || 0 %></strong> practice questions in the bank</p>
+                        <% } else if (comp.slug === 'capgemini') { %>
+                            <p class="company-tag"><strong><%= capgeminiQuestionCount || 0 %></strong> practice questions in the bank</p>
+                        <% } else if (comp.slug === 'hcltech') { %>
+                            <p class="company-tag"><strong><%= hcltechQuestionCount || 0 %></strong> practice items in the bank</p>
+                        <% } else if (comp.slug === 'tech-mahindra') { %>
+                            <p class="company-tag"><strong><%= techMahindraQuestionCount || 0 %></strong> objective and coding questions in the bank</p>
+                        <% } else if (comp.slug === 'ibm') { %>
+                            <p class="company-tag"><strong><%= ibmQuestionCount || 0 %></strong> original English and coding problems</p>
+                        <% } %>
+                        <div class="btn-secondary" style="padding: 10px; font-size: 13px;">
+                            <span><%= comp.slug === 'accenture' ? 'Practice Accenture Patterns →' : `Practice ${comp.name} Patterns` %></span>
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </div>
+                    </a>
+                <% }); %>
+            </div>
+
+        <% } else if (step === 'company-levels') { %>
+            <!-- STEP 4: COMPANY LEVELS -->
+            <div class="back-bar">
+                <a href="/placement/college/company" class="btn-back"><i class="fa-solid fa-chevron-left"></i> Back to Company List</a>
+            </div>
+
+            <div class="page-header">
+                <h1><%= title %></h1>
+                <p><%= subtitle %></p>
+            </div>
+
+            <% if (disclaimer) { %>
+                <div class="disclaimer-banner">
+                    <i class="fa-solid fa-circle-info"></i>
+                    <span><%= disclaimer %></span>
+                </div>
+            <% } %>
+
+            <% if (typeof isCognizant !== 'undefined' && isCognizant) { %>
+                <section class="accenture-dashboard">
+                    <div class="page-header">
+                        <h2>Cognizant Placement Practice</h2>
+                        <p>Practice communication, aptitude, technical skills and interview responses. This configurable practice pattern may be adapted to your role and hiring drive.</p>
+                    </div>
+                    <div class="level-grid">
+                        <% (cognizantRounds || []).forEach(function(round, roundIndex) { %>
+                            <article class="level-card">
+                                <div>
+                                    <p class="eyebrow">ROUND <%= roundIndex + 1 %></p>
+                                    <h3><%= round.name %></h3>
+                                    <p><%= round.description %></p>
+                                    <p><strong><%= round.minutes %></strong> configured minutes</p>
+                                    <div class="cognizant-sections">
+                                        <% round.sections.forEach(function(section) { var href = section.launch === 'quiz' ? `/quiz?learningPath=college&placementType=company&company=cognizant&mode=cognizant&sectionKey=${section.key}` : `/cognizant/${section.key}`; %>
+                                            <div class="cognizant-section-row">
+                                                <span><strong><%= section.name %></strong><small><%= section.sessionCount %> per session · <%= section.minutes %> min<% if (section.completed) { %> · Practiced<% } %></small></span>
+                                                <% if (section.available) { %><a class="btn-primary" href="<%= href %>">Practice <i class="fa-solid fa-arrow-right"></i></a><% } else { %><span class="muted">Coming soon</span><% } %>
+                                            </div>
+                                        <% }); %>
+                                    </div>
+                                </div>
+                            </article>
+                        <% }); %>
+                    </div>
+                    <p class="disclaimer-banner">Cognizant assessment formats differ by role and recruitment drive. These are AptitudePro original practice materials, not an official or universal test pattern.</p>
+                </section>
+
+            <% } else if (typeof isAccenture !== 'undefined' && isAccenture) { %>
+                <section class="accenture-dashboard">
+                    <div class="page-header">
+                        <h2>Accenture Placement Practice</h2>
+                        <p>Practice cognitive, technical, coding and communication skills for Accenture-style assessments.</p>
+                    </div>
+                    <div class="level-grid">
+                        <% (accentureSections || []).forEach(function(section) { %>
+                            <article class="level-card">
+                                <div>
+                                    <h3><%= section.name %></h3>
+                                    <p><%= section.description %></p>
+                                    <p><strong><%= section.sessionCount %></strong> questions per practice session · <%= section.difficulty %></p>
+                                </div>
+                                <% if (section.count > 0) { %>
+                                    <a class="btn-primary" href="<%= section.key === 'cognitive' || section.key === 'technical' ? `/quiz?learningPath=college&placementType=company&company=accenture&mode=accenture&sectionKey=${section.key}` : `/accenture/${section.key}` %>">
+                                        <span>Practice</span><i class="fa-solid fa-arrow-right"></i>
+                                    </a>
+                                <% } else { %>
+                                    <p>Practice tasks are being prepared for this section.</p>
+                                <% } %>
+                            </article>
+                        <% }); %>
+                    </div>
+                    <p class="disclaimer-banner">Assessment formats vary by role and hiring drive. Configure practice to match your invitation; this module does not claim one universal official format.</p>
+                </section>
+
+            <% } else if (typeof isCapgemini !== 'undefined' && isCapgemini) { %>
+                <section class="accenture-dashboard">
+                    <div class="page-header">
+                        <h2>Capgemini Assessment Practice</h2>
+                        <p>Configurable AptitudePro practice for technical, English, cognitive, behavioral and coding skills.</p>
+                    </div>
+                    <div class="level-grid">
+                        <% (capgeminiSections || []).forEach(function(section) { %>
+                            <article class="level-card">
+                                <div>
+                                    <h3><%= section.name %></h3>
+                                    <p><%= section.description %></p>
+                                    <% if (section.key === 'listening') { %>
+                                        <p><%= section.sessionCount %> audio questions · <%= section.minutes %> min</p>
+                                        <p class="muted">Original practice audio with a locally synthesized voice.</p>
+                                    <% } else if (section.key === 'writing') { %>
+                                        <p><%= section.targetCount %> writing tasks · <%= section.minutes %> min</p>
+                                    <% } else if (section.key === 'games') { %>
+                                        <p><%= section.targetCount %> interactive games · <%= section.minutes %> min</p>
+                                    <% } else { %>
+                                        <p><%= section.targetCount %> questions · <%= section.minutes %> min</p>
+                                    <% } %>
+                                </div>
+                                <% if (section.available) { %>
+                                    <% var href = section.key === 'technical' || section.key === 'english' ? `/quiz?learningPath=college&placementType=company&company=capgemini&mode=capgemini&sectionKey=${section.key}` : `/capgemini/${section.key}`; %>
+                                    <a class="btn-primary" href="<%= href %>"><span>Practice</span><i class="fa-solid fa-arrow-right"></i></a>
+                                <% } else { %>
+                                    <p class="muted">Practice content is being prepared for this section.</p>
+                                <% } %>
+                            </article>
+                        <% }); %>
+                    </div>
+                    <p class="disclaimer-banner">These are AptitudePro practice materials, not official or leaked Capgemini questions. Hiring formats vary by role or drive. Listening uses locally synthesized audio; coding runs in an isolated sandbox.</p>
+                    <p><a class="btn-secondary" href="/capgemini/history">View Capgemini practice history</a></p>
+                </section>
+
+            <% } else if (typeof isHCLTech !== 'undefined' && isHCLTech) { %>
+                <section class="accenture-dashboard">
+                    <div class="page-header">
+                        <h2>HCLTech Placement Practice</h2>
+                        <p>A fixed, timed AptitudePro practice pattern based on the configured brief. Actual HCLTech recruitment formats can vary by role and drive.</p>
+                        <p><strong><%= hcltechSections.assessment.totalItems %></strong> target items · <strong><%= hcltechSections.assessment.totalMinutes %></strong> total configured minutes · no negative marking</p>
+                    </div>
+                    <div class="level-grid">
+                        <% hcltechSections.forEach(function(section) { %>
+                            <article class="level-card">
+                                <div>
+                                    <h3><%= section.name %></h3>
+                                    <p><%= section.targetCount %> questions · <%= section.minutes %> min<% if(section.completed) { %> · Practiced<% } %></p>
+                                </div>
+                                <% if(section.available) { %>
+                                    <% var hclHref = section.key === 'coding' ? '/hcltech/coding' : `/quiz?learningPath=college&placementType=company&company=hcltech&mode=hcltech&sectionKey=${section.key}`; %>
+                                    <a class="btn-primary" href="<%= hclHref %>"><span>Practice</span><i class="fa-solid fa-arrow-right"></i></a>
+                                <% } else { %><p class="muted">Practice content is not available yet.</p><% } %>
+                            </article>
+                        <% }); %>
+                    </div>
+                    <p class="muted">Objective sessions use fixed question sets. Adaptive delivery is not enabled. These are original AptitudePro practice questions, not official HCLTech questions.</p>
+                    <p><a class="btn-secondary" href="/results/history?company=HCLTech">View objective assessment history</a></p>
+                    <% if(hcltechSections.codingSubmissions.length) { %><section class="level-card"><h3>Recent coding submissions</h3><ul><% hcltechSections.codingSubmissions.forEach(function(item) { %><li><a href="/hcltech/coding/result/<%= item._id %>"><%= item.testTitle %></a> · <%= item.executionAvailable ? `${item.solvedProblems}/${item.totalProblems} accepted` : 'Saved; not evaluated' %></li><% }); %></ul></section><% } %>
+                </section>
+
+            <% } else if (typeof isTechMahindra !== 'undefined' && isTechMahindra) { %>
+                <section class="accenture-dashboard">
+                    <div class="page-header">
+                        <h2>Tech Mahindra Placement Practice</h2>
+                        <p>Practice aptitude, written communication, technical foundations, coding, workplace scenarios and interview responses.</p>
+                        <p class="disclaimer-banner">Configurable AptitudePro practice defaults based on a reported pattern. This is not an official, guaranteed or leaked Tech Mahindra assessment format; requirements vary by role, hiring drive and year.</p>
+                    </div>
+                    <div class="level-grid">
+                        <% (techMahindraSections || []).forEach(function(section) { %>
+                            <article class="level-card">
+                                <div><h3><%= section.name %></h3><p><% if(section.minutes) { %><%= section.sessionCount %> questions · <%= section.minutes %> min<% } else { %><%= section.sessionCount %> questions<% } %><% if(section.completed) { %> · Practiced<% } %></p>
+                                <% if (section.key === 'essay') { %><p>Choose from original topics. Word count, draft autosave, timer, and self-review are provided; there is no automatic writing score.</p><% } else if (section.key === 'psychometric') { %><p>Agreement-scale workplace reflections; not scored and not a validated personality or hiring prediction.</p><% } else if (section.key === 'communication') { %><p>Text-based accessible listening alternatives and optional local recording. No speech scoring or external audio upload.</p><% } else if(section.key === 'technicalInterview' || section.key === 'hrInterview') { %><p>Draft your own answer before revealing study guidance. Subjective answers are not graded.</p><% } else if(section.key === 'coding') { %><p>Runs through the configured isolated Judge0 sandbox when available; no execution success is fabricated.</p><% } %></div>
+                                <% if(section.available) { %>
+                                    <% var tmHref = ['logical','quantitative','verbal','programming','cs'].includes(section.key) ? `/quiz?learningPath=college&placementType=company&company=tech-mahindra&mode=tech-mahindra&sectionKey=${section.key}` : `/tech-mahindra/${section.routeKey}`; %>
+                                    <a class="btn-primary" href="<%= tmHref %>"><span><%= section.key === 'coding' ? 'Start coding practice' : 'Start practice' %></span><i class="fa-solid fa-arrow-right"></i></a>
+                                <% } else { %><p class="muted">Practice content is not available.</p><% } %>
+                            </article>
+                        <% }); %>
+                    </div>
+                    <p><a class="btn-secondary" href="/tech-mahindra/history">View Tech Mahindra practice history</a> <a class="btn-secondary" href="/placement/college/company">Back to companies</a></p>
+                    <% if(techMahindraSections.codingSubmissions.length) { %><section class="level-card"><h3>Recent coding submissions</h3><ul><% techMahindraSections.codingSubmissions.forEach(function(item) { %><li><a href="/tech-mahindra/coding/result/<%= item._id %>"><%= item.testTitle %></a> · <%= item.executionAvailable ? `${item.solvedProblems}/${item.totalProblems} accepted` : 'Saved; not evaluated' %></li><% }); %></ul></section><% } %>
+                </section>
+
+            <% } else if (typeof isIBM !== 'undefined' && isIBM) { %>
+                <section class="accenture-dashboard">
+                    <div class="page-header"><h2>IBM Placement Practice</h2><p>Configurable practice for English, coding, group discussion and interviews. This is independent AptitudePro content, not official or leaked IBM assessment material.</p><p class="disclaimer-banner">Hiring formats vary by role, country, hiring drive and year. English uses the configured no-negative-marking practice default.</p></div>
+                    <div class="level-grid">
+                        <% (ibmSections || []).forEach(function(section) { %>
+                            <article class="level-card"><div><h3><%= section.name %></h3><p><% if(section.key === 'english' || section.key === 'coding' || section.key === 'groupDiscussion') { %><%= section.sessionCount %> questions · <%= section.minutes %> min<% } else { %>Interview practice<% } %><% if(section.completed) { %> · Practiced<% } %></p>
+                                <% if(section.key === 'coding') { %><p>One medium and one advanced original problem. Runs through the existing isolated execution service when available; unavailable execution is never reported as a pass.</p><% } else if(section.key === 'english') { %><p>Grammar, voice, error spotting, vocabulary, tenses and sentence correction. No negative marking is used in this practice configuration.</p><% } else if(section.key === 'groupDiscussion') { %><p>Choose a topic category, prepare both viewpoints, draft a response and self-review. No live participants or automatic score.</p><% } else { %><p>Draft your own answers before revealing study guidance. Subjective answers are saved without an objective score.</p><% } %></div>
+                                <% if(section.available) { %><% var ibmHref = section.key === 'coding' ? '/ibm/coding' : section.key === 'english' ? '/quiz?learningPath=college&placementType=company&company=ibm&mode=ibm&sectionKey=english' : section.key === 'groupDiscussion' ? '/ibm/group-discussion' : section.key === 'technicalInterview' ? '/ibm/interview/technical' : '/ibm/interview/hr'; %><a class="btn-primary" href="<%= ibmHref %>"><span>Practice</span><i class="fa-solid fa-arrow-right"></i></a><% } else { %><p class="muted">Practice content is not available yet.</p><% } %>
+                            </article>
+                        <% }); %>
+                    </div>
+                    <p><a class="btn-secondary" href="/ibm/history">View IBM practice history</a> <a class="btn-secondary" href="/placement/college/company">Back to companies</a></p>
+                    <% if(ibmSections.codingSubmissions.length) { %><section class="level-card"><h3>Recent coding submissions</h3><ul><% ibmSections.codingSubmissions.forEach(function(item) { %><li><a href="/ibm/coding/result/<%= item._id %>"><%= item.testTitle %></a> · <%= item.executionAvailable ? `${item.solvedProblems}/${item.totalProblems} accepted` : 'Saved; not evaluated' %></li><% }); %></ul></section><% } %>
+                </section>
+
+            <% } else if (typeof isTcs !== 'undefined' && isTcs) { %>
+                <!-- TCS NQT EXACT EXAM STRUCTURE & PRACTICE VIEW -->
+                <div class="tcs-placement-wrapper">
+                    <!-- FULL INTEGRATED MOCK ASSESSMENT BANNER -->
+                    <div class="tcs-mock-hero">
+                        <div class="tcs-hero-content">
+                            <div class="tcs-hero-badge">
+                                <i class="fa-solid fa-bolt"></i>
+                                <span>Official Exam Simulation</span>
+                            </div>
+                            <h2>Full Integrated TCS NQT Mock Assessment</h2>
+                            <p>Complete 190-minute integrated test containing Foundation (75m) and Advanced (115m) sections. 82 total questions reflecting the real TCS NQT recruitment drive pattern.</p>
+                            <div class="tcs-meta-pills">
+                                <span class="tcs-pill"><i class="fa-regular fa-clock"></i> 190 Minutes Total</span>
+                                <span class="tcs-pill"><i class="fa-solid fa-list-check"></i> 82 Questions</span>
+                                <span class="tcs-pill"><i class="fa-solid fa-layer-group"></i> 5 Exam Sections</span>
+                            </div>
+                        </div>
+                        <div class="tcs-hero-action">
+                            <a href="/quiz?learningPath=college&placementType=company&company=tcs&mode=mock_integrated" class="btn-tcs-primary">
+                                <i class="fa-solid fa-play"></i>
+                                <span>Start Integrated Mock (190m)</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- TWO MAIN CARDS: FOUNDATION & ADVANCED -->
+                    <div class="tcs-card-grid">
+                        <!-- CARD 1: LEVEL 1 FOUNDATION -->
+                        <div class="tcs-card foundation-card">
+                            <div>
+                                <div class="tcs-card-header">
+                                    <div class="tcs-badge unlocked">
+                                        <i class="fa-solid fa-lock-open"></i>
+                                        <span>Unlocked</span>
+                                    </div>
+                                    <h3>Level 1 — Foundation Section</h3>
+                                    <div class="tcs-card-stats">
+                                        <span><i class="fa-regular fa-clock"></i> 75 Mins Total</span>
+                                        <span>•</span>
+                                        <span><i class="fa-solid fa-list-ol"></i> 65 Questions</span>
+                                    </div>
+                                </div>
+
+                                <p class="tcs-card-desc">Tests essential quantitative, verbal, and logical reasoning skills required for TCS NQT eligibility.</p>
+
+                                <!-- SECTION BREAKDOWN -->
+                                <div class="tcs-section-breakdown">
+                                    <div class="tcs-breakdown-item">
+                                        <div class="tcs-sec-icon"><i class="fa-solid fa-calculator"></i></div>
+                                        <div class="tcs-sec-info">
+                                            <strong>1. Numerical Ability</strong>
+                                            <small>25 Mins • 20 Questions</small>
+                                        </div>
+                                        <a href="/quiz?learningPath=college&placementType=company&company=tcs&mode=section&sectionKey=numericalAbility" class="tcs-mini-btn" title="Practice Numerical Ability">
+                                            <i class="fa-solid fa-play"></i>
+                                        </a>
+                                    </div>
+
+                                    <div class="tcs-breakdown-item">
+                                        <div class="tcs-sec-icon"><i class="fa-solid fa-comments"></i></div>
+                                        <div class="tcs-sec-info">
+                                            <strong>2. Verbal Ability</strong>
+                                            <small>25 Mins • 25 Questions</small>
+                                        </div>
+                                        <a href="/quiz?learningPath=college&placementType=company&company=tcs&mode=section&sectionKey=verbalAbility" class="tcs-mini-btn" title="Practice Verbal Ability">
+                                            <i class="fa-solid fa-play"></i>
+                                        </a>
+                                    </div>
+
+                                    <div class="tcs-breakdown-item">
+                                        <div class="tcs-sec-icon"><i class="fa-solid fa-brain"></i></div>
+                                        <div class="tcs-sec-info">
+                                            <strong>3. Reasoning Ability</strong>
+                                            <small>25 Mins • 20 Questions</small>
+                                        </div>
+                                        <a href="/quiz?learningPath=college&placementType=company&company=tcs&mode=section&sectionKey=reasoningAbility" class="tcs-mini-btn" title="Practice Reasoning Ability">
+                                            <i class="fa-solid fa-play"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="tcs-card-footer">
+                                <a href="/quiz?learningPath=college&placementType=company&company=tcs&mode=mock_foundation&difficulty=1" class="btn-primary">
+                                    <span>Start Full Foundation Mock (75m)</span>
+                                    <i class="fa-solid fa-arrow-right"></i>
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- CARD 2: LEVEL 2 ADVANCED -->
+                        <div class="tcs-card advanced-card">
+                            <div>
+                                <div class="tcs-card-header">
+                                    <div class="tcs-badge unlocked">
+                                        <i class="fa-solid fa-lock-open"></i>
+                                        <span>Unlocked</span>
+                                    </div>
+                                    <h3>Level 2 — Advanced Section</h3>
+                                    <div class="tcs-card-stats">
+                                        <span><i class="fa-regular fa-clock"></i> 115 Mins Total</span>
+                                        <span>•</span>
+                                        <span><i class="fa-solid fa-code"></i> 17 Questions</span>
+                                    </div>
+                                </div>
+
+                                <p class="tcs-card-desc">Tests advanced quantitative analysis, complex logic, and algorithm implementation for TCS Digital / Prime hiring tiers.</p>
+
+                                <!-- SECTION BREAKDOWN -->
+                                <div class="tcs-section-breakdown">
+                                    <div class="tcs-breakdown-item">
+                                        <div class="tcs-sec-icon"><i class="fa-solid fa-chart-line"></i></div>
+                                        <div class="tcs-sec-info">
+                                            <strong>1. Advanced Quant & Reasoning</strong>
+                                            <small>25 Mins • 15 Questions</small>
+                                        </div>
+                                        <a href="/quiz?learningPath=college&placementType=company&company=tcs&mode=section&sectionKey=advancedQuantReasoning" class="tcs-mini-btn" title="Practice Adv Quant">
+                                            <i class="fa-solid fa-play"></i>
+                                        </a>
+                                    </div>
+
+                                    <div class="tcs-breakdown-item">
+                                        <div class="tcs-sec-icon"><i class="fa-solid fa-laptop-code"></i></div>
+                                        <div class="tcs-sec-info">
+                                            <strong>2. Advanced Coding</strong>
+                                            <small>90 Mins • 2 Coding Problems</small>
+                                        </div>
+                                        <a href="/quiz?learningPath=college&placementType=company&company=tcs&mode=section&sectionKey=advancedCoding" class="tcs-mini-btn" title="Practice Adv Coding">
+                                            <i class="fa-solid fa-play"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="tcs-card-footer">
+                                <a href="/quiz?learningPath=college&placementType=company&company=tcs&mode=mock_advanced&difficulty=2" class="btn-primary">
+                                    <span>Start Full Advanced Mock (115m)</span>
+                                    <i class="fa-solid fa-arrow-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            <% } else if (typeof isInfosys !== 'undefined' && isInfosys) { %>
+                <!-- INFOSYS INFYTQ EXACT EXAM STRUCTURE & PRACTICE VIEW -->
+                <div class="tcs-placement-wrapper">
+                    <!-- FULL INFOSYS MOCK ASSESSMENT HERO BANNER -->
+                    <div class="tcs-mock-hero" style="background: linear-gradient(135deg, rgba(30, 58, 138, 0.4), rgba(15, 23, 42, 0.9)); border-color: rgba(59, 130, 246, 0.3);">
+                        <div class="tcs-hero-content">
+                            <div class="tcs-hero-badge" style="background: rgba(59, 130, 246, 0.2); color: #93c5fd; border: 1px solid rgba(59, 130, 246, 0.4);">
+                                <i class="fa-solid fa-graduation-cap"></i>
+                                <span>Official Exam Simulation</span>
+                            </div>
+                            <h2>Full Infosys InfyTQ Mock Assessment</h2>
+                            <p>Complete 120-minute integrated test containing all 7 official exam sections. 60 total questions accurately reflecting the real Infosys recruitment drive and InfyTQ pattern.</p>
+                            <div class="tcs-meta-pills">
+                                <span class="tcs-pill"><i class="fa-regular fa-clock"></i> 120 Minutes Total</span>
+                                <span class="tcs-pill"><i class="fa-solid fa-list-check"></i> 60 Questions</span>
+                                <span class="tcs-pill"><i class="fa-solid fa-layer-group"></i> 7 Exam Sections</span>
+                            </div>
+                        </div>
+                        <div class="tcs-hero-action">
+                            <a href="/quiz?learningPath=college&placementType=company&company=infosys&mode=mock" class="btn-tcs-primary">
+                                <i class="fa-solid fa-play"></i>
+                                <span>Start Full Mock Test (120m)</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- TWO MAIN CARDS: 7 SECTIONS BREAKDOWN -->
+                    <div class="tcs-card-grid">
+                        <!-- CARD 1: CORE APTITUDE & REASONING (3 SECTIONS, 45 Qs, 80m) -->
+                        <div class="tcs-card foundation-card">
+                            <div>
+                                <div class="tcs-card-header">
+                                    <div class="tcs-badge unlocked">
+                                        <i class="fa-solid fa-lock-open"></i>
+                                        <span>Part A</span>
+                                    </div>
+                                    <h3>Core Aptitude & Reasoning</h3>
+                                    <div class="tcs-card-stats">
+                                        <span><i class="fa-regular fa-clock"></i> 80 Mins Total</span>
+                                        <span>•</span>
+                                        <span><i class="fa-solid fa-list-ol"></i> 45 Questions</span>
+                                    </div>
+                                </div>
+
+                                <p class="tcs-card-desc">Tests mathematical ability, logical deduction, and verbal comprehension essential for Infosys recruitment.</p>
+
+                                <!-- SECTION BREAKDOWN -->
+                                <div class="tcs-section-breakdown">
+                                    <div class="tcs-breakdown-item">
+                                        <div class="tcs-sec-icon"><i class="fa-solid fa-calculator"></i></div>
+                                        <div class="tcs-sec-info">
+                                            <strong>1. Technical Ability</strong>
+                                            <small>35 Mins • 10 Questions (Quant & Math)</small>
+                                        </div>
+                                        <a href="/quiz?learningPath=college&placementType=company&company=infosys&mode=section&sectionKey=technicalAbility" class="tcs-mini-btn" title="Practice Technical Ability">
+                                            <i class="fa-solid fa-play"></i>
+                                        </a>
+                                    </div>
+
+                                    <div class="tcs-breakdown-item">
+                                        <div class="tcs-sec-icon"><i class="fa-solid fa-brain"></i></div>
+                                        <div class="tcs-sec-info">
+                                            <strong>2. Logical Reasoning</strong>
+                                            <small>25 Mins • 15 Questions (Puzzles & Logic)</small>
+                                        </div>
+                                        <a href="/quiz?learningPath=college&placementType=company&company=infosys&mode=section&sectionKey=logicalReasoning" class="tcs-mini-btn" title="Practice Logical Reasoning">
+                                            <i class="fa-solid fa-play"></i>
+                                        </a>
+                                    </div>
+
+                                    <div class="tcs-breakdown-item">
+                                        <div class="tcs-sec-icon"><i class="fa-solid fa-comments"></i></div>
+                                        <div class="tcs-sec-info">
+                                            <strong>3. Verbal Ability</strong>
+                                            <small>20 Mins • 20 Questions (Comprehension & Jumbles)</small>
+                                        </div>
+                                        <a href="/quiz?learningPath=college&placementType=company&company=infosys&mode=section&sectionKey=verbalAbility" class="tcs-mini-btn" title="Practice Verbal Ability">
+                                            <i class="fa-solid fa-play"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="tcs-card-footer">
+                                <a href="/quiz?learningPath=college&placementType=company&company=infosys&mode=section&sectionKey=technicalAbility" class="btn-primary">
+                                    <span>Practice Technical Ability</span>
+                                    <i class="fa-solid fa-arrow-right"></i>
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- CARD 2: SPECIALIZED & TECHNICAL SECTIONS (4 SECTIONS, 15 Qs, 40m) -->
+                        <div class="tcs-card foundation-card">
+                            <div>
+                                <div class="tcs-card-header">
+                                    <div class="tcs-badge unlocked" style="background: rgba(99, 102, 241, 0.15); color: #a5b4fc; border-color: rgba(99, 102, 241, 0.3);">
+                                        <i class="fa-solid fa-code"></i>
+                                        <span>Part B</span>
+                                    </div>
+                                    <h3>Technical & Language Skills</h3>
+                                    <div class="tcs-card-stats">
+                                        <span><i class="fa-regular fa-clock"></i> 40 Mins Total</span>
+                                        <span>•</span>
+                                        <span><i class="fa-solid fa-layer-group"></i> 15 Questions</span>
+                                    </div>
+                                </div>
+
+                                <p class="tcs-card-desc">Tests code tracing, numerical puzzle solving, grammar accuracy, and written communication.</p>
+
+                                <!-- SECTION BREAKDOWN -->
+                                <div class="tcs-section-breakdown">
+                                    <div class="tcs-breakdown-item">
+                                        <div class="tcs-sec-icon" style="background: rgba(99, 102, 241, 0.15); color: #a5b4fc;"><i class="fa-solid fa-laptop-code"></i></div>
+                                        <div class="tcs-sec-info">
+                                            <strong>4. Pseudo Code</strong>
+                                            <small>10 Mins • 5 Questions (C & Data Structures)</small>
+                                        </div>
+                                        <a href="/quiz?learningPath=college&placementType=company&company=infosys&mode=section&sectionKey=pseudoCode" class="tcs-mini-btn" title="Practice Pseudo Code">
+                                            <i class="fa-solid fa-play"></i>
+                                        </a>
+                                    </div>
+
+                                    <div class="tcs-breakdown-item">
+                                        <div class="tcs-sec-icon" style="background: rgba(245, 158, 11, 0.15); color: #fbbf24;"><i class="fa-solid fa-puzzle-piece"></i></div>
+                                        <div class="tcs-sec-info">
+                                            <strong>5. Puzzle Solving</strong>
+                                            <small>10 Mins • 4 Questions (Number & Grid Puzzles)</small>
+                                        </div>
+                                        <a href="/quiz?learningPath=college&placementType=company&company=infosys&mode=section&sectionKey=puzzleSolving" class="tcs-mini-btn" title="Practice Puzzle Solving">
+                                            <i class="fa-solid fa-play"></i>
+                                        </a>
+                                    </div>
+
+                                    <div class="tcs-breakdown-item">
+                                        <div class="tcs-sec-icon" style="background: rgba(16, 185, 129, 0.15); color: #34d399;"><i class="fa-solid fa-spell-check"></i></div>
+                                        <div class="tcs-sec-info">
+                                            <strong>6. English Grammar</strong>
+                                            <small>10 Mins • 5 Questions (Error Spotting & Rules)</small>
+                                        </div>
+                                        <a href="/quiz?learningPath=college&placementType=company&company=infosys&mode=section&sectionKey=englishGrammar" class="tcs-mini-btn" title="Practice English Grammar">
+                                            <i class="fa-solid fa-play"></i>
+                                        </a>
+                                    </div>
+
+                                    <div class="tcs-breakdown-item">
+                                        <div class="tcs-sec-icon" style="background: rgba(236, 72, 153, 0.15); color: #f472b6;"><i class="fa-solid fa-pen-nib"></i></div>
+                                        <div class="tcs-sec-info">
+                                            <strong>7. English Writing</strong>
+                                            <small>10 Mins • 1 Writing Prompt (Rubric Evaluated)</small>
+                                        </div>
+                                        <a href="/quiz?learningPath=college&placementType=company&company=infosys&mode=section&sectionKey=englishWriting" class="tcs-mini-btn" title="Practice English Writing">
+                                            <i class="fa-solid fa-play"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="tcs-card-footer">
+                                <a href="/quiz?learningPath=college&placementType=company&company=infosys&mode=section&sectionKey=pseudoCode" class="btn-primary">
+                                    <span>Practice Pseudo Code</span>
+                                    <i class="fa-solid fa-arrow-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            <% } else if (typeof isWipro !== 'undefined' && isWipro) { %>
+                <!-- ═══════════════════════════════════════════════════════════ -->
+                <!-- WIPRO PLACEMENT PRACTICE VIEW                              -->
+                <!-- ═══════════════════════════════════════════════════════════ -->
+                <div class="tcs-placement-wrapper">
+
+                    <!-- WIPRO MODULE HEADER -->
+                    <div class="tcs-mock-hero" style="background: linear-gradient(135deg, rgba(0,91,150,0.35), rgba(15,23,42,0.92)); border-color: rgba(14,165,233,0.3);">
+                        <div class="tcs-hero-content">
+                            <div class="tcs-hero-badge" style="background: rgba(14,165,233,0.18); color:#7dd3fc; border: 1px solid rgba(14,165,233,0.35);">
+                                <i class="fa-solid fa-network-wired"></i>
+                                <span><%= wiproConfig.meta.status === 'verified' ? 'Verified Pattern' : 'Reported Practice Pattern' %></span>
+                            </div>
+                            <h2>Wipro Placement Practice</h2>
+                            <p>Wipro Assessment Preparation &mdash; aptitude, coding and written communication practice built on the reported Wipro Elite NTH pattern.</p>
+                            <div class="tcs-meta-pills">
+                                <span class="tcs-pill"><i class="fa-regular fa-clock"></i> 128 Minutes Total</span>
+                                <span class="tcs-pill"><i class="fa-solid fa-list-check"></i> 53 Tasks</span>
+                                <span class="tcs-pill"><i class="fa-solid fa-layer-group"></i> 3 Components</span>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!-- FULL WIPRO MOCK BREAKDOWN -->
+                    <div class="tcs-section-header" style="margin-top:32px;">
+                        <div class="tcs-section-badge" style="background:rgba(14,165,233,0.12);color:#7dd3fc;border-color:rgba(14,165,233,0.25);">
+                            <i class="fa-solid fa-layer-group"></i> Full Wipro Mock
+                        </div>
+                        <h3>Full Wipro Mock Test &mdash; <%= wiproConfig.full.totalTasks %> Tasks / <%= Math.round(wiproConfig.full.totalTimeLimitSec / 60) %> Minutes</h3>
+                        <p>Each component runs on its own timer, so the three parts are never merged into one misleading question count.</p>
+                    </div>
+
+                    <div class="tcs-cards-grid" style="grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));">
+                        <% wiproConfig.full.components.forEach(function(c) { %>
+                            <div class="tcs-practice-card">
+                                <div class="tcs-card-header">
+                                    <div class="tcs-card-icon" style="background:rgba(14,165,233,0.12);color:#7dd3fc;">
+                                        <i class="fa-solid <%= c.key === 'coding' ? 'fa-code' : (c.key === 'writing' ? 'fa-file-pen' : 'fa-calculator') %>"></i>
+                                    </div>
+                                    <div>
+                                        <div class="tcs-card-title"><%= c.name %></div>
+                                        <div class="tcs-card-subtitle"><%= c.questions %> Task<%= c.questions === 1 ? '' : 's' %></div>
+                                    </div>
+                                </div>
+                                <div class="tcs-card-meta">
+                                    <span><i class="fa-regular fa-clock"></i> <%= Math.round(c.timeLimitSec / 60) %> minutes</span>
+                                </div>
+                                <% if (c.key === 'coding') { %>
+                                    <a href="/wipro/coding" class="tcs-card-btn" style="background:linear-gradient(135deg,#7c3aed,#a855f7);"><i class="fa-solid fa-code"></i> Start Coding</a>
+                                <% } else { %>
+                                    <a href="/quiz?learningPath=college&placementType=company&company=wipro&mode=<%= c.mode %>" class="tcs-card-btn" style="background:linear-gradient(135deg,#0369a1,#38bdf8);"><i class="fa-solid fa-play"></i> Start</a>
+                                <% } %>
+                            </div>
+                        <% }) %>
+                    </div>
+<!-- APTITUDE SECTION PRACTICE -->
+                    <div class="tcs-section-header" style="margin-top:36px;">
+                        <div class="tcs-section-badge" style="background:rgba(16,185,129,0.12);color:#34d399;border-color:rgba(16,185,129,0.25);">
+                            <i class="fa-solid fa-calculator"></i> Component 1 &mdash; Aptitude
+                        </div>
+                        <h3>Aptitude Sections (<%= Math.round(wiproConfig.aptitude.timeLimitSec / 60) %> Minutes Combined)</h3>
+                        <p>Practice each section individually or attempt the full <%= wiproConfig.aptitude.totalQuestions %>-question aptitude mock above.</p>
+                    </div>
+
+                    <div class="tcs-cards-grid">
+                        <% ['quantitativeAptitude','logicalReasoning','verbalAbility'].forEach(function(key) { var s = wiproConfig.sections[key]; %>
+                            <div class="tcs-practice-card">
+                                <div class="tcs-card-header">
+                                    <div class="tcs-card-icon" style="background:<%= key === 'quantitativeAptitude' ? 'rgba(16,185,129,0.12);color:#34d399' : (key === 'logicalReasoning' ? 'rgba(99,102,241,0.12);color:#818cf8' : 'rgba(245,158,11,0.12);color:#fbbf24') %>;">
+                                        <i class="fa-solid <%= key === 'quantitativeAptitude' ? 'fa-square-root-variable' : (key === 'logicalReasoning' ? 'fa-brain' : 'fa-book-open') %>"></i>
+                                    </div>
+                                    <div>
+                                        <div class="tcs-card-title"><%= s.name %></div>
+                                        <div class="tcs-card-subtitle"><%= s.questionCount %> Questions &middot; Aptitude</div>
+                                    </div>
+                                </div>
+                                <p class="tcs-card-desc"><%= s.topics.join(', ') %>.</p>
+                                <div class="tcs-card-meta">
+                                    <span><i class="fa-regular fa-clock"></i> <%= Math.round(wiproConfig.aptitude.timeLimitSec / 60) %> min (shared timer)</span>
+                                    <span><i class="fa-solid fa-signal"></i> Mixed difficulty</span>
+                                </div>
+                                <a href="/quiz?learningPath=college&placementType=company&company=wipro&mode=section&sectionKey=<%= key %>" class="tcs-card-btn" style="background:<%= key === 'quantitativeAptitude' ? 'linear-gradient(135deg,#059669,#34d399)' : (key === 'logicalReasoning' ? 'linear-gradient(135deg,#4f46e5,#818cf8)' : 'linear-gradient(135deg,#b45309,#fbbf24)') %>;">
+                                    <i class="fa-solid fa-play"></i> Practice (<%= s.questionCount %> Qs)
+                                </a>
+                            </div>
+                        <% }) %>
+                    </div>
+
+                    <!-- CODING SECTION PRACTICE -->
+                    <div class="tcs-section-header" style="margin-top:36px;">
+                        <div class="tcs-section-badge" style="background:rgba(124,58,237,0.12);color:#c084fc;border-color:rgba(124,58,237,0.25);">
+                            <i class="fa-solid fa-code"></i> Component 2 &mdash; Coding Practice
+                        </div>
+                        <h3>Coding Practice (<%= Math.round(wiproConfig.coding.timeLimitSec / 60) %> Minutes)</h3>
+                        <p>Practice coding problems in a dedicated code editor workspace with multiple programming language options.</p>
+                    </div>
+
+                    <div class="tcs-cards-grid" style="grid-template-columns: 1fr;">
+                        <div class="tcs-practice-card" style="max-width:620px;">
+                            <div class="tcs-card-header">
+                                <div class="tcs-card-icon" style="background:rgba(124,58,237,0.12);color:#c084fc;"><i class="fa-solid fa-code"></i></div>
+                                <div>
+                                    <div class="tcs-card-title">Coding Practice</div>
+                                    <div class="tcs-card-subtitle"><%= wiproConfig.coding.totalQuestions %> Coding Problems &middot; C / C++ / Java / Python</div>
+                                </div>
+                            </div>
+                            <p class="tcs-card-desc"><%= wiproConfig.coding.description %></p>
+                            <div class="tcs-card-meta">
+                                <span><i class="fa-regular fa-clock"></i> <%= Math.round(wiproConfig.coding.timeLimitSec / 60) %> minutes</span>
+                                <span><i class="fa-solid fa-laptop-code"></i> Multi-language sandbox</span>
+                            </div>
+                            <a href="/wipro/coding" class="tcs-card-btn" style="background:linear-gradient(135deg,#6d28d9,#a855f7);">
+                                <i class="fa-solid fa-play"></i> Start Coding Practice
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- WRITTEN COMMUNICATION -->
+
+                    <div class="tcs-section-header" style="margin-top:36px;">
+                        <div class="tcs-section-badge" style="background:rgba(251,191,36,0.10);color:#fbbf24;border-color:rgba(251,191,36,0.25);">
+                            <i class="fa-solid fa-file-pen"></i> Component 3 &mdash; Written Communication
+                        </div>
+                        <h3>Written Communication (<%= Math.round(wiproConfig.writing.timeLimitSec / 60) %> Minutes)</h3>
+                        <p>One essay writing task of 200&ndash;400 words in a dedicated text editor with a live word counter and timer.</p>
+                    </div>
+
+                    <div class="tcs-cards-grid" style="grid-template-columns: 1fr;">
+                        <div class="tcs-practice-card" style="max-width:620px;">
+                            <div class="tcs-card-header">
+                                <div class="tcs-card-icon" style="background:rgba(251,191,36,0.12);color:#fbbf24;"><i class="fa-solid fa-file-pen"></i></div>
+                                <div>
+                                    <div class="tcs-card-title">Written Communication</div>
+                                    <div class="tcs-card-subtitle">1 Essay Task &middot; 200&ndash;400 words</div>
+                                </div>
+                            </div>
+                            <p class="tcs-card-desc"><%= wiproConfig.sections.writtenCommunication.description %></p>
+                            <div class="tcs-card-meta">
+                                <span><i class="fa-regular fa-clock"></i> <%= Math.round(wiproConfig.writing.timeLimitSec / 60) %> minutes</span>
+                                <span><i class="fa-solid fa-list-check"></i> Rubric-based self review</span>
+                            </div>
+                            <a href="/quiz?learningPath=college&placementType=company&company=wipro&mode=mock-writing" class="tcs-card-btn" style="background:linear-gradient(135deg,#92400e,#fbbf24);">
+                                <i class="fa-solid fa-play"></i> Start Writing Practice
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- DISCLAIMER -->
+                    <div style="margin-top:32px;padding:14px 18px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:10px;font-size:12px;color:rgba(255,255,255,0.35);line-height:1.7;">
+                        <i class="fa-solid fa-circle-info" style="color:#fbbf24;margin-right:6px;"></i>
+                        <strong>Pattern Note:</strong> <%= wiproConfig.meta.note %> Reported-pattern reference: <%= wiproConfig.meta.reference %>. This is not an official Wipro document.
+                    </div>
+                </div>
+
+            <% } else { %>
+
+                <!-- STANDARD 3-LEVEL CARD GRID FOR NON-TCS COMPANIES -->
+                <div class="level-grid">
+                    <% levels.forEach(function(lvl) { %>
+                        <div class="level-card <%= lvl.unlocked ? '' : 'locked' %>">
+                            <div>
+                                <div class="level-badge <%= lvl.unlocked ? 'unlocked' : 'locked-tag' %>">
+                                    <i class="fa-solid <%= lvl.unlocked ? 'fa-lock-open' : 'fa-lock' %>"></i>
+                                    <span><%= lvl.unlocked ? 'Unlocked' : 'Locked' %></span>
+                                </div>
+                                <h3><%= lvl.label.full %></h3>
+                                <p><%= lvl.label.tagline %>. 25 placement questions tailored for <%= company.name %> practice pattern at Level <%= lvl.number %>.</p>
+                            </div>
+                            <% if (lvl.unlocked) { %>
+                                <a href="/quiz?learningPath=college&placementType=company&company=<%= company.slug %>&difficulty=<%= lvl.number %>" class="btn-primary">
+                                    <span>Start Level <%= lvl.number %> Test</span>
+                                    <i class="fa-solid fa-play"></i>
+                                </a>
+                            <% } else { %>
+                                <button class="btn-secondary" disabled>
+                                    <span>Score <%= unlockThreshold %>% on Level <%= lvl.number - 1 %> to Unlock</span>
+                                </button>
+                            <% } %>
+                        </div>
+                    <% }); %>
+                </div>
+
+            <% } %>
+
+        <% } %>
+
+    </div>
+
+    <!-- FLOATING FULLSCREEN QUICK-ACTION BUTTON -->
+    <div class="fullscreen-fab-container">
+        <button type="button" id="btnFloatingFullscreen" class="btn-floating-fab" title="Toggle Full Screen (or press F)">
+            <i class="fa-solid fa-expand" id="floatingFsIcon"></i>
+        </button>
+    </div>
+
+    <script nonce="<%= cspNonce %>">
+        // ── Wide-mode toggle (placement-specific) ────────────────────────────────
+        // NOTE: All fullscreen logic is handled globally by /js/fullscreen.js.
+        // This script ONLY manages the "Full Width / Compact Width" toggle here.
+        (function() {
+            var btnToggleWidth = document.getElementById('btnToggleWidth');
+            var container      = document.querySelector('.placement-container');
+
+            // Restore wide-mode preference
+            if (localStorage.getItem('aptitudepro-wide-mode') === 'true') {
+                if (container) container.classList.add('wide-mode');
+                if (btnToggleWidth) {
+                    btnToggleWidth.classList.add('active');
+                    var wText = document.getElementById('widthText');
+                    if (wText) wText.textContent = 'Compact Width';
+                }
+            }
+
+            function toggleWideMode() {
+                if (!container) return;
+                var isWide = container.classList.toggle('wide-mode');
+                localStorage.setItem('aptitudepro-wide-mode', isWide ? 'true' : 'false');
+                if (btnToggleWidth) {
+                    btnToggleWidth.classList.toggle('active', isWide);
+                    var wText = document.getElementById('widthText');
+                    if (wText) wText.textContent = isWide ? 'Compact Width' : 'Full Width';
+                }
+            }
+
+            if (btnToggleWidth) {
+                btnToggleWidth.addEventListener('click', function(e) {
+                    e.stopPropagation(); // prevent global capture listener from misreading this
+                    toggleWideMode();
+                });
+            }
+
+            // Keep wide-mode class in sync with fullscreen state
+            ['fullscreenchange','webkitfullscreenchange','mozfullscreenchange','MSFullscreenChange']
+                .forEach(function(ev) {
+                    document.addEventListener(ev, function() {
+                        var active = !!(document.fullscreenElement ||
+                                        document.webkitFullscreenElement ||
+                                        document.mozFullScreenElement   ||
+                                        document.msFullscreenElement);
+                        if (active) {
+                            if (container) container.classList.add('wide-mode');
+                        } else {
+                            if (localStorage.getItem('aptitudepro-wide-mode') !== 'true') {
+                                if (container) container.classList.remove('wide-mode');
+                            }
+                        }
+                    });
+                });
+        })();
+    </script>
+</body>
+</html>

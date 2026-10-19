@@ -1,0 +1,3 @@
+company,section,subject,topic,category,question,option1,option2,option3,option4,answer,explanation,difficultyLevel,questionType
+Wipro,Maths,Percentages,Percentages,Quantitative Aptitude,"A shopkeeper buys an article for Rs 450 and sells it for Rs 540. Find the profit percentage.","15%","18%","20%","25%","20%","Profit = 540 - 450 = 90. Profit% = (90 / 450) x 100 = 20%.",1,mcq
+Wipro,Maths,Averages,Averages,Quantitative Aptitude,"The average of 5 numbers is 18. If one of the numbers, 25, is removed, what is the average of the remaining numbers?","15","16.25","16.75","17","16.25","Sum of 5 = 90. Remaining sum = 90 - 25 = 65. Average = 65/4 = 16.25.",2,mcq

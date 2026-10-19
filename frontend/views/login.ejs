@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login — AptitudePro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+
+<nav class="navbar">
+    <a href="/" class="nav-logo">
+        <div class="nav-logo-icon">🧠</div>
+        <div class="nav-logo-text">Aptitude<span>Pro</span></div>
+    </a>
+    <div style="display: flex; align-items: center; gap: 14px;">
+        <button type="button" class="btn-nav-fullscreen" id="btnNavFullscreen" title="Toggle Full Screen (or press F)">
+            <i class="fa-solid fa-expand"></i> <span>Full Screen</span>
+        </button>
+        <a href="/register" class="nav-link">
+            No account? Register →
+        </a>
+    </div>
+</nav>
+
+<div class="main">
+    <div class="card">
+
+        <div class="card-header">
+            <div class="card-icon">🔐</div>
+            <h2>Welcome Back!</h2>
+            <p>Login to continue your practice</p>
+        </div>
+
+        <!-- Show error messages -->
+        <% if (error) { %>
+            <div class="msg-error"><%= error %></div>
+        <% } %>
+
+        <!-- Show success messages -->
+        <% if (success) { %>
+            <div class="msg-success"><%= success %></div>
+        <% } %>
+
+        <form method="POST" action="/login">
+            <div class="form-group">
+                <label>EMAIL ADDRESS</label>
+                <input type="email"
+                       name="email"
+                       placeholder="Enter your email"
+                       required>
+            </div>
+
+            <div class="form-group">
+                <label>PASSWORD</label>
+                <input type="password"
+                       name="password"
+                       placeholder="Enter your password"
+                       required>
+            </div>
+
+            <button type="submit"
+                    name="login"
+                    class="btn">
+                🚀 Login to Portal
+            </button>
+        </form>
+
+        <div class="divider">or</div>
+
+        <div class="bottom-link">
+            New here?
+            <a href="/register">Create free account</a>
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,24 @@
+[
+  {
+    "company": "Wipro",
+    "exam": "Wipro_Elite_NTH",
+    "section": "English",
+    "subject": "Essay Writing",
+    "topic": "Written Communication",
+    "category": "Written Communication",
+    "sourceType": "practice",
+    "sourceRef": "Wipro Placement Practice",
+    "question": "Topic: The Importance of Time Management for Professionals.\n\nDiscuss why time management is important in the workplace and describe practical techniques that help people use their time effectively. Write an essay of 200-400 words on this topic. Your response should have a clear introduction, well-developed body paragraphs and an appropriate conclusion.",
+    "option1": "Response submitted",
+    "option2": "Free-text response",
+    "option3": "Written answer",
+    "option4": "Typed response",
+    "answer": "Response submitted",
+    "explanation": "Evaluation rubric (self-review): Relevance to the topic; Grammar; Vocabulary; Clarity; Coherence; Paragraph structure; Appropriate conclusion.",
+    "difficultyLevel": 2,
+    "difficulty": "Medium",
+    "level": "Intermediate",
+    "questionType": "fill_in_blank",
+    "active": true
+  }
+]

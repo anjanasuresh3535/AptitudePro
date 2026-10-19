@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-dark: #090d16;
+            --card-bg: rgba(15, 23, 42, 0.8);
+            --card-border: rgba(255, 255, 255, 0.1);
+            --accent-cyan: #00f2fe;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-main);
+            min-height: 100vh;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .navbar {
+            background: rgba(15, 23, 42, 0.9);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 16px 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand-link {
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--accent-cyan);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .nav-link {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            transition: color 0.2s;
+        }
+
+        .nav-link:hover {
+            color: #ffffff;
+        }
+
+        .history-container {
+            max-width: 1050px;
+            margin: 36px auto;
+            padding: 0 24px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .page-head {
+            margin-bottom: 32px;
+        }
+
+        .page-head h1 {
+            font-size: 32px;
+            font-weight: 800;
+            color: #ffffff;
+            margin: 0 0 8px 0;
+        }
+
+        .page-head p {
+            color: var(--text-muted);
+            margin: 0;
+        }
+
+        .history-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 20px;
+            padding: 24px;
+        }
+
+        .history-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        .history-table th {
+            text-align: left;
+            padding: 14px 16px;
+            color: var(--text-muted);
+            font-weight: 700;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            font-size: 12px;
+            text-transform: uppercase;
+        }
+
+        .history-table td {
+            padding: 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            color: #e2e8f0;
+        }
+
+        .chip {
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 700;
+            display: inline-block;
+        }
+
+        .chip-speed { background: rgba(0, 242, 254, 0.15); color: #38bdf8; }
+        .chip-accuracy { background: rgba(0, 230, 118, 0.15); color: #4ade80; }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <a href="/dashboard" class="brand-link">
+            <i class="fa-solid fa-gamepad"></i> AptitudePro Gaming
+        </a>
+        <div class="nav-links">
+            <a href="/placement" class="nav-link"><i class="fa-solid fa-graduation-cap"></i> Practice</a>
+            <a href="/gaming" class="nav-link"><i class="fa-solid fa-gamepad"></i> Gaming</a>
+            <a href="/dashboard" class="nav-link"><i class="fa-solid fa-chart-line"></i> Dashboard</a>
+            <a href="/results/history" class="nav-link"><i class="fa-solid fa-clock-rotate-left"></i> History</a>
+            <a href="/logout" class="nav-link"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+        </div>
+    </nav>
+
+    <div class="history-container">
+        <div class="page-head">
+            <h1>Gaming History</h1>
+            <p>Review all your past competitive gaming sessions and performance metrics.</p>
+        </div>
+
+        <div class="history-card">
+            <% if (history && history.length > 0) { %>
+                <table class="history-table">
+                    <thead>
+                        <tr>
+                            <th>Game Mode</th>
+                            <th>Difficulty</th>
+                            <th>Score</th>
+                            <th>Accuracy</th>
+                            <th>Max Streak</th>
+                            <th>XP Earned</th>
+                            <th>Time Spent</th>
+                            <th>Date</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% history.forEach(g => { %>
+                            <tr>
+                                <td>
+                                    <span class="chip <%= g.gameSection === 'speedChallenge' ? 'chip-speed' : 'chip-accuracy' %>">
+                                        <%= g.gameSectionName %>
+                                    </span>
+                                </td>
+                                <td><%= g.difficultyName %></td>
+                                <td><strong><%= g.score %></strong> / <%= g.totalQuestions %></td>
+                                <td><%= g.accuracy %>%</td>
+                                <td><%= g.maxStreak %> 🔥</td>
+                                <td><strong style="color: #facc15;">+<%= g.netXP %> XP</strong></td>
+                                <td><%= Math.floor((g.timeTakenSec || 0) / 60) %>m <%= (g.timeTakenSec || 0) % 60 %>s</td>
+                                <td><%= new Date(g.completedAt || g.createdAt).toLocaleDateString() %></td>
+                                <td>
+                                    <a href="/gaming/result/<%= g.sessionId %>" class="nav-link" style="color: #38bdf8;">Result &rarr;</a>
+                                </td>
+                            </tr>
+                        <% }); %>
+                    </tbody>
+                </table>
+            <% } else { %>
+                <p style="color: var(--text-muted); text-align: center; margin: 30px 0;">No game session history recorded yet.</p>
+            <% } %>
+        </div>
+    </div>
+
+</body>
+</html>

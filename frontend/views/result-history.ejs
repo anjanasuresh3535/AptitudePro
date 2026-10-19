@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Result History | AptitudePro</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+    font-family:'Inter',sans-serif;
+    background: linear-gradient(135deg,#0a1628 0%,#0f2138 50%,#0a1628 100%);
+    color:#e2e8f0; min-height:100vh; padding-bottom:60px;
+}
+.top-nav {
+    display:flex; align-items:center; justify-content:space-between;
+    padding:18px 32px; background:rgba(10,22,40,0.85); backdrop-filter:blur(10px);
+    border-bottom:1px solid rgba(79,172,254,0.15); position:sticky; top:0; z-index:50;
+}
+.top-nav a { color:#94a3b8; text-decoration:none; font-size:0.9rem; font-weight:600; }
+.top-nav a:hover { color:#4facfe; }
+.brand { color:#fff; font-weight:800; font-size:1.1rem; }
+.brand span { color:#4facfe; }
+.wrap { max-width:900px; margin:0 auto; padding:32px 20px; }
+h1 { color:#fff; font-size:1.6rem; margin-bottom:20px; }
+
+.card {
+    background:rgba(255,255,255,0.04); backdrop-filter:blur(12px);
+    border:1px solid rgba(79,172,254,0.15); border-radius:16px; padding:20px; margin-bottom:20px;
+}
+
+.filters { display:flex; gap:14px; flex-wrap:wrap; align-items:end; }
+.filter-group { display:flex; flex-direction:column; gap:6px; }
+.filter-group label { font-size:0.75rem; color:#94a3b8; text-transform:uppercase; letter-spacing:0.05em; }
+.filter-group select, .filter-group input {
+    background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12);
+    border-radius:8px; padding:9px 12px; color:#e2e8f0; font-size:0.88rem; font-family:inherit;
+}
+.filter-btn {
+    background:linear-gradient(135deg,#4facfe,#00f2fe); color:#0a1628; border:none;
+    border-radius:8px; padding:10px 18px; font-weight:700; font-size:0.85rem; cursor:pointer;
+}
+.clear-link { color:#94a3b8; font-size:0.85rem; text-decoration:none; padding:10px 0; }
+
+.result-row {
+    display:flex; align-items:center; justify-content:space-between; gap:14px;
+    padding:16px 18px; border-radius:12px; background:rgba(255,255,255,0.03);
+    margin-bottom:10px; text-decoration:none; color:inherit; flex-wrap:wrap;
+}
+.result-row:hover { background:rgba(79,172,254,0.08); }
+.result-date { font-size:0.8rem; color:#94a3b8; min-width:90px; }
+.result-section-badge { background:rgba(79,172,254,0.15); color:#4facfe; padding:4px 10px; border-radius:14px; font-size:0.75rem; font-weight:700; }
+.result-score { font-weight:700; color:#fff; }
+.result-accuracy { font-weight:800; }
+.result-accuracy.high { color:#34d399; }
+.result-accuracy.mid { color:#fbbf24; }
+.result-accuracy.low { color:#f87171; }
+.result-xp { color:#4facfe; font-weight:700; font-size:0.85rem; }
+.result-time { color:#94a3b8; font-size:0.8rem; }
+
+.empty-state { text-align:center; padding:40px 20px; color:#64748b; }
+
+.pagination { display:flex; justify-content:center; gap:8px; margin-top:20px; }
+.pagination a, .pagination span {
+    padding:8px 14px; border-radius:8px; font-size:0.85rem; text-decoration:none; color:#94a3b8;
+    background:rgba(255,255,255,0.05);
+}
+.pagination a:hover { color:#4facfe; }
+.pagination .current { background:linear-gradient(135deg,#4facfe,#00f2fe); color:#0a1628; font-weight:700; }
+</style>
+</head>
+<body>
+    <div class="top-nav">
+        <div class="brand">Aptitude<span>Pro</span></div>
+        <div style="display: flex; gap: 16px;">
+            <a href="/placement"><i class="fas fa-graduation-cap"></i> Practice</a>
+            <a href="/gaming" style="color: #00f2fe; font-weight: 700;"><i class="fas fa-gamepad"></i> Gaming</a>
+            <a href="/dashboard"><i class="fas fa-arrow-left"></i> Dashboard</a>
+        </div>
+    </div>
+
+    <div class="wrap">
+        <h1>Result History</h1>
+
+        <% if (error) { %>
+            <div class="card"><p style="color:#f87171;"><%= error %></p></div>
+        <% } %>
+
+        <div class="card">
+            <form class="filters" method="GET" action="/results/history">
+                <div class="filter-group">
+                    <label for="section">Section</label>
+                    <select name="section" id="section">
+                        <option value="">All Sections</option>
+                        <% sections.forEach(function(s) { %>
+                            <option value="<%= s %>" <%= section === s ? 'selected' : '' %>><%= s %></option>
+                        <% }); %>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="date">Date</label>
+                    <input type="date" name="date" id="date" value="<%= date %>">
+                </div>
+                <button type="submit" class="filter-btn">Apply Filters</button>
+                <a href="/results/history" class="clear-link">Clear</a>
+            </form>
+        </div>
+
+        <% if (responseHistory && responseHistory.length) { %>
+        <div class="card">
+            <h2 style="margin:0 0 14px;color:#fff;font-size:1.1rem">Accenture Writing & Interview Responses</h2>
+            <% responseHistory.forEach(function(r) { %>
+                <a class="result-row" href="/accenture/submission/<%= r._id %>">
+                    <span class="result-date"><%= new Date(r.submittedAt || r.createdAt).toLocaleDateString('en-US', { day:'numeric', month:'short' }) %></span>
+                    <span class="result-section-badge"><%= r.section %></span>
+                    <span class="result-score"><%= r.taskTitle %></span>
+                    <span class="result-accuracy mid">Evaluation pending</span>
+                    <span class="result-time"><%= r.wordCount %> words</span>
+                </a>
+            <% }); %>
+        </div>
+        <% } %>
+
+        <div class="card">
+            <% if (!results || results.length === 0) { %>
+                <div class="empty-state">
+                    <i class="fas fa-inbox" style="font-size:2rem; margin-bottom:10px; display:block;"></i>
+                    No quiz results found<% if (section || date) { %> for these filters<% } %>.
+                </div>
+            <% } else { %>
+                <% results.forEach(function(r) { %>
+                    <a class="result-row" href="/results/<%= r._id %>">
+                        <span class="result-date"><%= new Date(r.testDate).toLocaleDateString('en-US', { day:'numeric', month:'short' }) %></span>
+                        <span class="result-section-badge"><%= r.section %></span>
+                        <span class="result-score"><%= r.evaluationStatus === 'execution-unavailable' ? 'Code submitted' : `${r.score}/${r.totalQuestions}` %></span>
+                        <span class="result-accuracy <%= r.evaluationStatus === 'execution-unavailable' ? 'mid' : (r.accuracy >= 70 ? 'high' : (r.accuracy >= 40 ? 'mid' : 'low')) %>"><%= r.evaluationStatus === 'execution-unavailable' ? 'Not evaluated' : `${r.accuracy}%` %></span>
+                        <span class="result-xp"><%= r.netXP >= 0 ? '+' : '' %><%= r.netXP %> XP</span>
+                        <span class="result-time"><%= formatTime(r.timeTaken) %></span>
+                    </a>
+                <% }); %>
+            <% } %>
+        </div>
+
+        <% if (totalPages > 1) { %>
+        <div class="pagination">
+            <% for (let p = 1; p <= totalPages; p++) { %>
+                <% const qs = 'page=' + p + (section ? '&section=' + section : '') + (date ? '&date=' + date : ''); %>
+                <% if (p === page) { %>
+                    <span class="current"><%= p %></span>
+                <% } else { %>
+                    <a href="/results/history?<%= qs %>"><%= p %></a>
+                <% } %>
+            <% } %>
+        </div>
+        <% } %>
+    </div>
+</body>
+</html>

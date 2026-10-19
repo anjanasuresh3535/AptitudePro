@@ -1,0 +1,74 @@
+[
+  {
+    "company": "TCS",
+    "exam": "TCS_NQT",
+    "level": "Advanced",
+    "difficultyLevel": 3,
+    "section": "Programming",
+    "subject": "Advanced Coding",
+    "topic": "Advanced Coding",
+    "subtopic": "Arrays & Strings",
+    "questionType": "coding",
+    "question": "Given an array of integers, find the maximum sum of a contiguous subarray using Kadane's algorithm.",
+    "option1": "Option A",
+    "option2": "Option B",
+    "option3": "Option C",
+    "option4": "Option D",
+    "answer": "Option A",
+    "explanation": "Kadane's algorithm maintains a max_so_far and max_ending_here. Time complexity is O(N).",
+    "formulaUsed": "max_ending_here = max(arr[i], max_ending_here + arr[i])",
+    "stepSolution": "Iterate through elements, update max_ending_here and max_so_far.",
+    "sampleinput": "[-2, 1, -3, 4, -1, 2, 1, -5, 4]",
+    "sampleoutput": "6",
+    "testCases": [
+      {
+        "input": "[-2, 1, -3, 4, -1, 2, 1, -5, 4]",
+        "output": "6",
+        "isHidden": false,
+        "explanation": "Subarray [4, -1, 2, 1] has sum 6"
+      },
+      {
+        "input": "[1, 2, 3, 4]",
+        "output": "10",
+        "isHidden": true,
+        "explanation": "All positive numbers sum to 10"
+      }
+    ]
+  },
+  {
+    "company": "TCS",
+    "exam": "TCS_NQT",
+    "level": "Advanced",
+    "difficultyLevel": 3,
+    "section": "Programming",
+    "subject": "Advanced Coding",
+    "topic": "Advanced Coding",
+    "subtopic": "Strings & Palindromes",
+    "questionType": "coding",
+    "question": "Given a string S, write a program to find the length of the longest palindromic substring.",
+    "option1": "Option A",
+    "option2": "Option B",
+    "option3": "Option C",
+    "option4": "Option D",
+    "answer": "Option A",
+    "explanation": "Expand around centers or dynamic programming to find the longest palindromic substring in O(N^2) time.",
+    "formulaUsed": "Expand around center (i, i) and (i, i+1)",
+    "stepSolution": "For each character, expand outwards while characters match and track max length.",
+    "sampleinput": "babad",
+    "sampleoutput": "3",
+    "testCases": [
+      {
+        "input": "babad",
+        "output": "3",
+        "isHidden": false,
+        "explanation": "Longest palindrome is 'bab' or 'aba' with length 3"
+      },
+      {
+        "input": "racecar",
+        "output": "7",
+        "isHidden": true,
+        "explanation": "Full string 'racecar' is a palindrome of length 7"
+      }
+    ]
+  }
+]

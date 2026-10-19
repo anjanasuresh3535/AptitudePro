@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard — AptitudePro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/css/styles.css">
+    <style>
+        .content {
+            padding: 24px 32px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .welcome-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .welcome-row h2 {
+            font-size: 24px;
+            font-weight: 800;
+            color: white;
+            letter-spacing: -0.5px;
+        }
+
+        .welcome-row h2 span {
+            background: linear-gradient(135deg, #60a5fa, #3b82f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .welcome-row p {
+            font-size: 13px;
+            color: rgba(255,255,255,0.5);
+            margin-top: 4px;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .quiz-btn {
+            padding: 11px 24px;
+            background: linear-gradient(135deg, #2563eb, #60a5fa);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 700;
+            text-decoration: none;
+            box-shadow: 0 6px 24px rgba(37,99,235,0.35);
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .quiz-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 32px rgba(37,99,235,0.45);
+        }
+
+        .quiz-btn-outline {
+            padding: 11px 24px;
+            background: rgba(255,255,255,0.06);
+            color: #fff;
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .quiz-btn-outline:hover {
+            transform: translateY(-2px);
+            background: rgba(255,255,255,0.12);
+            border-color: rgba(96,165,250,0.4);
+        }
+
+        /* MAIN LEARNING PATH SECTION */
+        .path-selection-hero {
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.8), rgba(15, 23, 42, 0.9));
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 18px;
+            padding: 28px;
+            margin-bottom: 24px;
+        }
+
+        .path-hero-title {
+            font-size: 20px;
+            font-weight: 800;
+            color: #ffffff;
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .path-hero-sub {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.45);
+            margin-bottom: 20px;
+        }
+
+        .path-hero-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 20px;
+        }
+
+        .path-hero-card {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .path-hero-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(96, 165, 250, 0.4);
+            background: rgba(255, 255, 255, 0.07);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .path-hero-icon {
+            font-size: 28px;
+            color: #60a5fa;
+            margin-bottom: 14px;
+        }
+
+        .path-hero-card h3 {
+            font-size: 18px;
+            font-weight: 700;
+            color: #ffffff;
+            margin: 0 0 8px 0;
+            letter-spacing: -0.3px;
+        }
+
+        .path-hero-card p {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.5);
+            margin: 0 0 20px 0;
+            line-height: 1.6;
+        }
+
+        /* STAT CARDS & DISPLAYS */
+        .stat-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 14px;
+            padding: 16px 18px;
+            transition: all 0.3s;
+            text-align: center;
+        }
+
+        .stat-card:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateY(-2px);
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        .sc-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 6px;
+        }
+
+        .sc-label {
+            font-size: 10px;
+            color: rgba(255, 255, 255, 0.4);
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .sc-icon { font-size: 16px; }
+
+        .sc-value {
+            font-size: 24px;
+            font-weight: 800;
+            color: white;
+            margin-bottom: 2px;
+        }
+
+        .sc-sub {
+            font-size: 9px;
+            color: rgba(255, 255, 255, 0.35);
+        }
+
+        .sc-streak .sc-value { color: #ff9500; }
+        .sc-correct .sc-value { color: #00cc66; }
+        .sc-wrong .sc-value { color: #ff5050; }
+        .sc-xp .sc-value { color: #fbbf24; }
+        .sc-accuracy .sc-value { color: #60a5fa; }
+
+        /* ACTIONS & RECENT ACTIVITY */
+        .actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .action {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 14px;
+            text-align: center;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .action:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateY(-2px);
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        .action-icon {
+            font-size: 20px;
+            margin-bottom: 4px;
+        }
+
+        .action-label {
+            font-size: 11px;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .grid2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        @media (max-width: 768px) {
+            .grid2 { grid-template-columns: 1fr; }
+            .path-hero-grid { grid-template-columns: 1fr; }
+        }
+
+        .box {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 14px;
+            overflow: hidden;
+        }
+
+        .box-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 18px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .box-head h3 {
+            font-size: 13px;
+            font-weight: 700;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .box-head a {
+            font-size: 11px;
+            color: #60a5fa;
+            text-decoration: none;
+        }
+
+        .row-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 18px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+        }
+
+        .row-left p {
+            font-size: 12px;
+            color: white;
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+
+        .row-left span {
+            font-size: 10px;
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .pill {
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .pill-green {
+            background: rgba(0, 200, 100, 0.12);
+            color: #00cc66;
+            border: 1px solid rgba(0, 200, 100, 0.2);
+        }
+
+        .pill-yellow {
+            background: rgba(255, 170, 0, 0.12);
+            color: #ffaa00;
+            border: 1px solid rgba(255, 170, 0, 0.2);
+        }
+
+        .pill-red {
+            background: rgba(255, 80, 80, 0.12);
+            color: #ff5050;
+            border: 1px solid rgba(255, 80, 80, 0.2);
+        }
+
+        .empty {
+            padding: 24px;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 12px;
+        }
+
+        .empty a { color: #60a5fa; text-decoration: none; }
+
+        .nav-logo-icon { font-size: 22px; }
+
+        .nav-logo-text {
+            font-size: 18px;
+            font-weight: 800;
+            color: white;
+        }
+
+        .nav-logo-text span { color: #60a5fa; }
+
+        .nav-logo {
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .navbar {
+            background: rgba(15, 23, 42, 0.9);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 14px 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar">
+    <a href="/dashboard" class="nav-logo">
+        <div class="nav-logo-icon">🧠</div>
+        <div class="nav-logo-text">Aptitude<span>Pro</span></div>
+    </a>
+    <div class="nav-right" style="display: flex; align-items: center; gap: 16px;">
+        <button type="button" class="btn-nav-fullscreen" id="btnNavFullscreen" title="Toggle Full Screen (or press F)" style="margin-right: 4px;">
+            <i class="fa-solid fa-expand"></i> <span>Full Screen</span>
+        </button>
+        <a href="/placement" style="color: #94a3b8; text-decoration: none; font-size: 13px; font-weight: 600;"><i class="fas fa-graduation-cap"></i> Practice</a>
+        <a href="/gaming" style="color: #00f2fe; text-decoration: none; font-size: 13px; font-weight: 700;"><i class="fas fa-gamepad"></i> Gaming</a>
+        <a href="/results/history" style="color: #94a3b8; text-decoration: none; font-size: 13px; font-weight: 600;"><i class="fas fa-clock-rotate-left"></i> History</a>
+        <div class="nav-avatar"><%= username.charAt(0).toUpperCase() %></div>
+        <span class="nav-username"><%= username %></span>
+        <% if ((locals.user && locals.user.role === 'admin') || (typeof role !== 'undefined' && role === 'admin')) { %>
+        <a href="/admin" style="color: #fbbf24; text-decoration: none; font-size: 13px; font-weight: 700;"><i class="fas fa-shield-alt"></i> Admin</a>
+        <% } %>
+        <a href="/logout" class="nav-logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+    </div>
+</nav>
+
+<div class="content">
+
+    <!-- WELCOME HEADER -->
+    <div class="welcome-row animate">
+        <div>
+            <h2>👋 Welcome back, <span><%= username %></span>!</h2>
+            <p><i class="fas fa-fire" style="color: #ff9500;"></i>
+                <% if(streak >= 30) { %>🐐 <%= streak %> day streak! You are a GOAT!
+                <% } else if(streak >= 14) { %>🔥 <%= streak %> day streak! Unstoppable!
+                <% } else if(streak >= 7) { %>🔥 <%= streak %> day streak! Amazing!
+                <% } else if(streak >= 3) { %>🔥 <%= streak %> days — keep it going!
+                <% } else if(streak == 0) { %>⚠️ No streak — practice daily to build your streak!
+                <% } else { %>🌱 Day <%= streak %> — great start!
+                <% } %>
+            </p>
+        </div>
+        <div class="header-actions">
+            <a href="/placement/school" class="quiz-btn-outline"><i class="fas fa-graduation-cap"></i> School</a>
+            <a href="/placement/college" class="quiz-btn-outline"><i class="fas fa-briefcase"></i> College</a>
+            <a href="/gaming" class="quiz-btn" style="background: linear-gradient(135deg, #0284c7, #00f2fe); color: #090d16;"><i class="fas fa-gamepad"></i> Gaming</a>
+        </div>
+    </div>
+
+    <!-- MAIN LEARNING PATH SECTION -->
+    <div class="path-selection-hero animate animate-delay-1">
+        <div class="path-hero-title">
+            <i class="fas fa-route" style="color: #60a5fa;"></i> Choose Your Learning Path
+        </div>
+        <div class="path-hero-sub">Select your primary learning track to begin level-based aptitude practice.</div>
+        
+        <div class="path-hero-grid">
+            <a href="/placement/school" class="path-hero-card">
+                <div>
+                    <div class="path-hero-icon"><i class="fas fa-user-graduate"></i></div>
+                    <h3>SCHOOL STUDENTS</h3>
+                    <p>Build strong aptitude skills through Mathematics, Logical Reasoning and English.</p>
+                </div>
+                <div class="quiz-btn-outline" style="width: fit-content; padding: 10px 20px; font-size: 13px;">
+                    <span>Start Learning</span> <i class="fas fa-arrow-right"></i>
+                </div>
+            </a>
+
+            <a href="/placement/college" class="path-hero-card">
+                <div>
+                    <div class="path-hero-icon"><i class="fas fa-building-columns"></i></div>
+                    <h3>COLLEGE & PLACEMENT</h3>
+                    <p>Prepare for aptitude assessments and campus placement opportunities.</p>
+                </div>
+                <div class="quiz-btn" style="width: fit-content; padding: 10px 20px; font-size: 13px;">
+                    <span>Explore Placement</span> <i class="fas fa-arrow-right"></i>
+                </div>
+            </a>
+        </div>
+    </div>
+
+    <!-- XP, QUIZ COUNT & ACCURACY STAT DISPLAYS -->
+    <div class="stat-cards animate animate-delay-2">
+        <div class="stat-card sc-xp">
+            <div class="sc-top"><span class="sc-label">Total XP</span><span class="sc-icon"><i class="fas fa-bolt" style="color: #fbbf24;"></i></span></div>
+            <div class="sc-value"><%= Number(xp).toLocaleString() %></div>
+            <div class="sc-sub">User XP Points</div>
+        </div>
+        <div class="stat-card sc-accuracy">
+            <div class="sc-top"><span class="sc-label">Accuracy</span><span class="sc-icon"><i class="fas fa-bullseye" style="color: #60a5fa;"></i></span></div>
+            <div class="sc-value"><%= accuracy %>%</div>
+            <div class="sc-sub">Overall Accuracy</div>
+        </div>
+        <div class="stat-card">
+            <div class="sc-top"><span class="sc-label">Quizzes</span><span class="sc-icon"><i class="fas fa-clipboard-list"></i></span></div>
+            <div class="sc-value"><%= quizCount %></div>
+            <div class="sc-sub">Total Completed</div>
+        </div>
+        <div class="stat-card sc-streak">
+            <div class="sc-top"><span class="sc-label">Streak</span><span class="sc-icon"><i class="fas fa-fire"></i></span></div>
+            <div class="sc-value"><%= streak %></div>
+            <div class="sc-sub">Days in a Row</div>
+        </div>
+        <div class="stat-card sc-correct">
+            <div class="sc-top"><span class="sc-label">Correct</span><span class="sc-icon"><i class="fas fa-check-circle"></i></span></div>
+            <div class="sc-value"><%= Number(correct).toLocaleString() %></div>
+            <div class="sc-sub">Correct Answers</div>
+        </div>
+        <div class="stat-card sc-wrong">
+            <div class="sc-top"><span class="sc-label">Wrong</span><span class="sc-icon"><i class="fas fa-times-circle"></i></span></div>
+            <div class="sc-value"><%= Number(wrong).toLocaleString() %></div>
+            <div class="sc-sub">Wrong Answers</div>
+        </div>
+    </div>
+
+    <!-- QUICK ACTIONS -->
+    <div class="actions animate animate-delay-3">
+        <a href="/placement" class="action"><div class="action-icon">🎯</div><div class="action-label">Learning Paths</div></a>
+        <a href="/placement/school" class="action"><div class="action-icon">🎓</div><div class="action-label">School Aptitude</div></a>
+        <a href="/placement/college/general" class="action"><div class="action-icon">💻</div><div class="action-label">General Placement</div></a>
+        <a href="/placement/college/company" class="action"><div class="action-icon">🏢</div><div class="action-label">Company Practice</div></a>
+        <a href="/results/history" class="action"><div class="action-icon">📊</div><div class="action-label">Result History</div></a>
+    </div>
+
+    <!-- RECENT RESULTS & XP HISTORY -->
+    <div class="grid2 animate animate-delay-4">
+        <div class="box">
+            <div class="box-head">
+                <h3><i class="fas fa-clock"></i> Recent Results</h3>
+                <a href="/results/history">View all →</a>
+            </div>
+            <% if(!recent || recent.length == 0) { %>
+                <div class="empty">No quizzes taken yet.<br><a href="/placement">Start a quiz →</a></div>
+            <% } else { for(var r of recent) {
+                var pct = r.total > 0 ? Math.round((r.score / r.total) * 100) : 0;
+                var cls = pct >= 80 ? 'pill-green' : (pct >= 50 ? 'pill-yellow' : 'pill-red');
+            %>
+            <div class="row-item">
+                <div class="row-left">
+                    <p><i class="far fa-calendar-alt"></i> <%= r.test_date %></p>
+                    <span><%= r.total %> Questions • <%- (r.xp_earned || 0) >= 0 ? '+' : '' %><%= r.xp_earned || 0 %> XP</span>
+                </div>
+                <span class="pill <%= cls %>"><%= r.score %>/<%= r.total %></span>
+            </div>
+            <% } } %>
+        </div>
+
+        <div class="box">
+            <div class="box-head">
+                <h3><i class="fas fa-bolt"></i> XP History</h3>
+                <a href="/results/history">View history →</a>
+            </div>
+            <% if(!xpHistory || xpHistory.length == 0) { %>
+                <div class="empty">No XP history yet.<br>Complete a quiz to earn XP!</div>
+            <% } else { for(var h of xpHistory) { %>
+            <div class="row-item">
+                <div class="row-left"><p><%= h.reason %></p></div>
+                <span class="<%= h.xp_change >= 0 ? 'pill-green' : 'pill-red' %>" style="font-size: 11px;">
+                    <%- h.xp_change >= 0 ? '+' : '' %><%= h.xp_change %> XP
+                </span>
+            </div>
+            <% } } %>
+        </div>
+    </div>
+
+</div>
+
+<script src="/js/dashboard.js"></script>
+</body>
+</html>

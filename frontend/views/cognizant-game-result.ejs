@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Game Practice Review | AptitudePro</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <style>
+        body{margin:0;background:#08111f;color:#eaf2ff;font:16px/1.55 Inter,system-ui,sans-serif}
+        main{max-width:900px;margin:30px auto;padding:18px}
+        a{color:#8fdcff}
+        .panel{background:#101d30;border:1px solid #253650;border-radius:14px;padding:20px;margin:16px 0}
+        .score{font-size:1.2rem;color:#9aabc0}
+        .review{border-top:1px solid #253650;padding:14px 0}
+        .review:first-of-type{border-top:0}
+        .correct{color:#34d399}.incorrect{color:#fbbf24}
+        .muted{color:#9aabc0}
+    </style>
+</head>
+<body>
+<main>
+    <a href="/cognizant/history">← Practice history</a>
+    <section class="panel">
+        <h1>Game practice review</h1>
+        <p class="score"><%= attempt.score %>/<%= attempt.totalGames %> activities correct · <%= attempt.timeTaken %> seconds</p>
+        <% const labels = { motion: 'Motion target', digitRecall: 'Digit recall', switchTracker: 'Switch tracker', patternMatrix: 'Pattern completion', logicGrid: 'Logic grid' }; %>
+        <% attempt.games.forEach(game => { %>
+            <article class="review">
+                <h2><%= labels[game.key] || game.key %> — <span class="<%= game.correct ? 'correct' : 'incorrect' %>"><%= game.correct ? 'Correct' : 'Review' %></span></h2>
+                <p><strong>Your answer:</strong> <%= game.key === 'motion' && game.response !== '' ? `Tile ${Number(game.response) + 1}` : (game.response || 'No answer entered') %></p>
+                <p><strong>Correct answer:</strong> <%= game.expectedAnswer || 'Not recorded' %></p>
+                <p class="muted"><%= game.explanation || '' %></p>
+            </article>
+        <% }) %>
+    </section>
+    <a href="/cognizant/games">Practice another set</a>
+</main>
+</body>
+</html>

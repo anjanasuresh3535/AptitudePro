@@ -1,0 +1,27 @@
+// Cognizant technical core MCQ bank (OOP, data structures, DBMS, networks,
+// cloud, programming fundamentals). Tuple format:
+// [topic, subject, question, options[4], answerText, explanation, difficultyLevel]
+module.exports = [
+    ['OOP', 'OOP', 'Which of these is NOT one of the four pillars of Object-Oriented Programming?', ['Encapsulation', 'Inheritance', 'Compilation', 'Polymorphism'], 'Compilation', 'The four pillars are encapsulation, inheritance, polymorphism and abstraction.', 1],
+    ['OOP', 'OOP', 'Wrapping data and the methods that operate on it into a single unit, restricting direct access, is called:', ['Inheritance', 'Encapsulation', 'Overloading', 'Recursion'], 'Encapsulation', 'Encapsulation hides internal state behind a class interface.', 1],
+    ['OOP', 'OOP', 'A class deriving properties from another class demonstrates:', ['Polymorphism', 'Abstraction', 'Inheritance', 'Encapsulation'], 'Inheritance', 'Inheritance enables code reuse through a parent-child relationship.', 1],
+    ['OOP', 'OOP', 'The same method name behaving differently for a subclass (e.g., draw() for Circle vs Square) is:', ['Encapsulation', 'Polymorphism', 'Aggregation', 'Serialization'], 'Polymorphism', 'Polymorphism = one interface, many behaviours.', 2],
+    ['Data Structures', 'Data Structures', 'Which data structure follows LIFO order?', ['Queue', 'Stack', 'Array', 'Linked list'], 'Stack', 'Stack: last in, first out.', 1],
+    ['Data Structures', 'Data Structures', 'Which data structure follows FIFO order?', ['Stack', 'Queue', 'Tree', 'Graph'], 'Queue', 'Queue: first in, first out.', 1],
+    ['Algorithms', 'Programming Fundamentals', 'What is the time complexity of binary search on a sorted array of n elements?', ['O(n)', 'O(n log n)', 'O(log n)', 'O(1)'], 'O(log n)', 'The search space halves each step.', 2],
+    ['Recursion', 'Programming Fundamentals', 'Every recursive function must have:', ['A loop', 'A base case', 'A global variable', 'Two return statements'], 'A base case', 'Without a base case recursion never terminates.', 1],
+    ['DBMS', 'DBMS', 'In DBMS, ACID stands for:', ['Atomicity, Consistency, Isolation, Durability', 'Access, Control, Integrity, Data', 'Atomicity, Concurrency, Isolation, Delivery', 'Accuracy, Consistency, Integrity, Durability'], 'Atomicity, Consistency, Isolation, Durability', 'These are the four transaction guarantees.', 2],
+    ['DBMS', 'DBMS', 'Which key uniquely identifies each row in a relational table?', ['Foreign key', 'Primary key', 'Candidate index', 'Composite value'], 'Primary key', 'The primary key is unique and non-null.', 1],
+    ['DBMS', 'DBMS', 'Normalisation in databases is mainly used to:', ['Increase redundancy', 'Reduce redundancy and anomalies', 'Encrypt data', 'Speed up all queries'], 'Reduce redundancy and anomalies', 'It organises data to minimise duplication and update anomalies.', 2],
+    ['SQL', 'DBMS', 'Which SQL clause filters rows AFTER aggregation?', ['WHERE', 'HAVING', 'GROUP BY', 'ORDER BY'], 'HAVING', 'HAVING applies conditions to grouped results; WHERE applies before grouping.', 2],
+    ['Computer Networks', 'Computer Networks', 'How many layers does the OSI model have?', ['4', '5', '6', '7'], '7', 'Physical, Data Link, Network, Transport, Session, Presentation, Application.', 1],
+    ['Computer Networks', 'Computer Networks', 'Which protocol is connection-oriented and guarantees ordered delivery?', ['UDP', 'TCP', 'ICMP', 'ARP'], 'TCP', 'TCP establishes a connection and retransmits lost segments.', 1],
+    ['Computer Networks', 'Computer Networks', 'What is the default port for HTTP?', ['21', '25', '80', '443'], '80', 'HTTP uses 80; HTTPS uses 443.', 1],
+    ['Computer Networks', 'Computer Networks', 'DNS is used to:', ['Encrypt web traffic', 'Resolve domain names to IP addresses', 'Filter packets', 'Store web pages'], 'Resolve domain names to IP addresses', 'DNS maps human-readable names to IP addresses.', 1],
+    ['Cloud Computing', 'Cloud Computing', 'In cloud service models, which one gives you the MOST control over the operating system and runtime?', ['SaaS', 'PaaS', 'IaaS', 'FaaS'], 'IaaS', 'IaaS provides virtualised infrastructure; you manage the OS and above.', 2],
+    ['Cloud Computing', 'Cloud Computing', 'A provider hosts and manages a complete application you only use through a browser. This is:', ['IaaS', 'PaaS', 'SaaS', 'On-premise'], 'SaaS', 'Software as a Service delivers complete applications over the internet.', 1],
+    ['Web Fundamentals', 'Programming Fundamentals', 'Which HTTP status code means "Not Found"?', ['200', '301', '404', '500'], '404', '404 = resource not found; 500 = server error.', 1],
+    ['Web Fundamentals', 'Programming Fundamentals', 'In a typical web application, what is the role of a REST API?', ['To style pages', 'To expose resources over HTTP for clients to consume', 'To compile front-end code', 'To store session cookies only'], 'To expose resources over HTTP for clients to consume', 'REST APIs provide stateless HTTP endpoints for data exchange.', 2],
+    ['Programming Fundamentals', 'Programming Fundamentals', 'Which of these is a compiled language?', ['Python', 'JavaScript', 'C++', 'PHP'], 'C++', 'C++ is compiled to machine code; the others are typically interpreted/JIT.', 1],
+    ['DBMS', 'DBMS', 'An index in a database table primarily helps to:', ['Reduce storage size', 'Speed up read lookups', 'Enforce encryption', 'Compress rows'], 'Speed up read lookups', 'Indexes trade extra storage and slower writes for faster reads.', 2]
+];

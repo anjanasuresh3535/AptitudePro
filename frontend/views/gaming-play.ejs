@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-dark: #090d16;
+            --card-bg: rgba(15, 23, 42, 0.85);
+            --card-border: rgba(255, 255, 255, 0.12);
+            --accent-cyan: #00f2fe;
+            --accent-green: #00e676;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-main);
+            min-height: 100vh;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            user-select: none;
+        }
+
+        .play-navbar {
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 16px 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .game-title-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .game-title-info h2 {
+            margin: 0;
+            font-size: 18px;
+            font-weight: 800;
+            color: #ffffff;
+        }
+
+        .game-badge {
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .stats-head-group {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .timer-display {
+            background: rgba(239, 68, 68, 0.15);
+            border: 1px solid rgba(239, 68, 68, 0.4);
+            color: #fca5a5;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 16px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-mono: true;
+        }
+
+        .streak-display {
+            background: rgba(0, 230, 118, 0.15);
+            border: 1px solid rgba(0, 230, 118, 0.4);
+            color: #4ade80;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-quit {
+            background: rgba(255, 255, 255, 0.08);
+            color: var(--text-muted);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 8px 16px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+
+        .btn-quit:hover {
+            color: #ffffff;
+            background: rgba(239, 68, 68, 0.2);
+            border-color: rgba(239, 68, 68, 0.4);
+        }
+
+        .play-container {
+            max-width: 860px;
+            margin: 32px auto;
+            padding: 0 20px;
+            width: 100%;
+            box-sizing: border-box;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .progress-bar-container {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 4px;
+            margin-bottom: 24px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #0284c7, var(--accent-cyan));
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .q-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 24px;
+            padding: 32px;
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .q-meta-line {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            color: var(--text-muted);
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .q-text {
+            font-size: 20px;
+            font-weight: 700;
+            color: #ffffff;
+            line-height: 1.5;
+            margin-bottom: 32px;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 14px;
+            margin-bottom: 32px;
+        }
+
+        .option-btn {
+            background: rgba(30, 41, 59, 0.7);
+            border: 1.5px solid rgba(255, 255, 255, 0.12);
+            border-radius: 14px;
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: left;
+            color: #e2e8f0;
+            font-size: 16px;
+            font-weight: 600;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .option-btn:hover {
+            border-color: var(--accent-cyan);
+            background: rgba(0, 242, 254, 0.08);
+            transform: translateX(4px);
+        }
+
+        .option-btn.selected {
+            border-color: var(--accent-cyan);
+            background: rgba(0, 242, 254, 0.18);
+            color: #ffffff;
+            box-shadow: 0 0 16px rgba(0, 242, 254, 0.25);
+        }
+
+        .option-prefix {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 14px;
+            color: #ffffff;
+            flex-shrink: 0;
+        }
+
+        .option-btn.selected .option-prefix {
+            background: var(--accent-cyan);
+            color: #090d16;
+        }
+
+        .controls-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .btn-skip {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: var(--text-muted);
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-skip:hover {
+            background: rgba(255, 255, 255, 0.12);
+            color: #ffffff;
+        }
+
+        .btn-next {
+            background: linear-gradient(135deg, #0284c7, #00f2fe);
+            color: #090d16;
+            border: none;
+            padding: 14px 32px;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 800;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+        }
+
+        .btn-next:hover {
+            filter: brightness(1.15);
+            box-shadow: 0 6px 20px rgba(0, 242, 254, 0.35);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="play-navbar">
+        <div class="game-title-info">
+            <i class="fa-solid fa-gamepad" style="color: var(--accent-cyan); font-size: 20px;"></i>
+            <h2><%= session.gameSectionName %></h2>
+            <span class="game-badge" style="background: rgba(0, 242, 254, 0.15); color: var(--accent-cyan);">
+                <%= session.difficultyName %>
+            </span>
+        </div>
+
+        <div class="stats-head-group">
+            <div class="streak-display">
+                <i class="fa-solid fa-fire"></i>
+                <span id="liveStreak">0 🔥</span>
+            </div>
+
+            <div class="timer-display">
+                <i class="fa-solid fa-clock"></i>
+                <span id="gameTimer">--:--</span>
+            </div>
+
+            <a href="/gaming" class="btn-quit" onclick="return confirm('Quit current game session? Progress will be lost.')">
+                <i class="fa-solid fa-xmark"></i> Quit
+            </a>
+        </div>
+    </div>
+
+    <div class="play-container">
+
+        <div class="progress-bar-container">
+            <div class="progress-bar-fill" id="progressBar"></div>
+        </div>
+
+        <div class="q-card">
+            <div>
+                <% const firstQ = (session.questions && session.questions.length > 0) ? session.questions[0] : null; %>
+                <div class="q-meta-line">
+                    <span id="questionCounter">Question 1 of <%= session.totalQuestions %></span>
+                    <span id="questionSubject"><%= firstQ ? (firstQ.subject || 'Aptitude') : 'Aptitude' %></span>
+                </div>
+
+                <div class="q-text" id="questionText"><%= firstQ ? firstQ.questionText : 'No questions loaded in this session.' %></div>
+
+                <div class="options-grid" id="optionsGrid">
+                    <% if (firstQ && firstQ.options) { %>
+                        <% ['a', 'b', 'c', 'd'].forEach(function(letterKey) { %>
+                            <% const letterUpper = letterKey.toUpperCase(); %>
+                            <% const optText = firstQ.options[letterKey] || ''; %>
+                            <button type="button" class="option-btn" data-option="<%= letterUpper %>" onclick="if(window.gameClient) window.gameClient.selectOption('<%= letterUpper %>')">
+                                <div class="option-prefix"><%= letterUpper %></div>
+                                <div><%= optText %></div>
+                            </button>
+                        <% }); %>
+                    <% } %>
+                </div>
+            </div>
+
+            <div class="controls-footer">
+                <button class="btn-skip" id="btnSkip" onclick="if(window.gameClient) window.gameClient.skipQuestion()">
+                    <i class="fa-solid fa-forward"></i> Skip Question
+                </button>
+
+                <button class="btn-next" id="btnNext" onclick="if(window.gameClient) window.gameClient.nextQuestion()">
+                    <span>Next Question</span>
+                    <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Hidden Form for Final Submission -->
+    <form id="gameSubmitForm" action="/gaming/submit" method="POST" style="display: none;">
+        <input type="hidden" name="sessionId" value="<%= session.sessionId %>">
+        <input type="hidden" name="timeTakenSec" id="formTimeTaken" value="0">
+        <input type="hidden" name="answersJson" id="formAnswersJson" value="[]">
+    </form>
+
+    <script id="gameSessionScript" type="application/json">
+        <%- JSON.stringify(session) %>
+    </script>
+    <script nonce="<%= cspNonce %>">
+        try {
+            window.GAME_SESSION_DATA = JSON.parse(document.getElementById('gameSessionScript').textContent);
+        } catch (e) {
+            console.error('Error parsing session data:', e);
+            window.GAME_SESSION_DATA = <%- JSON.stringify(session) %>;
+        }
+    </script>
+    <script nonce="<%= cspNonce %>" src="/js/gaming-client.js"></script>
+</body>
+</html>

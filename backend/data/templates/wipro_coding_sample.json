@@ -1,0 +1,35 @@
+[
+  {
+    "company": "Wipro",
+    "exam": "Wipro_Elite_NTH",
+    "section": "Programming",
+    "subject": "Number manipulation",
+    "topic": "Number manipulation",
+    "category": "Coding Practice",
+    "sourceType": "practice",
+    "sourceRef": "Wipro Placement Practice",
+    "problemTitle": "Sum of Digits",
+    "question": "You are given a positive integer N. Write a program to find the sum of all its digits.",
+    "inputFormat": "A single line containing the integer N.",
+    "outputFormat": "Print a single integer: the sum of the digits of N.",
+    "constraints": "1 <= N <= 1000000000",
+    "sampleInput": "1234",
+    "sampleOutput": "10",
+    "explanation": "Repeatedly take the last digit using N % 10, add it to a running total, then remove it using N // 10 until N becomes 0.",
+    "option1": "Attempt coding problem",
+    "option2": "Code submitted for review",
+    "option3": "Solution stored",
+    "option4": "Implementation provided",
+    "answer": "Attempt coding problem",
+    "difficultyLevel": 1,
+    "difficulty": "Easy",
+    "level": "Foundation",
+    "questionType": "coding",
+    "supportedLanguages": ["C", "C++", "Java", "Python"],
+    "testCases": [
+      { "input": "1234", "output": "10", "isHidden": false, "explanation": "Sample case" },
+      { "input": "9", "output": "9", "isHidden": true, "explanation": "Hidden test case 1" }
+    ],
+    "active": true
+  }
+]

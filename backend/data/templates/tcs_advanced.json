@@ -1,0 +1,23 @@
+[
+  {
+    "company": "TCS",
+    "exam": "TCS_NQT",
+    "level": "Advanced",
+    "difficultyLevel": 3,
+    "section": "Mixed",
+    "subject": "Advanced Quantitative & Reasoning",
+    "topic": "Advanced Quantitative & Reasoning",
+    "subtopic": "Advanced Data Interpretation",
+    "question": "A container contains 80 liters of pure milk. 8 liters of milk is taken out and replaced with water. This process is repeated 2 more times. What is the amount of pure milk remaining in the container?",
+    "option1": "58.32 liters",
+    "option2": "60.00 liters",
+    "option3": "54.40 liters",
+    "option4": "64.80 liters",
+    "answer": "58.32 liters",
+    "explanation": "Remaining liquid = Initial * (1 - x/V)^n = 80 * (1 - 8/80)^3 = 80 * (0.9)^3 = 80 * 0.729 = 58.32 liters.",
+    "formulaUsed": "Remaining Quantity = Initial * (1 - Replacement/Total)^n",
+    "stepSolution": "Step 1: Ratio = (80-8)/80 = 0.9. Step 2: Total 3 operations: (0.9)^3 = 0.729. Step 3: 80 * 0.729 = 58.32 liters.",
+    "quickTrick": "0.9 cubed = 0.729; 80 * 0.729 = 58.32.",
+    "commonMistake": "Subtracting 8 liters 3 times (80 - 24 = 56)."
+  }
+]

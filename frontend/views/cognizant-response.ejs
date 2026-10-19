@@ -1,0 +1,565 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title><%= title %> | AptitudePro</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            background: #08111f;
+            color: #eaf2ff;
+            font: 16px/1.55 Inter, system-ui, sans-serif;
+        }
+        .wrap {
+            max-width: 920px;
+            margin: auto;
+            padding: 28px 18px;
+        }
+        .back {
+            color: #8fdcff;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 14px;
+            font-weight: 600;
+        }
+        .back:hover { text-decoration: underline; }
+        .panel {
+            background: #101d30;
+            border: 1px solid #253650;
+            border-radius: 16px;
+            padding: 28px;
+            margin-top: 10px;
+        }
+        h1 { color: #fff; margin-top: 6px; font-size: 1.6rem; }
+        .eyebrow {
+            color: #60cfff;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            font-size: .8rem;
+        }
+        .timer {
+            float: right;
+            color: #fbbf24;
+            font-weight: 800;
+            font-variant-numeric: tabular-nums;
+            font-size: 1.1rem;
+        }
+        .prompt {
+            white-space: pre-wrap;
+            font-size: 1.05rem;
+            color: #d8e5f8;
+            line-height: 1.6;
+            background: rgba(8, 17, 31, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin: 16px 0;
+        }
+        .muted { color: #92a1b5; font-size: .92rem; }
+        .label {
+            display: block;
+            font-weight: 700;
+            margin: 20px 0 8px;
+            color: #60cfff;
+            font-size: 0.85rem;
+            letter-spacing: .06em;
+            text-transform: uppercase;
+        }
+
+        /* RESPONSE MODE SWITCHER */
+        .mode-tabs {
+            display: flex;
+            gap: 12px;
+            margin: 22px 0 16px;
+            background: rgba(8, 17, 31, 0.8);
+            padding: 6px;
+            border-radius: 12px;
+            border: 1px solid #253650;
+            width: fit-content;
+        }
+        .mode-tab-btn {
+            background: transparent;
+            border: 0;
+            color: #92a1b5;
+            padding: 8px 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+        }
+        .mode-tab-btn.active {
+            background: #21a5d8;
+            color: #06111c;
+            box-shadow: 0 2px 10px rgba(33, 165, 216, 0.3);
+        }
+
+        /* AUDIO RECORDER CARD */
+        .audio-recorder-box {
+            background: rgba(8, 17, 31, 0.85);
+            border: 1.5px solid #2d4361;
+            border-radius: 14px;
+            padding: 24px;
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 16px;
+            position: relative;
+        }
+        .audio-recorder-box.recording {
+            border-color: #ef4444;
+            box-shadow: 0 0 20px rgba(239, 68, 68, 0.2);
+        }
+        .mic-button-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .btn-mic-record {
+            width: 76px;
+            height: 76px;
+            border-radius: 50%;
+            border: 0;
+            background: linear-gradient(135deg, #0284c7, #00f2fe);
+            color: #06111c;
+            font-size: 28px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            box-shadow: 0 0 20px rgba(0, 242, 254, 0.3);
+        }
+        .btn-mic-record:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 26px rgba(0, 242, 254, 0.5);
+        }
+        .btn-mic-record.recording {
+            background: linear-gradient(135deg, #dc2626, #ef4444);
+            color: #ffffff;
+            animation: pulse-ring 1.5s infinite;
+            box-shadow: 0 0 25px rgba(239, 68, 68, 0.6);
+        }
+        @keyframes pulse-ring {
+            0% { transform: scale(0.98); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+            70% { transform: scale(1.04); box-shadow: 0 0 0 16px rgba(239, 68, 68, 0); }
+            100% { transform: scale(0.98); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+        }
+        .record-timer {
+            font-size: 1.5rem;
+            font-weight: 800;
+            font-variant-numeric: tabular-nums;
+            color: #ffffff;
+        }
+        .record-status-text {
+            color: #94a3b8;
+            font-size: 0.95rem;
+            font-weight: 600;
+        }
+        .audio-playback-preview {
+            width: 100%;
+            max-width: 500px;
+            margin-top: 8px;
+        }
+        .audio-playback-preview audio {
+            width: 100%;
+            height: 44px;
+            border-radius: 30px;
+            outline: none;
+        }
+
+        /* TEXTAREA */
+        textarea {
+            width: 100%;
+            min-height: 220px;
+            resize: vertical;
+            background: #08111f;
+            color: #f4f8ff;
+            border: 1px solid #354963;
+            border-radius: 10px;
+            padding: 15px;
+            font: 15px/1.6 inherit;
+        }
+        textarea:focus {
+            outline: none;
+            border-color: #21a5d8;
+            box-shadow: 0 0 10px rgba(33, 165, 216, 0.2);
+        }
+
+        .actions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 18px;
+        }
+        .btn {
+            border: 0;
+            border-radius: 9px;
+            padding: 12px 22px;
+            font-weight: 700;
+            cursor: pointer;
+            background: #21a5d8;
+            color: #06111c;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: opacity 0.2s;
+        }
+        .btn:hover { opacity: 0.9; }
+        .btn.secondary {
+            background: #253650;
+            color: #eaf2ff;
+        }
+        .btn.danger {
+            background: #ef4444;
+            color: #ffffff;
+        }
+        .status {
+            min-height: 28px;
+            color: #9edcff;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+        .criteria { color: #adbacb; }
+        .criteria li { margin: 5px 0; }
+        @media (max-width: 560px) {
+            .wrap { padding: 16px 12px; }
+            .panel { padding: 17px; }
+        }
+    </style>
+</head>
+<body>
+<main class="wrap">
+    <a class="back" href="/placement/college/company/cognizant">← Cognizant practice</a>
+    <section class="panel">
+        <% if (unavailable) { %>
+            <h1>No task is available yet</h1>
+            <p class="muted">There are no active <%= section %> tasks in this practice pool.</p>
+        <% } else { %>
+            <div class="eyebrow">
+                <span class="timer" id="timer" data-seconds="<%= remainingSeconds %>">--:--</span>
+                <%= section %> · Practice
+            </div>
+
+            <h1><%= task.question %></h1>
+            <p class="muted">
+                <%= task.topic || '' %> · <%= task.difficulty || 'Medium' %>
+                <% if (task.minWords || task.maxWords) { %> · Suggested length: <%= task.minWords || 0 %>–<%= task.maxWords || 'any' %> words<% } %>
+            </p>
+
+            <p class="prompt"><%= task.prompt || task.question %></p>
+
+            <% if (section === "Interview Preparation" && (task.explanation || task.fullExplanation)) { %>
+                <details style="margin-bottom: 18px; cursor: pointer;">
+                    <summary style="font-weight: 700; color: #60cfff;">Suggested answer structure and follow-up prompts</summary>
+                    <p style="margin-top: 10px;"><%= task.explanation %></p>
+                    <% if (task.fullExplanation) { %><p><%= task.fullExplanation %></p><% } %>
+                    <p class="muted">These are practice hints, not guaranteed answers.</p>
+                </details>
+            <% } %>
+
+            <!-- MODE SWITCH TABS -->
+            <% const isSpeakingTask = (task.topic === 'Speaking' || task.responseType === 'audio' || String(task.question).toLowerCase().includes('speaking')); %>
+            <div class="mode-tabs">
+                <button type="button" class="mode-tab-btn <%= isSpeakingTask ? 'active' : '' %>" id="tabAudioMode">
+                    <i class="fa-solid fa-microphone"></i> Audio Recording <%= isSpeakingTask ? '(Recommended)' : '' %>
+                </button>
+                <button type="button" class="mode-tab-btn <%= !isSpeakingTask ? 'active' : '' %>" id="tabTextMode">
+                    <i class="fa-solid fa-keyboard"></i> Written Response
+                </button>
+            </div>
+
+            <!-- AUDIO RECORDING CARD -->
+            <div class="audio-recorder-box" id="audioRecorderContainer" style="<%= !isSpeakingTask ? 'display: none;' : '' %>">
+                <div class="mic-button-wrapper">
+                    <button type="button" class="btn-mic-record" id="btnToggleRecord" title="Click to start audio recording">
+                        <i class="fa-solid fa-microphone" id="micIcon"></i>
+                    </button>
+                </div>
+
+                <div class="record-timer" id="audioRecordTimer">00:00</div>
+                <div class="record-status-text" id="recordStatusText">
+                    Click the microphone to start recording your response (1–2 minutes)
+                </div>
+
+                <!-- Playback Preview -->
+                <div class="audio-playback-preview" id="audioPlaybackWrapper" style="<%= draftAudio ? '' : 'display: none;' %>">
+                    <p style="margin: 0 0 6px 0; font-size: 13px; font-weight: 700; color: #60cfff;">
+                        <i class="fa-solid fa-circle-play"></i> Recorded Audio Preview
+                    </p>
+                    <audio id="audioPlayback" controls src="<%= draftAudio || '' %>"></audio>
+                    <div style="margin-top: 8px;">
+                        <button type="button" class="btn secondary" id="btnDiscardAudio" style="font-size: 13px; padding: 6px 14px;">
+                            <i class="fa-solid fa-trash"></i> Discard & Record Again
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <label class="label" for="response">YOUR RESPONSE</label>
+            <textarea id="response" maxlength="20000" placeholder="<%= isSpeakingTask ? 'Live spoken transcript or written answer…' : 'Write your response here…' %>"><%= draftText || '' %></textarea>
+            
+            <p class="muted">
+                <span id="wordCount">0</span> words · Your response is private and is not automatically scored.
+            </p>
+
+            <% if (task.evaluationCriteria && task.evaluationCriteria.length) { %>
+                <div class="criteria">
+                    <strong>Review checklist</strong>
+                    <ul>
+                        <% task.evaluationCriteria.forEach(item => { %>
+                            <li><%= item %></li>
+                        <% }); %>
+                    </ul>
+                </div>
+            <% } %>
+
+            <div class="actions">
+                <button class="btn secondary" id="saveDraft">
+                    <i class="fa-solid fa-bookmark"></i> Save draft
+                </button>
+                <button class="btn" id="submitResponse">
+                    <i class="fa-solid fa-paper-plane"></i> Submit response
+                </button>
+            </div>
+            
+            <p class="status" id="status" role="status"></p>
+
+            <script nonce="<%= cspNonce %>">
+                const area = document.getElementById('response');
+                const count = document.getElementById('wordCount');
+                const statusNode = document.getElementById('status');
+                const key = 'cognizant-response-<%= attemptId %>';
+                const audioKey = 'cognizant-audio-<%= attemptId %>';
+
+                // Restore cached draft from localStorage
+                const local = localStorage.getItem(key);
+                if (local !== null && !area.value) area.value = local;
+
+                function words() {
+                    return area.value.trim() ? area.value.trim().split(/\s+/).length : 0;
+                }
+                area.addEventListener('input', () => {
+                    count.textContent = words();
+                    localStorage.setItem(key, area.value);
+                });
+                count.textContent = words();
+
+                // Audio recording state
+                let mediaRecorder = null;
+                let audioChunks = [];
+                let audioBase64 = '<%= draftAudio || "" %>';
+                let audioDuration = Number('<%= draftAudioDuration || 0 %>') || 0;
+                let recordingInterval = null;
+                let recordingSeconds = 0;
+                let isRecording = false;
+
+                // Speech recognition setup (Speech-to-Text)
+                let recognition = null;
+                if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+                    const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
+                    recognition = new SpeechRec();
+                    recognition.continuous = true;
+                    recognition.interimResults = true;
+                    recognition.lang = 'en-US';
+
+                    recognition.onresult = (event) => {
+                        let transcript = '';
+                        for (let i = 0; i < event.results.length; i++) {
+                            transcript += event.results[i][0].transcript + ' ';
+                        }
+                        if (transcript.trim()) {
+                            area.value = transcript.trim();
+                            count.textContent = words();
+                            localStorage.setItem(key, area.value);
+                        }
+                    };
+                }
+
+                const btnToggleRecord = document.getElementById('btnToggleRecord');
+                const micIcon = document.getElementById('micIcon');
+                const audioRecordTimer = document.getElementById('audioRecordTimer');
+                const recordStatusText = document.getElementById('recordStatusText');
+                const audioPlaybackWrapper = document.getElementById('audioPlaybackWrapper');
+                const audioPlayback = document.getElementById('audioPlayback');
+                const audioRecorderContainer = document.getElementById('audioRecorderContainer');
+                const btnDiscardAudio = document.getElementById('btnDiscardAudio');
+
+                // Check local storage for cached audio
+                const cachedAudio = localStorage.getItem(audioKey);
+                if (!audioBase64 && cachedAudio) {
+                    audioBase64 = cachedAudio;
+                    audioPlayback.src = audioBase64;
+                    audioPlaybackWrapper.style.display = 'block';
+                }
+
+                // Mode tabs switching
+                const tabAudioMode = document.getElementById('tabAudioMode');
+                const tabTextMode = document.getElementById('tabTextMode');
+
+                tabAudioMode.addEventListener('click', () => {
+                    tabAudioMode.classList.add('active');
+                    tabTextMode.classList.remove('active');
+                    audioRecorderContainer.style.display = 'flex';
+                });
+
+                tabTextMode.addEventListener('click', () => {
+                    tabTextMode.classList.add('active');
+                    tabAudioMode.classList.remove('active');
+                    audioRecorderContainer.style.display = 'none';
+                });
+
+                // Toggle Record
+                btnToggleRecord.addEventListener('click', async () => {
+                    if (!isRecording) {
+                        startRecording();
+                    } else {
+                        stopRecording();
+                    }
+                });
+
+                async function startRecording() {
+                    try {
+                        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                        audioChunks = [];
+                        mediaRecorder = new MediaRecorder(stream);
+
+                        mediaRecorder.ondataavailable = (e) => {
+                            if (e.data && e.data.size > 0) {
+                                audioChunks.push(e.data);
+                            }
+                        };
+
+                        mediaRecorder.onstop = () => {
+                            const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+                            const reader = new FileReader();
+                            reader.readAsDataURL(audioBlob);
+                            reader.onloadend = () => {
+                                audioBase64 = reader.result;
+                                audioDuration = recordingSeconds;
+                                localStorage.setItem(audioKey, audioBase64);
+                                audioPlayback.src = audioBase64;
+                                audioPlaybackWrapper.style.display = 'block';
+                                recordStatusText.textContent = `Recorded ${recordingSeconds}s. You can play back below or submit your answer.`;
+                            };
+                            stream.getTracks().forEach(track => track.stop());
+                        };
+
+                        mediaRecorder.start();
+                        isRecording = true;
+                        recordingSeconds = 0;
+                        audioRecordTimer.textContent = '00:00';
+                        btnToggleRecord.classList.add('recording');
+                        audioRecorderContainer.classList.add('recording');
+                        micIcon.className = 'fa-solid fa-stop';
+                        recordStatusText.textContent = 'Recording in progress… Speak clearly into your microphone.';
+                        audioPlaybackWrapper.style.display = 'none';
+
+                        recordingInterval = setInterval(() => {
+                            recordingSeconds++;
+                            const mins = Math.floor(recordingSeconds / 60);
+                            const secs = recordingSeconds % 60;
+                            audioRecordTimer.textContent = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+
+                            // Limit to 2 minutes
+                            if (recordingSeconds >= 120) {
+                                stopRecording();
+                            }
+                        }, 1000);
+
+                        if (recognition) {
+                            try { recognition.start(); } catch (err) {}
+                        }
+
+                    } catch (err) {
+                        console.error('Microphone access denied:', err);
+                        recordStatusText.textContent = 'Microphone access denied or unavailable. Please grant permission or use written mode.';
+                    }
+                }
+
+                function stopRecording() {
+                    if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+                        mediaRecorder.stop();
+                    }
+                    if (recordingInterval) clearInterval(recordingInterval);
+                    if (recognition) {
+                        try { recognition.stop(); } catch (err) {}
+                    }
+                    isRecording = false;
+                    btnToggleRecord.classList.remove('recording');
+                    audioRecorderContainer.classList.remove('recording');
+                    micIcon.className = 'fa-solid fa-microphone';
+                }
+
+                btnDiscardAudio.addEventListener('click', () => {
+                    audioBase64 = '';
+                    audioDuration = 0;
+                    localStorage.removeItem(audioKey);
+                    audioPlayback.src = '';
+                    audioPlaybackWrapper.style.display = 'none';
+                    audioRecordTimer.textContent = '00:00';
+                    recordStatusText.textContent = 'Audio cleared. Click the microphone to record again.';
+                });
+
+                async function save(submit) {
+                    statusNode.textContent = submit ? 'Submitting response…' : 'Saving draft…';
+                    try {
+                        const payload = {
+                            attemptId: '<%= attemptId %>',
+                            responseText: area.value,
+                            audioData: audioBase64,
+                            audioDuration: audioDuration,
+                            responseMode: audioBase64 ? (area.value ? 'both' : 'audio') : 'text',
+                            submit: String(submit)
+                        };
+
+                        const r = await fetch('/cognizant/response/draft', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(payload)
+                        });
+                        const d = await r.json();
+                        if (!r.ok || !d.ok) throw new Error(d.message || 'Could not save.');
+
+                        if (submit) {
+                            localStorage.removeItem(key);
+                            localStorage.removeItem(audioKey);
+                            location.href = '/cognizant/submission/' + d.id;
+                            return;
+                        }
+                        statusNode.textContent = d.message;
+                    } catch (e) {
+                        statusNode.textContent = e.message;
+                    }
+                }
+
+                document.getElementById('saveDraft').addEventListener('click', () => save(false));
+                document.getElementById('submitResponse').addEventListener('click', () => save(true));
+
+                const timer = document.getElementById('timer');
+                let remaining = Number(timer.dataset.seconds) || 0;
+                function tick() {
+                    timer.textContent = remaining <= 0 ? 'Time ended' : String(Math.floor(remaining / 60)).padStart(2, '0') + ':' + String(remaining % 60).padStart(2, '0');
+                    if (remaining > 0) remaining--;
+                }
+                tick();
+                setInterval(tick, 1000);
+            </script>
+        <% } %>
+    </section>
+</main>
+</body>
+</html>

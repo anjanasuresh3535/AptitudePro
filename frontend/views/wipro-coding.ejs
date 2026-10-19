@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wipro Coding Mock Test | AptitudePro</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<!-- CodeMirror 5 — syntax highlighting + line numbers (CDN, no npm) -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.17/codemirror.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.17/theme/dracula.min.css">
+<style>
+/* Override CodeMirror defaults to match our dark theme */
+.CodeMirror {
+    height: 100% !important;
+    font-family: 'JetBrains Mono', ui-monospace, 'Cascadia Code', Consolas, monospace !important;
+    font-size: 0.88rem !important;
+    line-height: 1.7 !important;
+    background: #070c18 !important;
+    color: #e2e8f0 !important;
+    border: none !important;
+}
+.CodeMirror-scroll {
+    min-height: 100%;
+    padding-bottom: 24px;
+}
+.CodeMirror-gutters {
+    background: #050a14 !important;
+    border-right: 1px solid rgba(56,189,248,0.1) !important;
+    min-width: 44px;
+}
+.CodeMirror-linenumber {
+    color: #334155 !important;
+    font-size: 0.75rem !important;
+    padding: 0 10px 0 6px !important;
+    font-family: 'JetBrains Mono', monospace !important;
+}
+.CodeMirror-cursor {
+    border-left: 2px solid #38bdf8 !important;
+}
+.CodeMirror-selected { background: rgba(56,189,248,0.18) !important; }
+.CodeMirror-focused .CodeMirror-selected { background: rgba(56,189,248,0.22) !important; }
+.CodeMirror-matchingbracket { color: #34d399 !important; font-weight: bold; background: rgba(52,211,153,0.12); border-radius: 2px; }
+/* Active line highlight */
+.CodeMirror-activeline-background { background: rgba(56,189,248,0.05) !important; }
+/* Scrollbar */
+.CodeMirror-vscrollbar::-webkit-scrollbar { width: 8px; }
+.CodeMirror-vscrollbar::-webkit-scrollbar-track { background: transparent; }
+.CodeMirror-vscrollbar::-webkit-scrollbar-thumb { background: rgba(148,163,184,0.15); border-radius: 4px; }
+.CodeMirror-hscrollbar::-webkit-scrollbar { height: 6px; }
+.CodeMirror-hscrollbar::-webkit-scrollbar-thumb { background: rgba(148,163,184,0.15); border-radius: 4px; }
+</style>
+<style>
+/* ================================================================
+   WIPRO CODING ASSESSMENT — Professional dedicated UI
+   Completely separate from the standard AptitudePro MCQ renderer.
+   No A/B/C/D answer options. Pure programming assessment layout.
+   ================================================================ */
+:root {
+    --bg:           #0a0f1e;
+    --bg-panel:     #0f172a;
+    --bg-editor:    #070c18;
+    --bg-card:      rgba(15, 23, 42, 0.85);
+    --border:       rgba(56, 189, 248, 0.12);
+    --border-soft:  rgba(255, 255, 255, 0.07);
+    --text:         #e2e8f0;
+    --muted:        #64748b;
+    --muted2:       #94a3b8;
+    --accent:       #38bdf8;
+    --accent-dark:  #0891b2;
+    --green:        #34d399;
+    --green-dark:   #059669;
+    --amber:        #fbbf24;
+    --red:          #f87171;
+    --purple:       #a78bfa;
+    --radius:       14px;
+    --font-mono:    'JetBrains Mono', ui-monospace, 'Cascadia Code', Consolas, monospace;
+}
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { height: 100%; }
+
+body {
+    font-family: 'Inter', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ── Top navigation bar ─────────────────────────────────────── */
+.top-bar {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 0 20px;
+    height: 56px;
+    background: rgba(10, 15, 30, 0.98);
+    border-bottom: 1px solid var(--border);
+    z-index: 100;
+}
+
+.top-bar-left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex: 1;
+    min-width: 0;
+}
+
+.brand {
+    font-size: 1rem;
+    font-weight: 800;
+    color: #fff;
+    white-space: nowrap;
+}
+.brand span { color: var(--accent); }
+
+.back-link {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--muted2);
+    text-decoration: none;
+    padding: 6px 12px;
+    border-radius: 8px;
+    border: 1px solid var(--border-soft);
+    transition: all 0.15s;
+    white-space: nowrap;
+}
+.back-link:hover { color: var(--accent); border-color: rgba(56,189,248,0.3); }
+
+.test-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 1;
+    min-width: 0;
+}
+
+.test-title {
+    font-size: 0.92rem;
+    font-weight: 700;
+    color: #fff;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.test-meta {
+    font-size: 0.75rem;
+    color: var(--muted2);
+    white-space: nowrap;
+}
+
+/* ── Timer block ─────────────────────────────────────────────── */
+.timer-block {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    flex-shrink: 0;
+}
+.timer-label {
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 1px;
+}
+#timerDisplay {
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: var(--accent);
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.04em;
+    line-height: 1;
+    transition: color 0.3s;
+}
+#timerDisplay.warn   { color: var(--amber); }
+#timerDisplay.danger { color: var(--red); animation: blink 1s ease-in-out infinite; }
+@keyframes blink { 50% { opacity: 0.5; } }
+
+/* ── Problem tabs in top bar ─────────────────────────────────── */
+.prob-tabs {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+}
+.prob-tab {
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    border: 1px solid var(--border-soft);
+    background: rgba(255,255,255,0.04);
+    color: var(--muted2);
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.15s;
+    white-space: nowrap;
+}
+.prob-tab:hover { border-color: var(--accent); color: var(--accent); }
+.prob-tab.active {
+    background: linear-gradient(135deg, var(--accent-dark), var(--accent));
+    color: #04212e;
+    border-color: transparent;
+}
+.prob-tab.submitted { border-color: rgba(52,211,153,0.5); color: var(--green); }
+.prob-tab.active.submitted { background: linear-gradient(135deg, #065f46, var(--green)); color: #021a10; }
+
+/* ── Finish button ───────────────────────────────────────────── */
+.btn-finish {
+    padding: 7px 18px;
+    border-radius: 9px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    border: 1px solid rgba(248,113,113,0.35);
+    background: rgba(248,113,113,0.08);
+    color: #fca5a5;
+    cursor: pointer;
+    font-family: inherit;
+    white-space: nowrap;
+    transition: all 0.15s;
+}
+.btn-finish:hover { background: rgba(248,113,113,0.18); border-color: rgba(248,113,113,0.6); }
+
+
+/* ── Main split-screen body ─────────────────────────────────── */
+.assessment-body {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 44% 1fr;
+    min-height: 0;
+    overflow: hidden;
+}
+
+/* ── LEFT: Problem panel ────────────────────────────────────── */
+.problem-panel {
+    background: var(--bg-panel);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.problem-scroll {
+    flex: 1;
+    overflow-y: auto;
+    padding: 24px;
+    scroll-behavior: smooth;
+}
+.problem-scroll::-webkit-scrollbar { width: 4px; }
+.problem-scroll::-webkit-scrollbar-track { background: transparent; }
+.problem-scroll::-webkit-scrollbar-thumb { background: rgba(56,189,248,0.3); border-radius: 4px; }
+
+.problem-view { display: none; }
+.problem-view.active { display: block; }
+
+/* Problem header */
+.prob-num {
+    font-size: 0.65rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 700;
+    margin-bottom: 6px;
+}
+.prob-title {
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: #fff;
+    line-height: 1.35;
+    margin-bottom: 14px;
+}
+.prob-badges {
+    display: flex;
+    gap: 7px;
+    flex-wrap: wrap;
+    margin-bottom: 22px;
+}
+.badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.68rem;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 20px;
+}
+.badge-topic   { background: rgba(56,189,248,0.1);  color: #7dd3fc; border: 1px solid rgba(56,189,248,0.2); }
+.badge-diff    { background: rgba(167,139,250,0.1); color: #c4b5fd; border: 1px solid rgba(167,139,250,0.2); }
+.badge-diff.Easy        { background: rgba(52,211,153,0.1); color: #6ee7b7; border-color: rgba(52,211,153,0.2); }
+.badge-diff.Medium      { background: rgba(251,191,36,0.1); color: #fde68a; border-color: rgba(251,191,36,0.2); }
+.badge-diff.Hard        { background: rgba(248,113,113,0.1); color: #fca5a5; border-color: rgba(248,113,113,0.2); }
+.badge-hidden  { background: rgba(251,191,36,0.08); color: #fde68a; border: 1px solid rgba(251,191,36,0.2); }
+
+/* Section headers */
+.section-head {
+    font-size: 0.63rem;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 700;
+    margin-bottom: 8px;
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.section-head::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, rgba(56,189,248,0.2), transparent);
+}
+.section-head:first-of-type { margin-top: 0; }
+
+/* Section values */
+.section-body {
+    color: var(--text);
+    line-height: 1.8;
+    font-size: 0.91rem;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+/* Code-block for sample I/O */
+.io-block {
+    background: var(--bg-editor);
+    border: 1px solid rgba(148,163,184,0.12);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-top: 4px;
+}
+.io-block pre {
+    font-family: var(--font-mono);
+    font-size: 0.84rem;
+    line-height: 1.7;
+    color: #cbd5e1;
+    padding: 14px 16px;
+    white-space: pre;
+    overflow-x: auto;
+    tab-size: 4;
+}
+.io-block pre::-webkit-scrollbar { height: 4px; }
+.io-block pre::-webkit-scrollbar-thumb { background: rgba(56,189,248,0.25); border-radius: 4px; }
+
+/* Constraints list */
+.constraints-list {
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    color: #cbd5e1;
+    line-height: 2;
+    background: rgba(56,189,248,0.04);
+    border: 1px solid rgba(56,189,248,0.12);
+    border-radius: 10px;
+    padding: 12px 16px;
+    white-space: pre-wrap;
+}
+
+/* ── RIGHT: Editor panel ─────────────────────────────────────── */
+.editor-panel {
+    background: var(--bg-editor);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+/* Editor top toolbar */
+.editor-toolbar {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 10px 16px;
+    background: rgba(15,23,42,0.6);
+    border-bottom: 1px solid var(--border-soft);
+}
+
+.lang-tabs {
+    display: flex;
+    gap: 4px;
+}
+.lang-tab {
+    padding: 5px 14px;
+    border-radius: 7px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    font-family: var(--font-mono);
+    border: 1px solid var(--border-soft);
+    background: rgba(255,255,255,0.03);
+    color: var(--muted2);
+    cursor: pointer;
+    transition: all 0.15s;
+}
+.lang-tab:hover { border-color: var(--accent); color: var(--accent); }
+.lang-tab.active {
+    background: linear-gradient(135deg, #312e81, #6d28d9);
+    color: #ddd6fe;
+    border-color: transparent;
+}
+
+.editor-actions-top {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+}
+
+/* Problem label inside editor toolbar */
+.editor-prob-label {
+    font-size: 0.72rem;
+    color: var(--muted);
+    font-family: var(--font-mono);
+}
+
+/* Code editor */
+.editor-area {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+}
+
+
+
+/* Java class name hint */
+.java-hint {
+    display: none;
+    padding: 5px 16px;
+    font-size: 0.74rem;
+    color: #fde68a;
+    background: rgba(251,191,36,0.06);
+    border-top: 1px solid rgba(251,191,36,0.12);
+    flex-shrink: 0;
+}
+.java-hint.show { display: flex; align-items: center; gap: 7px; }
+
+/* Run result panel */
+.run-panel {
+    flex-shrink: 0;
+    max-height: 180px;
+    overflow-y: auto;
+    border-top: 1px solid var(--border-soft);
+    padding: 12px 16px;
+    font-size: 0.82rem;
+    line-height: 1.7;
+    display: none;
+}
+.run-panel.show { display: block; }
+.run-panel.ok   { background: rgba(52,211,153,0.06); color: #a7f3d0; }
+.run-panel.err  { background: rgba(248,113,113,0.06); color: #fca5a5; }
+.run-panel.info { background: rgba(56,189,248,0.06); color: #7dd3fc; }
+.run-panel strong { color: #fff; }
+.run-panel pre { font-family: var(--font-mono); font-size: 0.78rem; margin-top: 6px; white-space: pre-wrap; }
+
+/* ── Exec-unavailable friendly notice ───────────────────────── */
+.exec-msg-bar {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 16px;
+    font-size: 0.76rem;
+    color: #fde68a;
+    background: rgba(251,191,36,0.05);
+    border-top: 1px solid rgba(251,191,36,0.12);
+}
+
+
+/* Editor bottom action bar */
+.editor-action-bar {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 10px 16px;
+    background: rgba(15,23,42,0.7);
+    border-top: 1px solid var(--border);
+}
+.action-left { display: flex; gap: 8px; align-items: center; }
+.action-right { display: flex; gap: 8px; align-items: center; }
+
+/* Buttons */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 8px 18px;
+    border-radius: 9px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    font-family: inherit;
+    cursor: pointer;
+    border: none;
+    transition: filter 0.15s, opacity 0.15s;
+    white-space: nowrap;
+}
+.btn:hover:not(:disabled) { filter: brightness(1.1); }
+.btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.btn-run {
+    background: linear-gradient(135deg, #065f46, var(--green));
+    color: #021a10;
+}
+.btn-submit {
+    background: linear-gradient(135deg, var(--accent-dark), var(--accent));
+    color: #04212e;
+    font-size: 0.9rem;
+    padding: 9px 24px;
+}
+.btn-secondary {
+    background: rgba(255,255,255,0.05);
+    color: var(--muted2);
+    border: 1px solid var(--border-soft);
+}
+.btn-secondary:hover:not(:disabled) { color: var(--text); border-color: rgba(255,255,255,0.15); filter: none; }
+.btn-icon {
+    padding: 7px 10px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--border-soft);
+    color: var(--muted2);
+    border-radius: 7px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.15s;
+}
+.btn-icon:hover { color: var(--text); }
+.btn-icon.active { color: var(--accent); border-color: rgba(56,189,248,0.3); }
+
+/* ── Toast notifications ─────────────────────────────────────── */
+#toast-container {
+    position: fixed;
+    top: 68px;
+    right: 20px;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    pointer-events: none;
+}
+.toast {
+    padding: 12px 18px;
+    border-radius: 10px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    max-width: 320px;
+    animation: slideIn 0.2s ease-out;
+    pointer-events: auto;
+}
+.toast.info    { background: rgba(56,189,248,0.15); border: 1px solid rgba(56,189,248,0.35); color: #7dd3fc; }
+.toast.warning { background: rgba(251,191,36,0.15); border: 1px solid rgba(251,191,36,0.35); color: #fde68a; }
+.toast.error   { background: rgba(248,113,113,0.15); border: 1px solid rgba(248,113,113,0.35); color: #fca5a5; }
+.toast.success { background: rgba(52,211,153,0.15); border: 1px solid rgba(52,211,153,0.35); color: #a7f3d0; }
+@keyframes slideIn { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: none; } }
+
+/* ── Submit dialog ───────────────────────────────────────────── */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.75);
+    backdrop-filter: blur(6px);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+}
+.modal-overlay.show { display: flex; }
+.modal {
+    background: #0f172a;
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 32px;
+    max-width: 440px;
+    width: calc(100% - 40px);
+    text-align: center;
+}
+.modal-icon { font-size: 2.5rem; margin-bottom: 16px; }
+.modal h2 { font-size: 1.25rem; font-weight: 800; color: #fff; margin-bottom: 8px; }
+.modal p { color: var(--muted2); font-size: 0.88rem; line-height: 1.7; margin-bottom: 24px; }
+.modal-btns { display: flex; gap: 12px; justify-content: center; }
+
+/* ── Timer warning overlay ───────────────────────────────────── */
+.timer-warning {
+    position: fixed;
+    top: 64px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 800;
+    padding: 10px 24px;
+    border-radius: 24px;
+    font-size: 0.88rem;
+    font-weight: 700;
+    pointer-events: none;
+    animation: fadeOut 4s ease-out forwards;
+}
+.timer-warning.yellow { background: rgba(251,191,36,0.2); border: 1px solid rgba(251,191,36,0.5); color: #fde68a; }
+.timer-warning.red    { background: rgba(248,113,113,0.2); border: 1px solid rgba(248,113,113,0.5); color: #fca5a5; }
+@keyframes fadeOut { 0%,70% { opacity: 1; } 100% { opacity: 0; } }
+
+/* ── Mobile layout ───────────────────────────────────────────── */
+@media (max-width: 900px) {
+    body { overflow: auto; }
+    .assessment-body {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto;
+        overflow: auto;
+        height: auto;
+    }
+    .problem-panel { height: auto; overflow: visible; border-right: none; border-bottom: 1px solid var(--border); }
+    .problem-scroll { overflow: visible; max-height: none; }
+    .editor-panel { height: 60vh; min-height: 420px; }
+    .test-meta { display: none; }
+}
+
+@media (max-width: 600px) {
+    .back-link { display: none; }
+    .brand { font-size: 0.88rem; }
+    .prob-tab { padding: 5px 10px; font-size: 0.72rem; }
+    .btn-finish { padding: 5px 12px; font-size: 0.75rem; }
+}
+
+/* ── Autosave indicator ─────────────────────────────────────── */
+#autosave-indicator {
+    font-size: 0.65rem;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: color 0.3s;
+}
+#autosave-indicator.saved { color: var(--green); }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════════
+     TOP NAVIGATION / TIMER BAR
+═══════════════════════════════════════════════════════════════ -->
+<div class="top-bar">
+    <div class="top-bar-left">
+        <a href="/placement/college/company/wipro" class="back-link">
+            <i class="fa-solid fa-arrow-left"></i> Wipro
+        </a>
+        <div class="brand">Aptitude<span>Pro</span></div>
+        <div class="test-info">
+            <span class="test-title">Wipro Coding Mock Test</span>
+            <span class="test-meta">&nbsp;·&nbsp; 2 Problems &nbsp;·&nbsp; 60 min &nbsp;·&nbsp; C / C++ / Java / Python</span>
+        </div>
+    </div>
+
+    <!-- Problem tabs -->
+    <div class="prob-tabs" id="probTabs">
+        <% problems.forEach(function(p, i) { %>
+        <button type="button"
+                class="prob-tab <%= i === 0 ? 'active' : '' %>"
+                id="ptab-<%= i %>"
+                data-idx="<%= i %>"
+                title="<%= p.title %>">
+            Problem <%= i + 1 %>
+        </button>
+        <% }); %>
+    </div>
+
+    <!-- Timer -->
+    <div class="timer-block">
+        <div class="timer-label">Time Remaining</div>
+        <div id="timerDisplay"
+             data-deadline="<%= deadline %>"
+             data-limit="<%= timeLimitSec %>">
+            <%= String(Math.floor(remainingSeconds / 60)).padStart(2,'0') %>:<%= String(remainingSeconds % 60).padStart(2,'0') %>
+        </div>
+    </div>
+
+    <!-- Finish button -->
+    <button type="button" class="btn-finish" id="finishBtn">
+        <i class="fa-solid fa-flag-checkered"></i> Finish Test
+    </button>
+</div>
+
+<!-- Execution status is handled gracefully near the action buttons (see exec-msg below) -->
+
+<!-- ═══════════════════════════════════════════════════════════
+     MAIN SPLIT-SCREEN LAYOUT
+═══════════════════════════════════════════════════════════════ -->
+<div class="assessment-body">
+
+    <!-- ─── LEFT: Problem Panel ──────────────────────────────── -->
+    <div class="problem-panel">
+        <div class="problem-scroll" id="problemScroll">
+            <% problems.forEach(function(p, i) { %>
+            <div class="card problem-panel" id="pview-<%= i %>" style="<%= i === 0 ? '' : 'display:none;' %>">
+
+                <div class="prob-num">Problem <%= i + 1 %> of <%= problems.length %></div>
+                <div class="prob-title"><%= p.title %></div>
+
+                <div class="prob-badges">
+                    <% if (p.topic) { %>
+                    <span class="badge badge-topic">
+                        <i class="fa-solid fa-tag"></i> <%= p.topic %>
+                    </span>
+                    <% } %>
+                    <span class="badge badge-diff <%= p.difficulty %>">
+                        <i class="fa-solid fa-signal"></i> <%= p.difficulty || 'Medium' %>
+                    </span>
+                </div>
+
+
+                <div class="section-head">Problem Statement</div>
+                <div class="section-body"><%= p.statement %></div>
+
+                <div class="section-head">Input Format</div>
+                <div class="section-body"><%= p.inputFormat %></div>
+
+                <div class="section-head">Output Format</div>
+                <div class="section-body"><%= p.outputFormat %></div>
+
+                <div class="section-head">Constraints</div>
+                <div class="constraints-list"><%= p.constraints %></div>
+
+                <div class="section-head">Sample Input</div>
+                <div class="io-block"><pre><%= p.sampleInput %></pre></div>
+
+                <div class="section-head">Sample Output</div>
+                <div class="io-block"><pre><%= p.sampleOutput %></pre></div>
+
+                <div class="section-head">Explanation</div>
+                <div class="section-body"><%= p.explanation || 'Review the problem constraints, logic, and test cases carefully.' %></div>
+
+            </div>
+            <% }); %>
+        </div>
+    </div>
+
+    <!-- ─── RIGHT: Editor Panel ──────────────────────────────── -->
+    <div class="editor-panel">
+
+        <!-- Editor top toolbar -->
+        <div class="editor-toolbar">
+            <!-- Language tabs -->
+            <div class="lang-tabs" id="langTabs">
+                <% languages.forEach(function(l, i) { %>
+                <button type="button"
+                        class="lang-tab <%= i === 0 ? 'active' : '' %>"
+                        data-lang="<%= l %>"
+                        title="Switch to <%= l %>">
+                    <%= l %>
+                </button>
+                <% }); %>
+            </div>
+
+            <div style="display:flex;align-items:center;gap:10px;">
+                <span class="editor-prob-label" id="editorProbLabel">Problem 1</span>
+                <button type="button" class="btn-icon" id="loadStarterBtn" title="Load starter template">
+                    <i class="fa-solid fa-code"></i> Starter
+                </button>
+                <button type="button" class="btn-icon" id="clearEditorBtn" title="Clear editor">
+                    <i class="fa-solid fa-eraser"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Java class name hint -->
+        <div class="java-hint" id="javaHint">
+            <i class="fa-solid fa-circle-info"></i>
+            Your public class must be named <strong>Main</strong>. Read input from stdin.
+        </div>
+
+        <!-- Single CodeMirror editor — code state managed in JS codeStore -->
+        <div class="editor-area" id="editorArea">
+            <!-- Hidden data: question IDs per problem so JS can map them -->
+            <% problems.forEach(function(p, i) { %>
+            <input type="hidden" class="prob-qid-ref" data-prob="<%= i %>" data-qid="<%= p.id %>">
+            <% }); %>
+            <!-- CodeMirror will be initialised here by wipro-coding-v2.js -->
+            <% problems.forEach(function(p, i) { %>
+            <div class="editor-wrap" data-editor="<%= i %>">
+                <textarea class="code-editor" id="codeEditor-<%= i %>" name="code_<%= i %>" data-prob="<%= i %>" style="display:none;"></textarea>
+            </div>
+            <% }); %>
+            <div id="cmEditorHost" style="height:100%;"></div>
+        </div>
+
+        <!-- Run result panel -->
+        <div class="run-panel" id="runPanel"></div>
+
+        <% if (!executionAvailable) { %>
+        <!-- Friendly exec-unavailable note (no technical reason exposed) -->
+        <div class="exec-msg-bar">
+            <i class="fa-solid fa-circle-info"></i>
+            Code execution is temporarily unavailable. Your solution will be saved when you submit.
+        </div>
+        <% } %>
+
+        <!-- Editor bottom action bar -->
+        <div class="editor-action-bar">
+            <div class="action-left">
+                <button type="button" class="btn btn-run" id="runSamplesBtn">
+                    <i class="fa-solid fa-play"></i> Run Code
+                </button>
+            </div>
+            <div class="action-right">
+                <button type="button" class="btn btn-submit" id="submitCodeBtn">
+                    <i class="fa-solid fa-paper-plane"></i> Submit Code
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     FINISH CONFIRMATION MODAL
+═══════════════════════════════════════════════════════════════ -->
+<div class="modal-overlay" id="finishModal">
+    <div class="modal">
+        <div class="modal-icon">🏁</div>
+        <h2>Finish Coding Assessment?</h2>
+        <p id="finishModalBody">
+            This will submit all your code and end the test. You cannot return after finishing.
+        </p>
+        <div class="modal-btns">
+            <button type="button" class="btn btn-secondary" id="cancelFinishBtn">
+                <i class="fa-solid fa-arrow-left"></i> Keep Coding
+            </button>
+            <button type="button" class="btn btn-submit" id="confirmFinishBtn">
+                <i class="fa-solid fa-flag-checkered"></i> Finish Now
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     TOAST CONTAINER
+═══════════════════════════════════════════════════════════════ -->
+<div id="toast-container"></div>
+
+<!-- Hidden submission form (POST to existing route — no change to backend) -->
+<form method="POST" action="/wipro/coding/submit" id="codingForm" style="display:none;">
+    <input type="hidden" name="submissions" id="submissionsField" value="[]">
+</form>
+
+<!-- Safe JSON data blocks — no inline scripts with user data -->
+<script type="application/json" id="startersData"><%= startersJson %></script>
+<script type="application/json" id="problemsData"><%- JSON.stringify(problems.map(function(p){ return {id: p.id, title: p.title}; })) %></script>
+
+<!-- CodeMirror 5 runtime (CDN) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.17/codemirror.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.17/mode/clike/clike.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.17/mode/python/python.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.17/addon/edit/matchbrackets.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.17/addon/edit/closebrackets.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.17/addon/selection/active-line.min.js"></script>
+<script src="/js/wipro-coding-v2.js"></script>
+</body>
+</html>

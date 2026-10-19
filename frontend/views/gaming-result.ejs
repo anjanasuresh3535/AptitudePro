@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-dark: #090d16;
+            --card-bg: rgba(15, 23, 42, 0.8);
+            --card-border: rgba(255, 255, 255, 0.1);
+            --accent-cyan: #00f2fe;
+            --accent-green: #00e676;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-main);
+            min-height: 100vh;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .navbar {
+            background: rgba(15, 23, 42, 0.9);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 16px 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand-link {
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--accent-cyan);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .nav-link {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            transition: color 0.2s;
+        }
+
+        .nav-link:hover {
+            color: #ffffff;
+        }
+
+        .result-container {
+            max-width: 1000px;
+            margin: 36px auto;
+            padding: 0 24px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .result-header-card {
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(15, 23, 42, 0.9) 100%);
+            border: 1px solid var(--card-border);
+            border-radius: 24px;
+            padding: 36px;
+            text-align: center;
+            margin-bottom: 32px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .result-header-card h1 {
+            font-size: 32px;
+            font-weight: 800;
+            margin: 0 0 8px 0;
+            color: #ffffff;
+        }
+
+        .result-header-card p {
+            color: var(--text-muted);
+            margin: 0 0 24px 0;
+            font-size: 15px;
+        }
+
+        .xp-reward-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: linear-gradient(135deg, rgba(250, 204, 21, 0.2) 0%, rgba(234, 179, 8, 0.3) 100%);
+            border: 1px solid rgba(250, 204, 21, 0.4);
+            color: #facc15;
+            padding: 12px 28px;
+            border-radius: 30px;
+            font-size: 22px;
+            font-weight: 800;
+            margin-bottom: 24px;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 16px;
+            margin-bottom: 36px;
+        }
+
+        .metric-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .metric-card .val {
+            font-size: 26px;
+            font-weight: 800;
+            color: #ffffff;
+            margin-bottom: 4px;
+        }
+
+        .metric-card .lbl {
+            font-size: 12px;
+            color: var(--text-muted);
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .action-bar {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            margin-bottom: 40px;
+        }
+
+        .btn-action {
+            background: linear-gradient(135deg, #0284c7, #00f2fe);
+            color: #090d16;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 800;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+        }
+
+        .btn-action:hover {
+            filter: brightness(1.15);
+            box-shadow: 0 8px 24px rgba(0, 242, 254, 0.3);
+        }
+
+        .btn-action-sec {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: #ffffff;
+            padding: 14px 28px;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+        }
+
+        .btn-action-sec:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .review-section h2 {
+            font-size: 22px;
+            font-weight: 800;
+            color: #ffffff;
+            margin: 0 0 20px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .ans-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 20px;
+        }
+
+        .ans-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .ans-badge {
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        .badge-correct { background: rgba(0, 230, 118, 0.15); color: #4ade80; border: 1px solid rgba(0, 230, 118, 0.3); }
+        .badge-wrong { background: rgba(239, 68, 68, 0.15); color: #fca5a5; border: 1px solid rgba(239, 68, 68, 0.3); }
+        .badge-skipped { background: rgba(148, 163, 184, 0.15); color: #cbd5e1; border: 1px solid rgba(148, 163, 184, 0.3); }
+
+        .ans-q-text {
+            font-size: 16px;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 16px;
+        }
+
+        .ans-comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            background: rgba(15, 23, 42, 0.6);
+            padding: 14px;
+            border-radius: 12px;
+            font-size: 13px;
+            margin-bottom: 16px;
+        }
+
+        .explanation-box {
+            background: rgba(30, 41, 59, 0.5);
+            border-left: 3px solid var(--accent-cyan);
+            padding: 12px 16px;
+            border-radius: 0 10px 10px 0;
+            font-size: 13px;
+            color: #cbd5e1;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <a href="/dashboard" class="brand-link">
+            <i class="fa-solid fa-gamepad"></i> AptitudePro Gaming
+        </a>
+        <div class="nav-links">
+            <a href="/placement" class="nav-link"><i class="fa-solid fa-graduation-cap"></i> Practice</a>
+            <a href="/gaming" class="nav-link"><i class="fa-solid fa-gamepad"></i> Gaming</a>
+            <a href="/dashboard" class="nav-link"><i class="fa-solid fa-chart-line"></i> Dashboard</a>
+            <a href="/results/history" class="nav-link"><i class="fa-solid fa-clock-rotate-left"></i> History</a>
+            <a href="/logout" class="nav-link"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+        </div>
+    </nav>
+
+    <div class="result-container">
+
+        <div class="result-header-card">
+            <h1><%= session.gameSectionName %> Complete!</h1>
+            <p><%= session.difficultyName %> Level • Session ID: <%= session.sessionId %></p>
+
+            <div class="xp-reward-badge">
+                <i class="fa-solid fa-bolt"></i>
+                <span>+<%= session.netXP %> XP Earned</span>
+            </div>
+
+            <div>
+                <span style="color: var(--text-muted); font-size: 14px;">User Progress: Level <%= session.levelBefore %> &rarr; <strong style="color: #ffffff;">Level <%= session.levelAfter %></strong></span>
+            </div>
+        </div>
+
+        <div class="metrics-grid">
+            <div class="metric-card">
+                <div class="val" style="color: var(--accent-cyan);"><%= session.score %> / <%= session.totalQuestions %></div>
+                <div class="lbl">Final Score</div>
+            </div>
+
+            <div class="metric-card">
+                <div class="val" style="color: #4ade80;"><%= session.accuracy %>%</div>
+                <div class="lbl">Accuracy</div>
+            </div>
+
+            <div class="metric-card">
+                <div class="val" style="color: #facc15;"><%= session.maxStreak %> 🔥</div>
+                <div class="lbl">Max Streak</div>
+            </div>
+
+            <div class="metric-card">
+                <div class="val" style="color: #c084fc;"><%= Math.floor((session.timeTakenSec || 0) / 60) %>m <%= (session.timeTakenSec || 0) % 60 %>s</div>
+                <div class="lbl">Time Taken</div>
+            </div>
+        </div>
+
+        <div class="action-bar">
+            <form action="/gaming/session" method="POST" style="margin: 0;">
+                <input type="hidden" name="gameSection" value="<%= session.gameSection %>">
+                <input type="hidden" name="difficulty" value="<%= session.difficulty %>">
+                <button type="submit" class="btn-action">
+                    <i class="fa-solid fa-rotate-right"></i> Play Again
+                </button>
+            </form>
+
+            <a href="/gaming" class="btn-action-sec">
+                <i class="fa-solid fa-gamepad"></i> Gaming Hub
+            </a>
+
+            <a href="/gaming/history" class="btn-action-sec">
+                <i class="fa-solid fa-clock-rotate-left"></i> Game History
+            </a>
+        </div>
+
+        <div class="review-section">
+            <h2><i class="fa-solid fa-list-check"></i> Detailed Question Review</h2>
+
+            <% if (session.answers && session.answers.length > 0) { %>
+                <% session.answers.forEach((ans, idx) => { %>
+                    <div class="ans-card">
+                        <div class="ans-head">
+                            <span style="color: var(--text-muted); font-weight: 700; font-size: 13px;">Question <%= idx + 1 %></span>
+                            <% if (ans.isCorrect) { %>
+                                <span class="ans-badge badge-correct"><i class="fa-solid fa-check"></i> Correct (+<%= ans.xpEarnedForQuestion %> XP)</span>
+                            <% } else if (ans.isSkipped) { %>
+                                <span class="ans-badge badge-skipped"><i class="fa-solid fa-forward"></i> Skipped</span>
+                            <% } else { %>
+                                <span class="ans-badge badge-wrong"><i class="fa-solid fa-xmark"></i> Wrong</span>
+                            <% } %>
+                        </div>
+
+                        <div class="ans-q-text"><%= ans.questionText %></div>
+
+                        <div class="ans-comparison">
+                            <div>
+                                <span style="color: var(--text-muted);">Your Answer:</span><br>
+                                <strong><%= ans.selectedAnswer ? ans.selectedAnswer + ': ' + ans.selectedAnswerText : 'Skipped' %></strong>
+                            </div>
+                            <div>
+                                <span style="color: var(--text-muted);">Correct Answer:</span><br>
+                                <strong style="color: #4ade80;"><%= ans.correctAnswer %>: <%= ans.correctAnswerText %></strong>
+                            </div>
+                        </div>
+
+                        <% if (ans.explanation || ans.quickTrick || ans.stepSolution) { %>
+                            <div class="explanation-box">
+                                <strong>Explanation / Solution:</strong><br>
+                                <%= ans.explanation || ans.fullExplanation || ans.stepSolution || ans.quickTrick %>
+                            </div>
+                        <% } %>
+                    </div>
+                <% }); %>
+            <% } %>
+        </div>
+
+    </div>
+
+</body>
+</html>

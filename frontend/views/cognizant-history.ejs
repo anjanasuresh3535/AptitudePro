@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Cognizant History | AptitudePro</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <style>
+        body { margin: 0; background: #08111f; color: #eaf2ff; font: 16px/1.55 Inter, system-ui, sans-serif; }
+        .wrap { max-width: 1000px; margin: 30px auto; padding: 18px; }
+        .panel { background: #101d30; border: 1px solid #253650; border-radius: 14px; padding: 18px; margin: 14px 0; }
+        a { color: #8fdcff; }
+        .muted { color: #9aabc0; }
+        li { padding: 8px 0; border-bottom: 1px solid #253650; }
+        .badge-audio {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 700;
+            background: rgba(0, 242, 254, 0.15);
+            color: #00f2fe;
+            margin-left: 6px;
+        }
+    </style>
+</head>
+<body>
+<main class="wrap">
+    <a href="/placement/college/company/cognizant">← Cognizant practice</a>
+    <h1>Cognizant practice history</h1>
+
+    <section class="panel">
+        <h2>Assessment results</h2>
+        <% if (!results.length) { %>
+            <p class="muted">No Cognizant quiz results yet.</p>
+        <% } else { %>
+            <ul>
+                <% results.forEach(r => { %>
+                    <li>
+                        <a href="/results/<%= r._id %>"><%= r.testTitle || r.section %></a> — <%= r.score %>/<%= r.totalQuestions %>, <%= r.accuracy %>% · <%= new Date(r.testDate).toLocaleString() %>
+                    </li>
+                <% }) %>
+            </ul>
+        <% } %>
+    </section>
+
+    <section class="panel">
+        <h2>Written and interview responses</h2>
+        <% if (!responses.length) { %>
+            <p class="muted">No submitted responses yet.</p>
+        <% } else { %>
+            <ul>
+                <% responses.forEach(r => { %>
+                    <li>
+                        <a href="/cognizant/submission/<%= r._id %>"><%= r.taskTitle %></a>
+                        <% if (r.audioData) { %>
+                            <span class="badge-audio">🎙️ Audio (<%= r.audioDuration || 0 %>s)</span>
+                        <% } %>
+                        — <%= r.wordCount %> words · <%= new Date(r.submittedAt || r.createdAt).toLocaleString() %>
+                    </li>
+                <% }) %>
+            </ul>
+        <% } %>
+    </section>
+
+    <section class="panel">
+        <h2>Coding and SQL submissions</h2>
+        <% if (!codingSubmissions.length && !sqlSubmissions.length) { %>
+            <p class="muted">No coding or SQL submissions yet.</p>
+        <% } %>
+        <ul>
+            <% codingSubmissions.forEach(s => { %>
+                <li>
+                    <a href="/cognizant/coding/result/<%= s._id %>">Coding attempt</a> — <%= s.overallStatus %>, <%= s.solvedProblems %>/<%= s.totalProblems %> solved
+                </li>
+            <% }) %>
+            <% sqlSubmissions.forEach(s => { %>
+                <li>
+                    <a href="/cognizant/sql/result/<%= s._id %>">SQL attempt</a> — <%= s.overallStatus %>, <%= s.solvedTasks %>/<%= s.totalTasks %> solved
+                </li>
+            <% }) %>
+        </ul>
+    </section>
+
+    <section class="panel">
+        <h2>Game-based aptitude</h2>
+        <% if (!gameAttempts.length) { %>
+            <p class="muted">No completed game sessions yet.</p>
+        <% } else { %>
+            <ul>
+                <% gameAttempts.forEach(g => { %>
+                    <li>
+                        <a href="/cognizant/games/result/<%= g._id %>"><%= g.score %>/<%= g.totalGames %> activities correct — Review answers</a> · <%= new Date(g.createdAt).toLocaleString() %>
+                    </li>
+                <% }) %>
+            </ul>
+        <% } %>
+    </section>
+</main>
+</body>
+</html>

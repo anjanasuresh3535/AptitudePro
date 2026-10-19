@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Audit Log – AptitudePro Admin</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; font-family:'Poppins',sans-serif; }
+    body { display:flex; min-height:100vh; background:#0a1628; color:#e2e8f0; }
+    .admin-sidebar { width:240px; min-height:100vh; background:rgba(15,23,42,0.95); border-right:1px solid rgba(255,255,255,0.08); position:fixed; top:0; left:0; bottom:0; display:flex; flex-direction:column; padding:0; z-index:100; }
+    .admin-sidebar-logo { padding:20px 20px 16px; display:flex; align-items:center; gap:10px; font-size:16px; font-weight:800; color:#fff; border-bottom:1px solid rgba(255,255,255,0.08); }
+    .admin-badge { background:#3b82f6; color:#fff; font-size:10px; font-weight:700; padding:2px 8px; border-radius:20px; margin-left:auto; }
+    .admin-nav { flex:1; padding:16px 12px; display:flex; flex-direction:column; gap:4px; overflow-y:auto; }
+    .admin-nav-link { display:flex; align-items:center; gap:10px; padding:10px 14px; border-radius:10px; font-size:13px; font-weight:600; color:#94a3b8; text-decoration:none; transition:all 0.2s; }
+    .admin-nav-link:hover { background:rgba(255,255,255,0.07); color:#fff; }
+    .admin-nav-link.active { background:rgba(59,130,246,0.15); color:#60a5fa; border-left:3px solid #3b82f6; }
+    .admin-sidebar-user { padding:16px 20px; border-top:1px solid rgba(255,255,255,0.08); display:flex; align-items:center; gap:10px; }
+    .admin-avatar { width:36px; height:36px; background:linear-gradient(135deg,#1a56db,#3b82f6); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:16px; font-weight:700; color:#fff; flex-shrink:0; }
+    .admin-main { margin-left:240px; flex:1; padding:28px 32px; min-height:100vh; }
+    .admin-topbar { display:flex; justify-content:space-between; align-items:center; margin-bottom:24px; }
+    .admin-topbar h1 { font-size:22px; font-weight:800; color:#fff; }
+    .admin-table-wrap { background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:14px; overflow:hidden; margin-bottom:24px; }
+    .admin-table-header { display:flex; justify-content:space-between; align-items:center; padding:16px 20px; border-bottom:1px solid rgba(255,255,255,0.08); }
+    .admin-table-header h3 { font-size:15px; font-weight:700; color:#fff; }
+    table { width:100%; border-collapse:collapse; }
+    th { background:rgba(255,255,255,0.04); color:#94a3b8; font-size:12px; font-weight:600; text-transform:uppercase; letter-spacing:0.5px; padding:12px 16px; text-align:left; }
+    td { padding:12px 16px; border-bottom:1px solid rgba(255,255,255,0.05); color:#cbd5e1; font-size:13px; vertical-align:middle; }
+    tr:last-child td { border-bottom:none; }
+    tr:hover td { background:rgba(255,255,255,0.03); }
+    .badge { display:inline-block; padding:3px 10px; border-radius:20px; font-size:11px; font-weight:700; }
+    .badge-action { background:rgba(59,130,246,0.15); color:#60a5fa; border:1px solid rgba(59,130,246,0.3); }
+    .empty-state { padding:48px 24px; text-align:center; color:#64748b; }
+    .empty-state i { font-size:40px; margin-bottom:12px; display:block; }
+    .pagination { display:flex; gap:8px; align-items:center; justify-content:center; margin-top:20px; }
+    .pagination a, .pagination span { display:inline-flex; align-items:center; justify-content:center; min-width:36px; height:36px; padding:0 10px; border-radius:8px; font-size:13px; font-weight:600; text-decoration:none; color:#94a3b8; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); transition:all 0.2s; }
+    .pagination a:hover { background:rgba(59,130,246,0.15); color:#60a5fa; }
+    .pagination .current { background:rgba(59,130,246,0.2); color:#60a5fa; border-color:#3b82f6; }
+    .pagination .disabled { opacity:0.35; pointer-events:none; }
+    @media(max-width:768px){ .admin-sidebar{display:none;} .admin-main{margin-left:0;} }
+  </style>
+</head>
+<body>
+
+<aside class="admin-sidebar">
+  <div class="admin-sidebar-logo">
+    <span>🧠</span> AptitudePro
+    <div class="admin-badge">Admin</div>
+  </div>
+  <nav class="admin-nav">
+    <a href="/admin" class="admin-nav-link"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+    <a href="/admin/users" class="admin-nav-link"><i class="fas fa-users"></i> Users</a>
+    <a href="/admin/questions" class="admin-nav-link"><i class="fas fa-question-circle"></i> Questions</a>
+    <a href="/admin/results" class="admin-nav-link"><i class="fas fa-chart-bar"></i> Results</a>
+    <a href="/admin/analytics" class="admin-nav-link"><i class="fas fa-chart-line"></i> Analytics</a>
+    <a href="/admin/audit-log" class="admin-nav-link active"><i class="fas fa-clipboard-list"></i> Audit Log</a>
+    <hr style="border-color:rgba(255,255,255,0.1);margin:12px 0;">
+    <a href="/dashboard?view=student" class="admin-nav-link"><i class="fas fa-arrow-left"></i> Student View</a>
+    <a href="/logout" class="admin-nav-link" style="color:#f87171;"><i class="fas fa-sign-out-alt"></i> Logout</a>
+  </nav>
+  <div class="admin-sidebar-user">
+    <div class="admin-avatar"><%= locals.adminUser ? locals.adminUser.name.charAt(0).toUpperCase() : 'A' %></div>
+    <div>
+      <div style="font-size:13px;font-weight:600;color:#fff;"><%= locals.adminUser ? locals.adminUser.name : 'Admin' %></div>
+      <div style="font-size:11px;color:#60a5fa;">Administrator</div>
+    </div>
+  </div>
+</aside>
+
+<main class="admin-main">
+  <div class="admin-topbar">
+    <h1><i class="fas fa-clipboard-list" style="color:#3b82f6;margin-right:8px;"></i>System Audit Log</h1>
+  </div>
+
+  <div class="admin-table-wrap">
+    <div class="admin-table-header">
+      <h3>Admin Actions History (<%= total %>)</h3>
+      <span style="font-size:12px;color:#94a3b8;">Page <%= page %> of <%= Math.max(1, totalPages) %></span>
+    </div>
+
+    <% if (!logs || logs.length === 0) { %>
+      <div class="empty-state">
+        <i class="fas fa-shield-alt"></i>
+        <p>No administrative actions have been logged yet.</p>
+      </div>
+    <% } else { %>
+      <table>
+        <thead>
+          <tr>
+            <th>Timestamp</th>
+            <th>Administrator</th>
+            <th>Action</th>
+            <th>Target User</th>
+            <th>Details / Metadata</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% for (const l of logs) { %>
+            <tr>
+              <td style="font-size:12px;color:#94a3b8;white-space:nowrap;">
+                <%= l.createdAt ? new Date(l.createdAt).toLocaleString() : 'N/A' %>
+              </td>
+              <td>
+                <% if (l.adminId) { %>
+                  <strong><%= l.adminId.name %></strong>
+                  <div style="font-size:11px;color:#64748b;"><%= l.adminId.email %></div>
+                <% } else { %>
+                  <span style="color:#64748b;">System / Unknown</span>
+                <% } %>
+              </td>
+              <td>
+                <span class="badge badge-action"><%= l.action %></span>
+              </td>
+              <td>
+                <% if (l.targetUserId) { %>
+                  <a href="/admin/users/<%= l.targetUserId._id %>" style="color:#60a5fa;text-decoration:none;">
+                    <%= l.targetUserId.name %>
+                  </a>
+                <% } else { %>
+                  <span style="color:#64748b;">—</span>
+                <% } %>
+              </td>
+              <td style="font-size:12px;color:#94a3b8;max-width:300px;word-break:break-all;">
+                <% if (l.metadata) { %>
+                  <code><%= JSON.stringify(l.metadata) %></code>
+                <% } else if (l.description) { %>
+                  <%= l.description %>
+                <% } else { %>
+                  <span style="color:#64748b;">—</span>
+                <% } %>
+              </td>
+            </tr>
+          <% } %>
+        </tbody>
+      </table>
+    <% } %>
+  </div>
+
+  <!-- Pagination -->
+  <% if (totalPages > 1) { %>
+    <div class="pagination">
+      <% if (page > 1) { %>
+        <a href="/admin/audit-log?page=<%= page - 1 %>">‹</a>
+      <% } else { %>
+        <span class="disabled">‹</span>
+      <% } %>
+
+      <% for (let p = Math.max(1, page - 2); p <= Math.min(totalPages, page + 2); p++) { %>
+        <% if (p === page) { %>
+          <span class="current"><%= p %></span>
+        <% } else { %>
+          <a href="/admin/audit-log?page=<%= p %>"><%= p %></a>
+        <% } %>
+      <% } %>
+
+      <% if (page < totalPages) { %>
+        <a href="/admin/audit-log?page=<%= page + 1 %>">›</a>
+      <% } else { %>
+        <span class="disabled">›</span>
+      <% } %>
+    </div>
+  <% } %>
+</main>
+
+</body>
+</html>

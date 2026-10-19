@@ -1,0 +1,24 @@
+[
+  {
+    "company": "Wipro",
+    "exam": "Wipro_Elite_NTH",
+    "section": "Logical",
+    "subject": "Seating Arrangements",
+    "topic": "Seating Arrangements",
+    "category": "Logical Reasoning",
+    "sourceType": "practice",
+    "sourceRef": "Wipro Placement Practice",
+    "question": "Five friends P, Q, R, S and T sit in a row facing north. R is at the extreme left. T is at the extreme right. Q is immediately to the right of R. S is not adjacent to T. Who sits in the middle?",
+    "option1": "P",
+    "option2": "Q",
+    "option3": "R",
+    "option4": "S",
+    "answer": "S",
+    "explanation": "Position 1 = R, 2 = Q, 5 = T. S is not adjacent to T, so S is at position 3 and P at position 4.",
+    "difficultyLevel": 2,
+    "difficulty": "Medium",
+    "level": "Intermediate",
+    "questionType": "mcq",
+    "active": true
+  }
+]

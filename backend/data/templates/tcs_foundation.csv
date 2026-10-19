@@ -1,0 +1,3 @@
+"question","option1","option2","option3","option4","answer","explanation","subject","topic","subtopic","difficultyLevel","company","exam","level"
+"What is the average of first 5 multiples of 3?","9","12","15","18","9","The first 5 multiples of 3 are 3, 6, 9, 12, 15. Sum = 45. Average = 45 / 5 = 9.","Numerical Ability","Numerical Ability","Averages",1,"TCS","TCS_NQT","Foundation"
+"If A is brother of B, and B is sister of C, how is A related to C?","Brother","Sister","Father","Uncle","Brother","Since A is male (brother) and B & C share siblings, A is the brother of C.","Reasoning Ability","Reasoning Ability","Blood Relations",1,"TCS","TCS_NQT","Foundation"

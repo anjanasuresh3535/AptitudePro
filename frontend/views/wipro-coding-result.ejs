@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title><%= title %> | AptitudePro</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+:root {
+    --bg: #090d16;
+    --card: rgba(30, 41, 59, 0.7);
+    --card-border: rgba(255, 255, 255, 0.1);
+    --text: #f8fafc;
+    --muted: #94a3b8;
+    --accent: #38bdf8;
+    --green: #34d399;
+    --amber: #fbbf24;
+    --red: #f87171;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; padding-bottom: 48px; }
+a { color: var(--accent); text-decoration: none; }
+
+.top-nav {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 16px 32px; background: rgba(15, 23, 42, 0.92);
+    border-bottom: 1px solid rgba(56, 189, 248, 0.15);
+    position: sticky; top: 0; z-index: 50;
+}
+.top-nav a { color: var(--muted); font-size: 0.9rem; font-weight: 600; }
+.top-nav a:hover { color: var(--accent); }
+.brand { font-size: 1.15rem; font-weight: 800; color: #fff; }
+.brand span { color: var(--accent); }
+
+.wrap { max-width: 1080px; margin: 0 auto; padding: 28px 22px; }
+.page-head h1 { font-size: 1.7rem; font-weight: 800; color: #fff; margin-bottom: 6px; }
+.page-sub { color: var(--muted); font-size: 0.9rem; margin-bottom: 22px; }
+
+.card {
+    background: var(--card); border: 1px solid var(--card-border);
+    border-radius: 18px; padding: 26px; margin-bottom: 20px;
+}
+.card h3 {
+    font-size: 0.78rem; letter-spacing: 0.09em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 16px; font-weight: 700;
+    display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+}
+
+.banner {
+    display: flex; gap: 12px; align-items: flex-start;
+    border-radius: 14px; padding: 16px 18px; margin-bottom: 22px;
+    font-size: 0.9rem; line-height: 1.7;
+}
+.banner.ok { background: rgba(52, 211, 153, 0.08); border: 1px solid rgba(52, 211, 153, 0.3); color: #a7f3d0; }
+.banner.off { background: rgba(251, 191, 36, 0.08); border: 1px solid rgba(251, 191, 36, 0.3); color: #fde68a; }
+.banner i { margin-top: 3px; }
+.banner strong { color: #fff; }
+
+.summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 14px; }
+.stat-box { background: rgba(255, 255, 255, 0.03); border-radius: 12px; padding: 16px; text-align: center; }
+.stat-box .val { font-size: 1.4rem; font-weight: 800; color: #fff; }
+.stat-box .lbl { font-size: 0.66rem; letter-spacing: 0.09em; text-transform: uppercase; color: var(--muted); margin-top: 5px; }
+
+.status-pill {
+    font-size: 0.72rem; font-weight: 700; padding: 5px 13px; border-radius: 20px;
+    text-transform: capitalize; display: inline-block; white-space: nowrap;
+}
+.status-pill.accepted, .status-pill.ok { background: rgba(52, 211, 153, 0.15); color: var(--green); border: 1px solid rgba(52, 211, 153, 0.3); }
+.status-pill.wrong_answer, .status-pill.compile_error, .status-pill.runtime_error { background: rgba(248, 113, 113, 0.15); color: var(--red); border: 1px solid rgba(248, 113, 113, 0.3); }
+.status-pill.partial, .status-pill.time_limit_exceeded { background: rgba(251, 191, 36, 0.15); color: var(--amber); border: 1px solid rgba(251, 191, 36, 0.3); }
+.status-pill.not_executed, .status-pill.skipped, .status-pill.not_attempted { background: rgba(148, 163, 184, 0.15); color: var(--muted); border: 1px solid rgba(148, 163, 184, 0.3); }
+
+.verdict-note {
+    background: rgba(255, 255, 255, 0.04); border-left: 3px solid var(--accent);
+    border-radius: 8px; padding: 12px 16px; margin-bottom: 18px;
+    color: #cbd5e1; font-size: 0.9rem; line-height: 1.6;
+}
+.tc-block {
+    background: rgba(15, 23, 42, 0.55); border: 1px solid rgba(255, 255, 255, 0.07);
+    border-radius: 12px; padding: 16px 18px; margin-bottom: 20px;
+}
+.tc-title { font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); font-weight: 700; margin-bottom: 10px; }
+.tc-line { color: #cbd5e1; font-size: 0.9rem; line-height: 1.9; }
+.tc-line strong { color: #fff; }
+.tc-dots { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 12px; }
+.tc-dot {
+    width: 13px; height: 13px; border-radius: 4px; display: inline-block;
+}
+.tc-dot.pass { background: var(--green); }
+.tc-dot.fail { background: var(--red); }
+.tc-dot.hidden { border: 1px dashed rgba(255, 255, 255, 0.5); }
+.tc-hint { font-size: 0.76rem; color: var(--muted); margin-top: 10px; }
+
+.spec-label { font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: #7dd3fc; font-weight: 700; margin: 18px 0 6px; }
+.spec-val { color: #cbd5e1; line-height: 1.75; font-size: 0.94rem; white-space: pre-wrap; }
+.code-block { overflow-x: auto; border-radius: 12px; border: 1px solid rgba(148, 163, 184, 0.18); background: #0b1626; }
+.code-block pre {
+    margin: 0; padding: 16px 18px;
+    font-family: 'JetBrains Mono', ui-monospace, Consolas, monospace;
+    font-size: 0.85rem; line-height: 1.7; color: #cbd5e1; white-space: pre; tab-size: 4;
+}
+
+.btn {
+    padding: 12px 26px; border-radius: 11px; font-size: 0.92rem; font-weight: 700;
+    display: inline-flex; align-items: center; gap: 9px;
+}
+.btn-primary { background: linear-gradient(135deg, #0891b2, #38bdf8); color: #04212e; }
+.btn-secondary { background: rgba(255, 255, 255, 0.06); color: #cbd5e1; border: 1px solid rgba(255, 255, 255, 0.14); }
+</style>
+</head>
+<body>
+<div class="top-nav">
+    <a href="/dashboard"><i class="fa-solid fa-arrow-left"></i> Dashboard</a>
+    <div class="brand">Aptitude<span>Pro</span></div>
+    <a href="/placement/college/company/wipro">Wipro Practice</a>
+</div>
+
+<div class="wrap">
+    <div class="page-head">
+        <h1>Wipro Coding Mock Result</h1>
+        <p class="page-sub">
+            <%= submission.testTitle %> &middot;
+            Submitted <%= new Date(submission.submittedAt).toLocaleString() %>
+        </p>
+    </div>
+
+    <!-- Execution status: static copy in scriptlets, never HTML inside data. -->
+    <div class="banner <%= executionAvailable ? 'ok' : 'off' %>">
+        <i class="fa-solid <%= executionAvailable ? 'fa-circle-check' : 'fa-circle-info' %>"></i>
+        <div>
+            <% if (executionAvailable) { %>
+                <strong>Evaluated inside the sandbox.</strong>
+                Your code was compiled and run in an isolated environment against the sample and
+                hidden test cases.
+            <% } else if (submission.expired) { %>
+                <strong>Not executed - time expired.</strong>
+                The 60 minute limit had already passed when this was submitted, so your code was
+                saved but not run. No pass or fail result was produced.
+            <% } else { %>
+                <strong>Not executed.</strong>
+                Code execution is currently switched off, so your code was saved exactly as you
+                wrote it but was not run. No pass or fail result was produced.
+            <% } %>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3><i class="fa-solid fa-chart-simple"></i> Mock Summary</h3>
+        <div class="summary-grid">
+            <div class="stat-box"><div class="val"><%= submission.attemptedProblems %> / <%= submission.totalProblems %></div><div class="lbl">Attempted</div></div>
+            <div class="stat-box"><div class="val"><%= submission.solvedProblems %> / <%= submission.totalProblems %></div><div class="lbl">Solved</div></div>
+            <div class="stat-box"><div class="val"><%= submission.passedTests %> / <%= submission.totalTests %></div><div class="lbl">Tests Passed</div></div>
+            <div class="stat-box"><div class="val"><%= submission.passedHiddenTests %> / <%= submission.totalHiddenTests %></div><div class="lbl">Hidden Tests</div></div>
+            <div class="stat-box"><div class="val"><%= submission.compileErrors %></div><div class="lbl">Compile Errors</div></div>
+            <div class="stat-box"><div class="val"><%= submission.runtimeErrors %></div><div class="lbl">Runtime Errors</div></div>
+            <div class="stat-box"><div class="val"><%= Math.floor(submission.timeTaken / 60) %>m <%= submission.timeTaken % 60 %>s</div><div class="lbl">Time Used</div></div>
+            <div class="stat-box"><div class="val"><%= submission.score %><span style="font-size:0.85rem;">%</span></div><div class="lbl">Coding Score</div></div>
+            <div class="stat-box"><div class="val">+<%= submission.xpEarned %></div><div class="lbl">XP Earned</div></div>
+        </div>
+        <div style="margin-top:18px;">
+            <span class="status-pill <%= submission.overallStatus %>">
+                <% if (submission.overallStatus === 'accepted') { %>Accepted
+                <% } else if (submission.overallStatus === 'partial') { %>Partially Solved
+                <% } else { %>Not Attempted<% } %>
+            </span>
+        </div>
+    </div>
+<% problems.forEach(function (p, i) { %>
+        <% var sampleTotal = p.sampleTests || 0; var hiddenTotal = p.hiddenTests || 0; %>
+        <% var samplePassed = Math.min(p.passedSampleTests, sampleTotal); %>
+        <% var hiddenPassed = Math.min(p.passedHiddenTests, hiddenTotal); %>
+        <div class="card">
+            <h3>
+                <span>Problem <%= i + 1 %>: <%= p.title %></span>
+                <span class="status-pill <%= p.evaluationStatus %>"><%= String(p.evaluationStatus).replace(/_/g, ' ') %></span>
+            </h3>
+
+            <% if (p.message) { %>
+                <div class="verdict-note"><%= p.message %></div>
+            <% } %>
+
+            <% if (executionAvailable && p.attempted) { %>
+                <div class="tc-block">
+                    <div class="tc-title">Test Cases</div>
+                    <div class="tc-line">Sample: <strong><%= samplePassed %> / <%= sampleTotal %></strong> passed</div>
+                    <div class="tc-line">Hidden: <strong><%= hiddenPassed %> / <%= hiddenTotal %></strong> passed</div>
+                    <div class="tc-line">Overall: <strong><%= p.passedTests %> / <%= p.totalTests %></strong> passed</div>
+                    <div class="tc-dots">
+                        <% (p.caseResults || []).forEach(function (c) { %>
+                            <span class="tc-dot <%= c.isHidden ? 'hidden' : '' %> <%= c.passed ? 'pass' : 'fail' %>"
+                                  title="<%= c.isHidden ? 'Hidden' : 'Sample' %> test <%= c.passed ? 'passed' : 'failed' %>"></span>
+                        <% }) %>
+                    </div>
+                    <p class="tc-hint">Hidden test inputs and expected outputs are never shown.</p>
+                </div>
+            <% } %>
+
+            <div class="spec-label">Problem Statement</div>
+            <div class="spec-val"><%= p.statement %></div>
+            <div class="spec-label">Constraints</div>
+            <div class="spec-val"><%= p.constraints %></div>
+            <div class="spec-label">Sample Input</div>
+            <div class="code-block"><pre><%= p.sampleInput %></pre></div>
+            <div class="spec-label">Sample Output</div>
+            <div class="code-block"><pre><%= p.sampleOutput %></pre></div>
+            <div class="spec-label">Explanation</div>
+            <div class="spec-val"><%= p.explanation %></div>
+
+            <div class="spec-label">Your Submitted Code (<%= p.language || 'language not selected' %>)</div>
+            <% if (p.attempted) { %>
+                <div class="code-block"><pre><%= p.code %></pre></div>
+            <% } else { %>
+                <div class="spec-val" style="color:var(--muted);">No code was submitted for this problem.</div>
+            <% } %>
+        </div>
+    <% }) %>
+
+    <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:22px;">
+        <a href="/wipro/coding?new=1" class="btn btn-primary"><i class="fa-solid fa-rotate-right"></i> Start Another Coding Test</a>
+        <a href="/results/history" class="btn btn-secondary"><i class="fa-solid fa-clock-rotate-left"></i> Result History</a>
+    </div>
+</div>
+</body>
+</html>
